@@ -1,3 +1,5 @@
+<<<<<<< .mine
+Yess screw digipen svn!!=======
 WEEEEEE!
 
-O_O...
+O_O...>>>>>>> .r4
