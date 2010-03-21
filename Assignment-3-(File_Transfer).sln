@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{F9C11D18-D2D8-4C21-83F5-BF60AC7BFE78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{DDEC1DCC-3A41-419D-88F0-8D10C01CCD02}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsLibrary", "WindowsLibrary\WindowsLibrary.vcproj", "{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcproj", "{9161C282-AC5F-4E1B-92F2-1DD45DCC4748}"
+	ProjectSection(ProjectDependencies) = postProject
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3} = {76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}.Debug|Win32.Build.0 = Debug|Win32
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}.Release|Win32.ActiveCfg = Release|Win32
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}.Release|Win32.Build.0 = Release|Win32
+		{9161C282-AC5F-4E1B-92F2-1DD45DCC4748}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9161C282-AC5F-4E1B-92F2-1DD45DCC4748}.Debug|Win32.Build.0 = Debug|Win32
+		{9161C282-AC5F-4E1B-92F2-1DD45DCC4748}.Release|Win32.ActiveCfg = Release|Win32
+		{9161C282-AC5F-4E1B-92F2-1DD45DCC4748}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3} = {F9C11D18-D2D8-4C21-83F5-BF60AC7BFE78}
+		{9161C282-AC5F-4E1B-92F2-1DD45DCC4748} = {DDEC1DCC-3A41-419D-88F0-8D10C01CCD02}
+	EndGlobalSection
+EndGlobal
