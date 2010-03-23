@@ -63,7 +63,7 @@ bool Window::Create( int show )
     WS_OVERLAPPEDWINDOW,            // Type of window to create.
     CW_USEDEFAULT, CW_USEDEFAULT,   // Initial position (x, y)
     width_, height_,                // Window size
-    NULL,                           // Window's parent.
+    GetDesktopWindow(),             // Window's parent.
     NULL,                           // Menu bar.
     hInst_,                         // Application instance.
     NULL );                         // lpParam not used.
