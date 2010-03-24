@@ -56,6 +56,15 @@ BOOL OpenFileDialog::OpenFile( const std::string &filename )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void OpenFileDialog::SetRelativeDir( const std::string &relative_dir )
+{
+  dir_ = gCurrentDirectory + relative_dir;
+
+  ofn_.lpstrInitialDir = dir_.c_str();
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 const char* OpenFileDialog::GetFileName( void )
 {
   return ofn_.lpstrFile;
@@ -108,6 +117,15 @@ BOOL SaveFileDialog::SaveFile( const std::string &filename )
   {
     return FALSE;
   }
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void SaveFileDialog::SetRelativeDir( const std::string &relative_dir )
+{
+  dir_ = gCurrentDirectory + relative_dir;
+
+  ofn_.lpstrInitialDir = dir_.c_str();
 }
 
 /**************************************************************************************************/
