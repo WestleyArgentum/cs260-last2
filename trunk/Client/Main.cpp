@@ -1,9 +1,8 @@
 #include <iostream>
 
-#include "WindowsLibrary/Window.hpp"          // Window
-#include "WindowsLibrary/Console.hpp"         // CreateConsole()
-#include "WindowsLibrary/FileDialogs.hpp"     // OpenFileDialog, SaveFileDialog
+#include "WindowsLibrary/Header.hpp"
 
+#include "ConfigReader.hpp"
 #include "ClientProcesses.hpp"
 
 enum ButtonIDs
@@ -116,21 +115,66 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
         }
       }
       break;
-
-    default:
-      return DefWindowProc( hWnd, message, wParam, lParam );
-      break;
   }
 
-  return 0;
+  return DefWindowProc( hWnd, message, wParam, lParam );
+}
+
+class FileAccept : public RoutineObject
+{
+  public:
+    FileAccept( const std::string &from, const std::string &file ) : from_(from), file_(file),
+      window_(NULL)
+    {
+      thread_.Resume();
+    }
+
+  private:
+    std::string from_;
+    std::string file_;
+    HWND window_;
+
+    virtual void InitializeThread( void );
+
+    void Run( void )
+    {
+      char buffer[512] = {0};
+
+      sprintf_s( buffer, sizeof(buffer),
+        "Incoming file from %s.\n Did you want to accept the file transfer?", from_.c_str() );
+
+      int result = MessageBox( window_, buffer, "File transfer pending...",
+        MB_YESNO | MB_ICONINFORMATION );
+
+      switch ( result )
+      {
+        case IDYES:
+          DebugPrint( "File transfer accepted..." );
+          break;
+
+        case IDNO:
+          DebugPrint( "File transfer rejected..." );
+          break;
+      }
+    }
+
+    virtual void ExitThread( void ) {;}
+    virtual void FlushThread( void ) {;}
+};    // class FileAccept
+
+void FileAccept::InitializeThread( void )
+{
 }
 
 /**************************************************************************************************/
 /**************************************************************************************************/
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
 {
+    // Check for memory leaks
+  _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_EVERY_16_DF );
+
     // Create a DebugConsole so we can print information for testing our chat program.
-  CreateConsole();
+  //CreateConsole();    // Could also use DebugPrint!
 
     // Setup our window for our chat program.
   Window window( "CS260_ChatProgram!", WinProc );
@@ -162,15 +206,19 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   window.AddComponent( &button3 );
   window.AddComponent( &userlistbox );
 
-  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
-  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
-  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
-
+  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),            CID_Display );
+  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),           CID_NewUser );
+  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ),        CID_RemoveUser );
+  //CommandCenter->AcceptFileProcess( new AcceptFileProcess( window.GetHwnd() ),  CID_AcceptFile );
 
   sendbox->SetTextLimit( 255 );
-  displaybox.SetText( "Welcome!\r\n"
-    "To begin a chat session, please connect to the server by typing the command below. Thanks!\r\n"
-    "\"/name=<username> /server:ip=<ip address> /server:port=<port number>\"\r\n\r\n" );
+  displaybox.SetText( "Welcome!\r\n\r\n" );
+
+    // Load in the server port/ip and client's name.
+  Config configuration( "Config.txt" );
+
+  FileAccept obj( configuration.username_, "Test.txt" );
+  CommandCenter->PostMsg( "Hi!!!", CID_Display );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() ) {;}

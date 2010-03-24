@@ -1,5 +1,4 @@
-#include "WindowsLibrary/CommandCenter.hpp"   // ICommandProcess
-#include "WindowsLibrary/Window.hpp"
+#include "WindowsLibrary/Header.hpp"
 
 struct DisplayProcess : public ICommandProcess
 {

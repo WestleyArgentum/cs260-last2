@@ -1,4 +1,5 @@
 #include "Window.hpp"
+
 #include <mmsystem.h>
 #include <shellapi.h>
 
@@ -14,9 +15,32 @@ Window::Window( const std::string &name, WindowProcedure proc, unsigned int widt
     // Get the HINSTANCE of this application. (aka first param of WinMain)
   hInst_ = GetModuleHandle( NULL );
 
+  // WS_BORDER           - Creates a window that has a border.
+  // WS_CAPTION          - Creates a window that has a title bar (implies the WS_BORDER style).
+  //                       Cannot be used with the WS_DLGFRAME style.
+  // WS_DLGFRAME         - Creates a window with a double border but no title.
+  // WS_MAXIMIZEBOX      - Creates a window that has a Maximize button.
+  // WS_MINIMIZE         - Creates a window that is initially minimized. For use with the
+  //                        WS_OVERLAPPED style only.
+  // WS_MINIMIZEBOX      - Creates a window that has a Minimize button.
+  // WS_OVERLAPPED       - Creates an overlapped window. An overlapped window usually has a caption
+  //                        and a border.
+  // WS_OVERLAPPEDWINDOW - Creates an overlapped window with the WS_OVERLAPPED, WS_CAPTION,
+  //                        WS_SYSMENU, WS_THICKFRAME, WS_MINIMIZEBOX, and WS_MAXIMIZEBOX styles.
+  // WS_POPUP            - Creates a pop-up window. Cannot be used with the WS_CHILD style.
+  // WS_POPUPWINDOW      - Creates a pop-up window with the WS_BORDER, WS_POPUP, and WS_SYSMENU
+  //                        styles. The WS_CAPTION style must be combined with the WS_POPUPWINDOW
+  //                        style to make the Control menu visible.
+  // WS_THICKFRAME       - Creates a window with a thick frame that can be used to size the window.
+
+  style_ = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+
+  RECT fullWindow = { 0, 0, width_, height_ };
+  AdjustWindowRect( &fullWindow, style_, FALSE );
+
     // Setup all the variables that make up our window!
   window_.cbSize        = sizeof(WNDCLASSEX);
-  window_.style         = CS_HREDRAW | CS_VREDRAW;
+  window_.style         = CS_CLASSDC;
   window_.lpfnWndProc   = proc;
   window_.cbClsExtra    = 0;
   window_.cbWndExtra    = 0;
@@ -60,7 +84,7 @@ bool Window::Create( int show )
   handle_ = CreateWindow(
     name_.c_str(),                  // Application name.
     title_.c_str(),                 // Title bar text.
-    WS_OVERLAPPEDWINDOW,            // Type of window to create.
+    style_,                         // Style of the window we are creating.
     CW_USEDEFAULT, CW_USEDEFAULT,   // Initial position (x, y)
     width_, height_,                // Window size
     GetDesktopWindow(),             // Window's parent.
