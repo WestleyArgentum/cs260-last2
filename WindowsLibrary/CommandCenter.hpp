@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vector>
-#include <list>
-#include <hash_map>
-
 #include "WindowsLibrary/Threading.hpp"
+
+#include <string>
+#include <vector>
+#include <hash_map>
 
 enum CommandID
 {
@@ -13,6 +13,7 @@ enum CommandID
   ,CID_NewUser
   ,CID_RemoveUser
   ,CID_SendFile
+  ,CID_AcceptFile
   ,CID_SendMessage
   ,CID_DistributeMessage
 

@@ -2,8 +2,7 @@
 
 #include <windows.h>
 
-#include <string>       // std::string
-#include <list>         // std::list<>
+#include <string>         // std::string
 
 struct IWindowComponent
 {
@@ -33,6 +32,8 @@ class Window
 
     WPARAM ReturnCode( void ) const { return msg_.wParam; }
 
+    HWND GetHwnd( void ) const { return handle_; }
+
   private:
     unsigned width_;
     unsigned height_;
@@ -41,6 +42,7 @@ class Window
     std::string title_;
 
     WNDCLASSEX window_;
+    DWORD style_;
     MSG msg_;
     HWND handle_;
     HINSTANCE hInst_;

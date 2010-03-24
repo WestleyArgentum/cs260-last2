@@ -48,6 +48,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -113,7 +114,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				WarnAsError="true"
+				WarnAsError="false"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
@@ -172,30 +173,30 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Console"
-			>
-			<File
-				RelativePath=".\Console.cpp"
+			<Filter
+				Name="Console"
 				>
-			</File>
-			<File
-				RelativePath=".\Console.hpp"
+				<File
+					RelativePath=".\Console.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Console.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DialogBoxes"
 				>
-			</File>
-		</Filter>
-		<Filter
-			Name="DialogBoxes"
-			>
-			<File
-				RelativePath=".\FileDialogs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FileDialogs.hpp"
-				>
-			</File>
+				<File
+					RelativePath=".\FileDialogs.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileDialogs.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Threading"
@@ -218,6 +219,26 @@
 			</File>
 			<File
 				RelativePath=".\CommandCenter.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Debug"
+			>
+			<File
+				RelativePath=".\DebugDiagnostic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DebugDiagnostic.hpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header"
+			>
+			<File
+				RelativePath=".\Header.hpp"
 				>
 			</File>
 		</Filter>

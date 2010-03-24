@@ -180,6 +180,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Resources"
+			>
+			<File
+				RelativePath=".\Config.txt"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="ConfigReader"
+			>
+			<File
+				RelativePath=".\ConfigReader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ConfigReader.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\Main.cpp"
 			>

@@ -1,4 +1,4 @@
-#include "WindowsLibrary/CommandCenter.hpp"
+//#include "WindowsLibrary/CommandCenter.hpp"
 #include "NetworkingLibrary/NetAPI.h"
 
 int main(int argc, char *argv[])
@@ -8,8 +8,9 @@ int main(int argc, char *argv[])
   //NetAPI->Init();
 
   //// read in port from config file
-  //unsigned port = 8000; // hard coded for now. TODO: FIX THIS!!!
+  //unsigned port = 8000; // hard coded for now. //TODO: FIX THIS!!!
 
+  // TODO:
   //// create hosting server
   //// if creation fails, let the user know and quit.
   //std::cout << "ChatServer2.0\nHosting from: " << NetAPI->LocalIP() << " Port: " << port << std::endl;

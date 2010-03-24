@@ -1,11 +1,11 @@
+#include "Console.hpp"
+
 #include <windows.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <io.h>
-#include <iostream>
-#include <fstream>
 
-#include "Console.hpp"
+#include <iostream>
 
 namespace
 {
@@ -13,7 +13,11 @@ namespace
 /**************************************************************************************************/
   void Redirect( FILE *file, const char *mode, HANDLE handle )
   {
+#pragma warning(push)
+#pragma warning( disable : 4311 )   // 'type cast' : pointer truncation from 'HANDLE' to 'long'
     int fileHandle = _open_osfhandle( (long)handle, _O_TEXT );
+#pragma warning(pop)
+
     FILE *fp = _fdopen( fileHandle, mode );
 
     *file = *fp;

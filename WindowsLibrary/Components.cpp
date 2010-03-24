@@ -76,7 +76,7 @@ void Textbox::AddText( const std::string &str )
 {
     // Get the current text within our window so we don't clear it on the client.
   std::string current = GetText();
-  unsigned size = current.size() + str.size();
+  unsigned size = static_cast<unsigned>( current.size() + str.size() );
 
     // If we reached the end of our buffer, start pushing our old data out to make room for the new
     //  data comming in!
