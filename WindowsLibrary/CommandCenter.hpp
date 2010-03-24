@@ -14,6 +14,7 @@ enum CommandID
   ,CID_RemoveUser
   ,CID_SendFile
   ,CID_SendMessage
+  ,CID_DistributeMessage
 
     // Keeps track of the total number of 
   ,CID_Total
