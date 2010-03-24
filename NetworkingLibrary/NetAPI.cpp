@@ -81,6 +81,19 @@ bool TCPSocket::operator==(const TCPSocket &rhs) const
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+int TCPSocket::ToggleBlocking(bool v) throw (Error)
+{
+  u_long val = (v ? 1 : 0);
+  int ret = ioctlsocket(socket, FIONBIO, &val);
+  if (ret == SOCKET_ERROR) {
+    Error er = CreateError(Error::E_SocketError);
+    throw er;
+  }
+  return ret;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 int TCPSocket::Bind(unsigned port)
 {
 	if (bound)
@@ -206,6 +219,20 @@ UDPSocket::UDPSocket() : id("UNINITIALIZED SOCKET"), rmsg(PT_INVALID), blocking(
 /**************************************************************************************************/
 bool UDPSocket::SetID(const std::string &id)
 { return NetAPI->UpdateID(this,id); }
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+int UDPSocket::ToggleBlocking(bool v) throw (Error)
+{
+  u_long val = (v ? 1 : 0);
+  int ret = ioctlsocket(socket, FIONBIO, &val);
+  if (ret == SOCKET_ERROR) {
+    Error er = CreateError(Error::E_SocketError);
+    throw er;
+  }
+
+  return ret;
+}
 
 /**************************************************************************************************/
 /**************************************************************************************************/
