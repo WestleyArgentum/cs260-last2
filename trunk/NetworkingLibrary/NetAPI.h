@@ -135,6 +135,7 @@ namespace NAPI ///< Networking API namespace
 
 	  bool operator==(const TCPSocket &rhs) const;
 
+    int ToggleBlocking(bool val) throw (Error);
 	  int Bind(unsigned port = 0) throw (Error);
 	  int Listen(unsigned num = 10) throw (Error);
 	  int Connect(const char *ip, unsigned port) throw (Error);
@@ -176,6 +177,8 @@ namespace NAPI ///< Networking API namespace
      ///< Only need to compare IDs.
     bool operator==(const UDPSocket &rhs) const
     { return socket == rhs.socket && id == rhs.id; }
+
+    int ToggleBlocking(bool val) throw (Error);
 
     ///< Send data to the address specified.
     int SendTo(const NetAddress &address, PacketType type, const void *data, 
