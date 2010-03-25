@@ -87,6 +87,8 @@ namespace NAPI ///< Networking API namespace
 	  /// Sequence numbers and ACKs are stored in this. Separate for sizeof reasons
 	  struct Header
 	  {
+      // TODO: Add source and destination fields.
+
 		  PacketType type; ///< Type of packet being sent.
 		  unsigned seq;    ///< Sequence number
 		  unsigned ack;    ///< Acknoledgement number
