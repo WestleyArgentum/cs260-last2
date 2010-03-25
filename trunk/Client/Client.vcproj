@@ -200,6 +200,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Client"
+			>
+			<File
+				RelativePath=".\Client.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Client.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\Main.cpp"
 			>
