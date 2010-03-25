@@ -171,7 +171,7 @@ int TCPSocket::Recieve()
 	if (ret == SOCKET_ERROR)
 	{
 		if (!blocking)
-			return -1; // would have blocked
+			return ret; // would have blocked
 
     Error er = CreateError(Error::E_SocketError);
     throw er;
