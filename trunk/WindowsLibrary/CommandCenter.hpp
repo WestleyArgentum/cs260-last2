@@ -6,6 +6,32 @@
 #include <vector>
 #include <hash_map>
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// For Client:
+//  > CID_Display
+//    - Displays the command into the read only textbox of our chat program.
+//  > CID_NewUser
+//    - Command contains the username to add to the listbox. (list of online users)
+//  > CID_RemoveUser
+//    - Command contains the username to remove from the listbox. (list of online users)
+//  > CID_SendFile
+//    - Not implemented...
+//  > CID_SendMessage
+//    - Not implemented...
+//  > CID_DistributeMessage
+//    - Not implemented... (not needed?)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// For Server:
+//  > CID_Display
+//  > CID_NewUser
+//  > CID_RemoveUser
+//  > CID_SendFile
+//  > CID_SendMessage
+//  > CID_DistributeMessage
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 enum CommandID
 {
    CID_Unknown = 0
