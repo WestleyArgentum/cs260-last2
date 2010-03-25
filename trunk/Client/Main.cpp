@@ -129,6 +129,11 @@ class FileAccept : public RoutineObject
       thread_.Resume();
     }
 
+    bool Terminate( void )
+    {
+      return thread_.Terminate();
+    }
+
   private:
     std::string from_;
     std::string file_;
@@ -211,9 +216,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   displaybox.SetText( "Welcome!\r\n\r\n" );
 
     // Load in the server port/ip and client's name.
-  //Config configuration( "Config.txt" );
+  Config configuration( "..\\Assets\\Config.txt" );
 
-  //FileAccept obj( configuration.username_, "Test.txt" );
+  FileAccept obj( configuration.username_, "Test.txt" );
   CommandCenter->PostMsg( "Hi!!!", CID_Display );
 
     // Finally start processing our window until our client decides to quit the chat program.

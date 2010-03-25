@@ -63,9 +63,10 @@ class Thread
     void Resume( void );
 
     void WaitForDeath( void );
-    void Terminate( void );
+    bool Terminate( void );
 
   private:
+    SECURITY_ATTRIBUTES attributes_;
     HANDLE handle_;   ///< Handle to our thread.
     DWORD id_;        ///< Thread id.
 };    // class Thread
