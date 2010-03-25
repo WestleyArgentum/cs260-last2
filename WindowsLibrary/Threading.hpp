@@ -63,6 +63,7 @@ class Thread
     void Resume( void );
 
     void WaitForDeath( void );
+    void Terminate( void );
 
   private:
     HANDLE handle_;   ///< Handle to our thread.

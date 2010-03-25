@@ -242,6 +242,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Timer"
+			>
+			<File
+				RelativePath=".\Timer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Timer.hpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
