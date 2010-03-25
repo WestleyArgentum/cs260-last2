@@ -22,7 +22,8 @@ enum CommandID
 
 struct Command
 {
-  Command( CommandID id = CID_Unknown, std::string str = "<null>" ) : id_(id), str_(str) {;}
+  Command( CommandID id = CID_Unknown, std::string str = "<null>", void *data = 0 )
+    : id_(id), str_(str), data_(data) {;}
 
   CommandID id_;
   std::string str_;

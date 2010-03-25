@@ -2,31 +2,35 @@
 #define SERVER_PROCESSES_H
 
 #include "NetworkingLibrary/NetAPI.h" // NetAPI, TCPSOCKET, UDPSOCKET
+#include "ServerRoutines.hpp"
 
-// message queue
-// client list
-// methods on those two
-
-// distribute message struct
-
-typedef std::string ClientNick;
-
-struct ClientData
+// adds user to list, spawns new client process,
+// informs all clients of the new user.
+struct NewUserProcess : ICommandProcess
 {
-  ClientNick name; ///< Client Nickname
-  TCPSOCKET socket; ///< Handle to Client TCPSocket
+  NewUserProcess(HostRoutine &host) : host_(host) {;}
+  virtual void operator()(const Command &command)
+  { host_.DistributeMessage(command); }
+
+  HostRoutine &host_;
 };
 
-class HostProcess
+struct RemoveUserProcess : ICommandProcess
 {
-  TCPSOCKET listener;
-  bool hosting;
-public:
-  HostProcess(const char *ip, unsigned port);
-  ~HostProcess() { Quit(); }
+  RemoveUserProcess(HostRoutine &host) : host_(host) {;}
+  virtual void operator()(const Command &command)
+  { host_.DistributeMessage(command); }
 
-  bool Host();
-  void Quit();
+  HostRoutine &host_;
+};
+
+struct SendMessageProcess : ICommandProcess
+{
+  SendMessageProcess(HostRoutine &host) : host_(host) {;}
+  virtual void operator()(const Command &command)
+  { host_.DistributeMessage(command); }
+
+  HostRoutine &host_;
 };
 
 
