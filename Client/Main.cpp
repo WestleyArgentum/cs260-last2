@@ -10,7 +10,6 @@
 enum ButtonIDs
 {
    BID_Send = 100   ///< Button id for sending a message to the server.
-  ,BID_AcceptFile   ///< Button id for receiving a file from another client.
   ,BID_OpenFile     ///< Button id for opening a file to send to another client.
 };    // enum ButtonIDs
 
@@ -55,22 +54,6 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
               // Post this message so someone can process this message.
             CommandCenter->PostMsg( str, CID_SendMessage );
-            break;
-
-            // Accept a file.
-          case BID_AcceptFile:
-            {
-              // TODO: Should error check to see if we have a file waiting to accept before we ask
-              //  the user for the destination directory.
-
-              SaveFileDialog dialog( hWnd );
-
-              //if ( dialog.SaveFile( "Save as..." ) )    // Specify default name for the user
-              if ( dialog.SaveFile() )
-              {
-                CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ), CID_Display );
-              }
-            }
             break;
 
             // Send a file.
@@ -150,16 +133,14 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   style = WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_BORDER;
   Button button1( "SEND!", BID_Send, ComponentInfo( style, 670, 450, 100, 100 ) );
   Button button2( "Send file...", BID_OpenFile, ComponentInfo( style, 670, 405, 100, 40 ) );
-  Button button3( "Accept file...", BID_AcceptFile, ComponentInfo( style, 670, 360, 100, 40 ) );
 
   style = WS_TABSTOP | WS_VISIBLE | WS_CHILD | LBS_NOSEL | LBS_SORT | WS_BORDER;
-  Listbox userlistbox( "Listbox1", ComponentInfo( style, 670, 10, 100, 350 ) );
+  Listbox userlistbox( "Listbox1", ComponentInfo( style, 670, 10, 100, 400 ) );
 
   window.AddComponent( &text1 );
   window.AddComponent( &displaybox );
   window.AddComponent( &button1 );
   window.AddComponent( &button2 );
-  window.AddComponent( &button3 );
   window.AddComponent( &userlistbox );
 
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -171,8 +152,6 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
 
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Assets\\Config.txt" );
-
-  FileAccept obj( configuration.username_, "Test.txt" );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )
