@@ -1,5 +1,5 @@
 [Username]
-Bunny
+Crazy!
 
 [Server]
 IP: 255.255.255.255

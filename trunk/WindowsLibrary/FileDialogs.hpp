@@ -12,6 +12,7 @@ class OpenFileDialog
     BOOL OpenFile( void );
     BOOL OpenFile( const std::string &filename );
 
+    void SetDirectory( const std::string &directory );
     void SetRelativeDir( const std::string &relative_dir );
 
     const char* GetFileName( void );    // Get the name of the file that the user wants to open.
@@ -35,6 +36,7 @@ class SaveFileDialog
       // Default the initial filename for the user to the filename given.
     BOOL SaveFile( const std::string &filename );
 
+    void SetDirectory( const std::string &directory );
     void SetRelativeDir( const std::string &relative_dir );
 
     const char* GetFileName( void );    // Get the name of the file to save.

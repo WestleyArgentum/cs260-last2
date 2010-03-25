@@ -15,7 +15,8 @@ enum ButtonIDs
 
 namespace
 {
-  Textbox *sendbox = NULL;
+  Textbox *sendbox  = NULL;
+  Listbox *userlist = NULL;
 }
 
 /**************************************************************************************************/
@@ -59,15 +60,22 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
             // Send a file.
           case BID_OpenFile:
             {
-              // TODO: Should error check to see if the user is currently connected before prompting
-              //  them to send a particular file.
+              const char *selected = userlist->GetSelected();
 
-              OpenFileDialog dialog( hWnd );
-
-              //if ( dialog.OpenFile( "Save as..." ) )    // Specify default name for the user
-              if ( dialog.OpenFile() )
+              if ( selected )
               {
-                CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ), CID_Display );
+                OpenFileDialog dialog( hWnd );
+
+                if ( dialog.OpenFile() )
+                {
+                  CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ),
+                    CID_Display );
+                }
+              }
+              else
+              {
+                MessageBox( NULL, "Please select an user to send the file to.",
+                  "Unknown destination!", MB_OK | MB_ICONEXCLAMATION );
               }
             }
             break;
@@ -136,6 +144,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
 
   style = WS_TABSTOP | WS_VISIBLE | WS_CHILD | LBS_NOSEL | LBS_SORT | WS_BORDER;
   Listbox userlistbox( "Listbox1", ComponentInfo( style, 670, 10, 100, 400 ) );
+  userlist = &userlistbox;
 
   window.AddComponent( &text1 );
   window.AddComponent( &displaybox );
@@ -153,7 +162,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  FileAccept obj( "BAM!", "Cool.txt" );
+  CommandCenter->PostMsg( configuration.username_, CID_NewUser );
+
+  FileAccept obj( "Test", "Cool.txt" );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )

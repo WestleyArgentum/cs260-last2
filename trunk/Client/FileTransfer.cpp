@@ -31,7 +31,7 @@ void FileAccept::InitializeThread( void )
   char buffer[512] = {0};
 
   sprintf_s( buffer, sizeof(buffer),
-    "Incoming file from %s.\n Did you want to accept the file transfer?", from_.c_str() );
+    "Incoming file from %s.\nDid you want to accept the file transfer?", from_.c_str() );
 
   result_ = MessageBox( NULL, buffer, "File transfer pending...", MB_YESNO | MB_ICONINFORMATION );
 }
@@ -102,6 +102,7 @@ bool FileSend::IsDone( void )
 /**************************************************************************************************/
 void FileSend::InitializeThread( void )
 {
+  OpenFileDialog openfile( NULL );
 }
 
 /**************************************************************************************************/
