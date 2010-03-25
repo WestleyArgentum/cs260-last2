@@ -172,6 +172,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Routines"
+			>
+			<File
+				RelativePath=".\ServerRoutines.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerRoutines.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\Main.cpp"
 			>
