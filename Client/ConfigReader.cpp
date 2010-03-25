@@ -22,10 +22,14 @@ Config::Config( const char *configname )
 
       if ( dataname == "[USERNAME]" )     // Specifing username.
       {
+        char name[32] = {0};
+
           // Ignore the newline character still left in the stream before the next line of our file
           //  so we can read in the user's name's line.
         iStream.ignore();
-        std::getline( iStream, username_ );
+        iStream.getline( name, sizeof(name) );
+
+        username_.assign( name, sizeof(name) );
       }
       else if ( dataname == "[SERVER]" )  // Specifing server information.
       {

@@ -173,3 +173,23 @@ void Listbox::RemoveString( const std::string &str )
   }
 }
 
+/**************************************************************************************************/
+/**************************************************************************************************/
+const char* Listbox::GetSelected( void )
+{
+  LRESULT index = SendMessage( handle_, LB_GETCURSEL, 0, 0 );
+
+  if ( index != LB_ERR )
+  {
+    memset( selected_, 0, sizeof(selected_) );
+
+    SendMessage( handle_, LB_GETTEXT, (WPARAM)index, (LPARAM)selected_ );
+
+    return selected_;
+  }
+  else
+  {
+    return NULL;
+  }
+}
+
