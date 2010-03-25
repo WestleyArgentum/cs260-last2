@@ -1,6 +1,7 @@
 #include "Client.hpp"
 
 #include "WindowsLibrary/CommandCenter.hpp"
+#include "WindowsLibrary/FileDialogs.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +42,23 @@ void FileAccept::Run( void )
 {
   if ( result_ == IDNO )
   {
-      // Don't perform the file transfer if the user didn't want to accept the transfer.
+      // File transfer rejected.
     return;
   }
 
+  SaveFileDialog saveas( NULL );
+  saveas.SetRelativeDir( "..\\Data\\dropfolder" );
 
+    // Select the destination of where to save the file and to save the file as.
+  if ( !saveas.SaveFile( file_ ) )
+  {
+      // User canceled to save the file at a particular location. File transfer rejected.
+    return;
+  }
+
+  // Connect to the client wanting to send us a file.
+  // Download file.
+  // Close connection.
 }
 
 /**************************************************************************************************/

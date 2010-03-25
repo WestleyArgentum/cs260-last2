@@ -151,7 +151,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   displaybox.SetText( "Welcome!\r\n\r\n" );
 
     // Load in the server port/ip and client's name.
-  Config configuration( "..\\Assets\\Config.txt" );
+  Config configuration( "..\\Data\\Config.txt" );
+
+  FileAccept obj( "BAM!", "Cool.txt" );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )

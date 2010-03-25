@@ -184,7 +184,7 @@
 			Name="Resources"
 			>
 			<File
-				RelativePath="..\Assets\Config.txt"
+				RelativePath="..\Data\Config.txt"
 				>
 			</File>
 		</Filter>

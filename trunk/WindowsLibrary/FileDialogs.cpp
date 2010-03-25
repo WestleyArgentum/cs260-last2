@@ -58,7 +58,7 @@ BOOL OpenFileDialog::OpenFile( const std::string &filename )
 /**************************************************************************************************/
 void OpenFileDialog::SetRelativeDir( const std::string &relative_dir )
 {
-  dir_ = gCurrentDirectory + relative_dir;
+  dir_ = gCurrentDirectory + ("\\" + relative_dir);
 
   ofn_.lpstrInitialDir = dir_.c_str();
 }
@@ -123,7 +123,7 @@ BOOL SaveFileDialog::SaveFile( const std::string &filename )
 /**************************************************************************************************/
 void SaveFileDialog::SetRelativeDir( const std::string &relative_dir )
 {
-  dir_ = gCurrentDirectory + relative_dir;
+  dir_ = gCurrentDirectory + ("\\" + relative_dir);
 
   ofn_.lpstrInitialDir = dir_.c_str();
 }
