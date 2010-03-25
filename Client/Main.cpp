@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "Client.hpp"
+
 #include "WindowsLibrary/Header.hpp"
 
 #include "ConfigReader.hpp"
@@ -120,53 +122,6 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
   return DefWindowProc( hWnd, message, wParam, lParam );
 }
 
-class FileAccept : public RoutineObject
-{
-  public:
-    FileAccept( const std::string &from, const std::string &file ) : from_(from), file_(file),
-      window_(NULL)
-    {
-      thread_.Resume();
-    }
-
-    bool Terminate( void )
-    {
-      return thread_.Terminate();
-    }
-
-  private:
-    std::string from_;
-    std::string file_;
-    HWND window_;
-
-    virtual void InitializeThread( void ) {;}
-
-    void Run( void )
-    {
-      char buffer[512] = {0};
-
-      sprintf_s( buffer, sizeof(buffer),
-        "Incoming file from %s.\n Did you want to accept the file transfer?", from_.c_str() );
-
-      int result = MessageBox( window_, buffer, "File transfer pending...",
-        MB_YESNO | MB_ICONINFORMATION );
-
-      switch ( result )
-      {
-        case IDYES:
-          DebugPrint( "File transfer accepted..." );
-          break;
-
-        case IDNO:
-          DebugPrint( "File transfer rejected..." );
-          break;
-      }
-    }
-
-    virtual void ExitThread( void ) {;}
-    virtual void FlushThread( void ) {;}
-};    // class FileAccept
-
 /**************************************************************************************************/
 /**************************************************************************************************/
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
@@ -207,9 +162,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   window.AddComponent( &button3 );
   window.AddComponent( &userlistbox );
 
-  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),            CID_Display );
-  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),           CID_NewUser );
-  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ),        CID_RemoveUser );
+  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
+  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
+  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
 
   sendbox->SetTextLimit( 255 );
   displaybox.SetText( "Welcome!\r\n\r\n" );
@@ -218,20 +173,10 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   Config configuration( "..\\Assets\\Config.txt" );
 
   FileAccept obj( configuration.username_, "Test.txt" );
-  CommandCenter->PostMsg( "Hi!!!", CID_Display );
-
-  userlistbox.AddString( "Cool" );
-  userlistbox.AddString( "AMAZING!" );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )
   {
-    const char *selected = userlistbox.GetSelected();
-
-    if ( selected )
-    {
-      CommandCenter->PostMsg( selected, CID_Display );
-    }
   }
 
   return window.ReturnCode();

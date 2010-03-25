@@ -26,6 +26,7 @@ struct Command
 
   CommandID id_;
   std::string str_;
+  void *data_;
 };    // struct Command
 
 struct ICommandProcess
