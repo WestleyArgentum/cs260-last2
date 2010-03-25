@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.hpp"     // IWindowComponent
+#include "Threading.hpp"
 
 struct ComponentInfo
 {
@@ -61,6 +62,8 @@ class Listbox : public IWindowComponent
     const char* GetSelected( void );
 
   private:
+    Mutex mutex_;
+
     std::string name_;
     ComponentInfo info_;
 

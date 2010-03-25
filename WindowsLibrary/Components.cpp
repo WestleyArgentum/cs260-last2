@@ -156,6 +156,8 @@ void Listbox::Create( HWND hWnd, HINSTANCE hInstance )
 /**************************************************************************************************/
 void Listbox::AddString( const std::string &str )
 {
+  Lock lock( mutex_ );
+
   SendMessage( handle_, LB_ADDSTRING, 0, (LPARAM)str.c_str() );
 }
 
@@ -163,6 +165,8 @@ void Listbox::AddString( const std::string &str )
 /**************************************************************************************************/
 void Listbox::RemoveString( const std::string &str )
 {
+  Lock lock( mutex_ );
+
     // Attempt to find the string of ours to remove from this listbox (if we find it.)
   LRESULT index = SendMessage( handle_, LB_FINDSTRING, (WPARAM)-1, (LPARAM)str.c_str() );
 
@@ -177,6 +181,8 @@ void Listbox::RemoveString( const std::string &str )
 /**************************************************************************************************/
 const char* Listbox::GetSelected( void )
 {
+  Lock lock( mutex_ );
+
   LRESULT index = SendMessage( handle_, LB_GETCURSEL, 0, 0 );
 
   if ( index != LB_ERR )
