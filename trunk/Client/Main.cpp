@@ -134,7 +134,7 @@ class FileAccept : public RoutineObject
     std::string file_;
     HWND window_;
 
-    virtual void InitializeThread( void );
+    virtual void InitializeThread( void ) {;}
 
     void Run( void )
     {
@@ -161,10 +161,6 @@ class FileAccept : public RoutineObject
     virtual void ExitThread( void ) {;}
     virtual void FlushThread( void ) {;}
 };    // class FileAccept
-
-void FileAccept::InitializeThread( void )
-{
-}
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -215,9 +211,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   displaybox.SetText( "Welcome!\r\n\r\n" );
 
     // Load in the server port/ip and client's name.
-  Config configuration( "Config.txt" );
+  //Config configuration( "Config.txt" );
 
-  FileAccept obj( configuration.username_, "Test.txt" );
+  //FileAccept obj( configuration.username_, "Test.txt" );
   CommandCenter->PostMsg( "Hi!!!", CID_Display );
 
     // Finally start processing our window until our client decides to quit the chat program.

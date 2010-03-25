@@ -1,0 +1,6 @@
+[Username]
+Bunny
+
+[Server]
+IP: 255.255.255.255
+Port: 8000
