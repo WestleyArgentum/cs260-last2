@@ -71,7 +71,7 @@ void FileAccept::FlushThread( void )
 /**************************************************************************************************/
 /**************************************************************************************************/
 FileSend::FileSend( const std::string &to, const std::string &file ) : to_(to), file_(file),
-  result_(0), done_(false)
+  done_(false)
 {
   thread_.Resume();
 }
