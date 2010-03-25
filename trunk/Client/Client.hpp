@@ -1,25 +1,28 @@
 #pragma once
 
+#include "NetworkingLibrary/NetAPI.h"
 #include "WindowsLibrary/Threading.hpp"
-//#include "NetworkingLibrary/NetAPI.h"
 
 #include "FileTransfer.hpp"
 
-//
-//class Client : public RoutineObject
-//{
-//  NAPI::TCPSOCKET socket; ///< TCP socket used to talk to the server.
-//public:
-//  Client();
-//  ~Client() { EndSession(); }
-//
-//  bool BeginSession() { thread_.Resume(); }
-//  void EndSession() { Kill(); }
-//
-//protected:
-//      // Routine functions
-//    virtual void InitializeThread( void );
-//    virtual void Run( void );
-//    virtual void ExitThread( void );
-//    virtual void FlushThread( void );
-//};
+class Client : public RoutineObject
+{
+  NAPI::TCPSOCKET socket; ///< TCP socket used to talk to the server.
+  std::string name_;
+  std::string ip_;
+  unsigned port_;
+  bool connected;
+public:
+  Client(const std::string &name) : socket(0), name_(name), port_(0), connected(false) {;}
+  ~Client() { EndSession(); }
+
+  void BeginSession(const std::string &ip, unsigned port);
+  void EndSession() { Kill(); }
+
+protected:
+      // Routine functions
+    virtual void InitializeThread( void );
+    virtual void Run( void );
+    virtual void ExitThread( void );
+    virtual void FlushThread( void );
+};
