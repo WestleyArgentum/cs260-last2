@@ -58,10 +58,13 @@ class Listbox : public IWindowComponent
     void AddString( const std::string &str );
     void RemoveString( const std::string &str );
 
+    const char* GetSelected( void );
+
   private:
     std::string name_;
     ComponentInfo info_;
 
     HWND handle_;
+    char selected_[33];   // Size of max username length. (32, 33 is accounting for the NULL)
 };    // class Listbox
 

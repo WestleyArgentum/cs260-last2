@@ -210,7 +210,6 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),            CID_Display );
   CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),           CID_NewUser );
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ),        CID_RemoveUser );
-  //CommandCenter->AcceptFileProcess( new AcceptFileProcess( window.GetHwnd() ),  CID_AcceptFile );
 
   sendbox->SetTextLimit( 255 );
   displaybox.SetText( "Welcome!\r\n\r\n" );
@@ -221,8 +220,19 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   FileAccept obj( configuration.username_, "Test.txt" );
   CommandCenter->PostMsg( "Hi!!!", CID_Display );
 
+  userlistbox.AddString( "Cool" );
+  userlistbox.AddString( "AMAZING!" );
+
     // Finally start processing our window until our client decides to quit the chat program.
-  while ( window.Run() ) {;}
+  while ( window.Run() )
+  {
+    const char *selected = userlistbox.GetSelected();
+
+    if ( selected )
+    {
+      CommandCenter->PostMsg( selected, CID_Display );
+    }
+  }
 
   return window.ReturnCode();
 }

@@ -13,7 +13,6 @@ enum CommandID
   ,CID_NewUser
   ,CID_RemoveUser
   ,CID_SendFile
-  ,CID_AcceptFile
   ,CID_SendMessage
   ,CID_DistributeMessage
 
