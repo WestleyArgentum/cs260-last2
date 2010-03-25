@@ -100,7 +100,11 @@ DWORD Event::Wait( DWORD milliseconds )
 /**************************************************************************************************/
 Thread::Thread( Routine fn, void *arg )
 {
-  handle_ = CreateThread( NULL, 0, fn, arg, CREATE_SUSPENDED, &id_ );
+  attributes_.nLength              = sizeof(SECURITY_ATTRIBUTES);
+  attributes_.lpSecurityDescriptor = NULL;
+  attributes_.bInheritHandle       = FALSE;
+
+  handle_ = CreateThread( &attributes_, 0, fn, arg, CREATE_SUSPENDED, &id_ );
 }
 
 /**************************************************************************************************/
@@ -122,6 +126,13 @@ void Thread::Resume( void )
 void Thread::WaitForDeath( void )
 {
   WaitForSingleObject( handle_, INFINITE );
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+bool Thread::Terminate( void )
+{
+  return TerminateThread( handle_, -1 ) ? true : false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
