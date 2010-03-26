@@ -34,3 +34,8 @@ void SendMessageProcess::operator() ( const Command &command )
 {
   client_.SendCommand(command);
 }
+
+void ErrorBoxProcess::operator() ( const Command &command )
+{
+	MessageBox(0, "ERROR", command.str_.c_str(), 0);
+}

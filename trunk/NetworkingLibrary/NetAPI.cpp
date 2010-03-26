@@ -268,19 +268,13 @@ int UDPSocket::RecvFrom(NetAddress &address) throw (Error)
   return ret;
 }
 
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-// static vars
-NetAPI_ * NetAPI_::inst = 0;
-
 /**************************************************************************************************/
 /**************************************************************************************************/
 NetAPI_ *NetAPI_::GetInstance()
 {
-	if (!inst)
-		inst = new NetAPI_();
-	return inst;
+	static NetAPI_ inst;
+
+	return &inst;
 }
 
 /**************************************************************************************************/
@@ -356,6 +350,8 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
     throw er;
 	}
 
+	Lock lock(mutex);
+	tcp_sockets[sock->id] = sock;
 	return sock;
 }
 
@@ -363,9 +359,10 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 {
-	std::string nid = id;
-	for (int i = 0; udp_sockets.count(nid); ++i)
-		nid = id + char(i + '0');
+	
+  std::string nid = id;
+  for (int i = 0; udp_sockets.count(nid); ++i)
+	nid = id + char(i + '0');
   UDPSOCKET usock = new UDPSocket();
   usock->id = nid;
   usock->socket = WSASocket(AF_INET, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, 0);
@@ -389,6 +386,8 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
     throw er;
   }
 
+  Lock lock(mutex);
+  udp_sockets[usock->id] = usock;
   return usock; // success! ^_^
 }
 
@@ -396,6 +395,7 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::GetUDPSocket(const std::string &id)
 {
+	Lock lock(mutex);
 	if (udp_sockets.count(id))
 		return udp_sockets[id];
 
@@ -406,6 +406,7 @@ UDPSOCKET NetAPI_::GetUDPSocket(const std::string &id)
 /**************************************************************************************************/
 TCPSOCKET NetAPI_::GetTCPSocket(const std::string &id)
 {
+	Lock lock(mutex);
 	if (tcp_sockets.count(id))
 		return tcp_sockets[id];
 
@@ -416,6 +417,7 @@ TCPSOCKET NetAPI_::GetTCPSocket(const std::string &id)
 /**************************************************************************************************/
 bool NetAPI_::UpdateID(TCPSOCKET tcp, const std::string &newid)
 {
+  Lock lock(mutex);
   if (tcp_sockets.count(newid))
     return false;
 
@@ -433,6 +435,7 @@ bool NetAPI_::UpdateID(TCPSOCKET tcp, const std::string &newid)
 /**************************************************************************************************/
 bool NetAPI_::UpdateID(UDPSOCKET udp, const std::string &newid)
 {
+  Lock lock(mutex);
   if (udp_sockets.count(newid))
     return false;
 
@@ -450,16 +453,19 @@ bool NetAPI_::UpdateID(UDPSOCKET udp, const std::string &newid)
 /**************************************************************************************************/
 int NetAPI_::CloseSocket(UDPSOCKET socket)
 {
+  Lock lock(mutex);
+  udp_sockets.erase(socket->id);
   delete socket;
-	udp_sockets.erase(socket->id);
-	return 0;
+  return 0;
 }
 
 int NetAPI_::CloseSocket(TCPSOCKET socket)
 {
-  delete socket;
+  Lock lock(mutex);
   tcp_sockets.erase(socket->id);
-  return socket->Close();
+  int ret = socket->Close();
+  delete socket;
+  return ret;
 }
 
 } // NAPI namespace

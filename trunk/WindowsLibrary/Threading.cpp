@@ -98,7 +98,7 @@ DWORD Event::Wait( DWORD milliseconds )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-Thread::Thread( Routine fn, void *arg )
+Thread::Thread( Routine fn, void *arg ) : running(false)
 {
   attributes_.nLength              = sizeof(SECURITY_ATTRIBUTES);
   attributes_.lpSecurityDescriptor = NULL;
@@ -118,6 +118,7 @@ Thread::~Thread( void ) throw()
 /**************************************************************************************************/
 void Thread::Resume( void )
 {
+  running = true;
   ResumeThread( handle_ );
 }
 
@@ -126,6 +127,7 @@ void Thread::Resume( void )
 void Thread::WaitForDeath( void )
 {
   WaitForSingleObject( handle_, INFINITE );
+  running = false;
 }
 
 /**************************************************************************************************/

@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
   CommandCenter->RegisterProcess(new SendMessageProcess(host), CID_SendMessage);
   CommandCenter->RegisterProcess(new NewUserProcess(host), CID_NewUser);
   CommandCenter->RegisterProcess(new RemoveUserProcess(host), CID_RemoveUser);
+  CommandCenter->RegisterProcess(new DisplayProcess(), CID_Display);
 
   host.Host();
   // create hosting server
@@ -22,7 +23,6 @@ int main(int argc, char *argv[])
   std::cout << "You can enter commands to control the server here.\nCommands:\n"
                "server:quit .......... Quits the server, disconnecting all users.\n"
                "server:kick <user> ... Kicks the user specified from the server.\n";
-  // create client list
 
   // while the server hasn't posted a quit message update all ports.
   std::string cmd;

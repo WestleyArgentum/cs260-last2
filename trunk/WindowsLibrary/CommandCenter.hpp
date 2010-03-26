@@ -17,19 +17,19 @@
 //  > CID_SendFile
 //    - Not implemented...
 //  > CID_SendMessage
-//    - Not implemented...
-//  > CID_DistributeMessage
-//    - Not implemented... (not needed?)
+//    - Has the Client send a message to the server with the string provided.
+//  > CID_ErrorMessage
+//    - Creates a MessageBox with the text provided.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // For Server:
 //  > CID_Display
+//    - Prints the message provided out to the command line.
 //  > CID_NewUser
 //  > CID_RemoveUser
 //  > CID_SendFile
 //  > CID_SendMessage
-//  > CID_DistributeMessage
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 enum CommandID
@@ -40,7 +40,7 @@ enum CommandID
   ,CID_RemoveUser
   ,CID_SendFile
   ,CID_SendMessage
-  ,CID_DistributeMessage
+  ,CID_ErrorBox
 
     // Keeps track of the total number of 
   ,CID_Total

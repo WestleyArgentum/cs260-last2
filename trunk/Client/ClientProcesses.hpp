@@ -40,3 +40,8 @@ struct SendMessageProcess : public ICommandProcess
 
   Client &client_;
 };
+
+struct ErrorBoxProcess : public ICommandProcess
+{
+	virtual void operator() ( const Command &command );
+};

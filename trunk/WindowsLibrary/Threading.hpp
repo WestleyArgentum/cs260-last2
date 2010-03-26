@@ -62,6 +62,7 @@ class Thread
 
     void Resume( void );
 
+	bool IsRunning( void ) const { return running; }
     void WaitForDeath( void );
     bool Terminate( void );
 
@@ -69,6 +70,7 @@ class Thread
     SECURITY_ATTRIBUTES attributes_;
     HANDLE handle_;   ///< Handle to our thread.
     DWORD id_;        ///< Thread id.
+	bool running;     ///< If thread is running.
 };    // class Thread
 
 class RoutineObject
