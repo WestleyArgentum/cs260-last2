@@ -32,7 +32,8 @@ void SendFileProcess::operator()( const Command &command )
 
 void SendMessageProcess::operator() ( const Command &command )
 {
-  client_.SendCommand(command);
+  if (client_.IsConnected())
+    client_.SendCommand(command);
 }
 
 void ErrorBoxProcess::operator() ( const Command &command )
