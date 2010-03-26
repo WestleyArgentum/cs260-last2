@@ -3,11 +3,14 @@
 #include <windows.h>
 
 #include <string>         // std::string
+#include <map>
 
 struct IWindowComponent
 {
   virtual ~IWindowComponent( void ) throw() {;}
-  virtual void Create( HWND hWnd, HINSTANCE hInstance ) = 0;
+  virtual HWND Create( HWND parent, HINSTANCE hInstance ) = 0;
+
+  virtual void Init( void ) {;}
 };    // struct IWindowComponent
 
 const unsigned DEFAULT_WIDTH  = 800;
@@ -16,23 +19,33 @@ const unsigned DEFAULT_HEIGHT = 600;
 class Window
 {
   public:
-    typedef LRESULT ( CALLBACK *WindowProcedure )( HWND, UINT, WPARAM, LPARAM );
+    static Window* GetInstance( void );
 
-  public:
-    Window( const std::string &name, WindowProcedure proc, unsigned width = DEFAULT_WIDTH,
+    bool Create( const std::string &name, WNDPROC proc, int show = SW_SHOWNORMAL,
+      const std::string &title = "" /*name*/, unsigned width = DEFAULT_WIDTH,
       unsigned height = DEFAULT_HEIGHT );
-    ~Window( void ) throw();
-
-    void SetTitle( const std::string &title );
-
-    void AddComponent( IWindowComponent *component );
-
-    bool Create( int show );
-    bool Run( void );
-
-    WPARAM ReturnCode( void ) const { return msg_.wParam; }
 
     HWND GetHwnd( void ) const { return handle_; }
+
+    void AddComponent( IWindowComponent *component );
+    IWindowComponent* GetComponent( HWND component );
+
+    template < typename ComponentType >
+    ComponentType HasComp( HWND component )
+    {
+      return static_cast<ComponentType>( GetComponent( component ) );
+    }
+
+    bool Run( void );
+    WPARAM ReturnCode( void ) const { return msg_.wParam; }
+
+  private:
+    Window( void );
+    ~Window( void ) throw();
+
+      // Not implemented
+    Window( const Window &rhs );
+    Window& operator=( const Window &rhs );
 
   private:
     unsigned width_;
@@ -46,7 +59,12 @@ class Window
     MSG msg_;
     HWND handle_;
     HINSTANCE hInst_;
+
+    typedef std::map< HWND, IWindowComponent* > ComponentMap;
+    ComponentMap map_;
 };    // class Window
+
+#define WinSys Window::GetInstance()
 
   // Include all the window component objects as well...
 #include "Components.hpp"

@@ -123,12 +123,10 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Create a DebugConsole so we can print information for testing our chat program.
   //CreateConsole();    // Could also use DebugPrint!
 
-    // Setup our window for our chat program.
-  Window window( "CS260_ChatProgram!", WinProc );
-  window.SetTitle( "CS260 Networking Chat Program!" );
+  HINSTANCE temp = GetModuleHandle( NULL );
 
-    // Create our window with the display features given.
-  window.Create( nCmdShow );
+    // Setup our window for our chat program.
+  WinSys->Create( "CS260_ChatProgram!", WinProc, nCmdShow, "CS260 Chat Program" );
 
     // Setup our window with all the UI elements on the window.
   DWORD style = WS_VISIBLE | WS_CHILD | WS_VSCROLL | ES_MULTILINE | WS_BORDER;
@@ -146,11 +144,11 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   Listbox userlistbox( "Listbox1", ComponentInfo( style, 670, 10, 100, 400 ) );
   userlist = &userlistbox;
 
-  window.AddComponent( &text1 );
-  window.AddComponent( &displaybox );
-  window.AddComponent( &button1 );
-  window.AddComponent( &button2 );
-  window.AddComponent( &userlistbox );
+  WinSys->AddComponent( &text1 );
+  WinSys->AddComponent( &displaybox );
+  WinSys->AddComponent( &button1 );
+  WinSys->AddComponent( &button2 );
+  WinSys->AddComponent( &userlistbox );
 
   sendbox->SetTextLimit( 255 );
   displaybox.SetText( "Welcome!\r\n\r\n" );
@@ -162,14 +160,15 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
   CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
-  CommandCenter->RegisterProcess( new SendMessageProcess( client ), CID_SendMessage );
+  CommandCenter->RegisterProcess( new SendMessageProcess( client ),      CID_SendMessage );
 
   client.BeginSession(configuration.ip_, configuration.port_);
+
     // Finally start processing our window until our client decides to quit the chat program.
-  while ( window.Run() )
+  while ( WinSys->Run() )
   {
   }
 
-  return window.ReturnCode();
+  return WinSys->ReturnCode();
 }
 

@@ -1,7 +1,7 @@
 #include "Window.hpp"
 
 #include <mmsystem.h>
-#include <shellapi.h>
+#include <shellapi.h>   // DragAcceptFiles
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -9,9 +9,22 @@
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-Window::Window( const std::string &name, WindowProcedure proc, unsigned int width,
-  unsigned int height ) : width_(width), height_(height), name_(name), title_(name), handle_(NULL)
+Window* Window::GetInstance( void )
 {
+  static Window instance;
+  return &instance;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+bool Window::Create( const std::string &name, WNDPROC proc, int show,
+  const std::string &title, unsigned width, unsigned height )
+{
+  name_   = name;
+  title_  = title;
+  width_  = width;
+  height_ = height;
+
     // Get the HINSTANCE of this application. (aka first param of WinMain)
   hInst_ = GetModuleHandle( NULL );
 
@@ -51,29 +64,7 @@ Window::Window( const std::string &name, WindowProcedure proc, unsigned int widt
   window_.lpszMenuName  = NULL;
   window_.lpszClassName = name_.c_str();
   window_.hIconSm       = LoadIcon( hInst_, MAKEINTRESOURCE( IDI_APPLICATION ) );
-}
 
-/**************************************************************************************************/
-/**************************************************************************************************/
-Window::~Window( void ) throw()
-{
-  if ( handle_ )
-  {
-    UnregisterClass( name_.c_str(), hInst_ );
-  }
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-void Window::SetTitle( const std::string &title )
-{
-  title_ = title;
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-bool Window::Create( int show )
-{
     // Register this window with the OS
   if ( !RegisterClassEx( &window_ ) )
   {
@@ -92,6 +83,7 @@ bool Window::Create( int show )
     hInst_,                         // Application instance.
     NULL );                         // lpParam not used.
 
+    // Window not created...
   if ( handle_ == NULL )
   {
     return false;
@@ -114,8 +106,22 @@ void Window::AddComponent( IWindowComponent *component )
 {
   if ( component )
   {
-    component->Create( handle_, hInst_ );
+    HWND comp = component->Create( handle_, hInst_ );
+
+    if ( comp )
+    {
+      map_[comp] = component;
+
+      component->Init();
+    }
   }
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+IWindowComponent* Window::GetComponent( HWND component )
+{
+  return map_[component];
 }
 
 /**************************************************************************************************/
@@ -137,5 +143,25 @@ bool Window::Run( void )
   }
 
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Window Private Methods
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+Window::Window( void ) : width_(0), height_(0), handle_(NULL)
+{
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+Window::~Window( void ) throw()
+{
+  if ( handle_ )
+  {
+    UnregisterClass( name_.c_str(), hInst_ );
+  }
 }
 
