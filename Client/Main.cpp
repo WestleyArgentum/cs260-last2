@@ -164,13 +164,12 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
   CommandCenter->RegisterProcess( new SendMessageProcess( client ), CID_SendMessage );
 
-  NAPI::NetAPI->Init();
   client.BeginSession(configuration.ip_, configuration.port_);
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )
   {
   }
-  NAPI::NetAPI->Cleanup();
+
   return window.ReturnCode();
 }
 

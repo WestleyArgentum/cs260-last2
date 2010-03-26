@@ -41,7 +41,6 @@ void ClientRoutine::AddCommand(Command cmd)
 void ClientRoutine::InitializeThread( void )
 {
    // ask for username
-   // set non-blocking
   socket->Send(NAPI::PT_REQ_NAME,0,0);
   for (Timer timeout; timeout.TimeElapsed() <  TIMEOUT_REQ_NAME;)
   {
@@ -52,16 +51,32 @@ void ClientRoutine::InitializeThread( void )
     {
        // save the name in the routine and in the socket
       name = socket->GetMsg().DataToStr();
-	  socket->SetID(name);
+	    socket->SetID(name);
        // add user to the active users list so it can recieve commands.
       if (host->SetUserActive(GetID())) // if it couldn't be added, server is shutting down.
       {
          // inform the users of this new user
         CommandCenter->PostMsg(name, CID_NewUser);
-		socket->ToggleBlocking(false);
+		    socket->ToggleBlocking(false);
         running = true;
-		break;
+		    break;
       }
+      else
+      {
+		    socket->ToggleBlocking(false);
+        std::string msg( "Nickname already taken." );
+        socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+        host->SetUserInactive(this);
+        break;
+      }
+    }
+    else
+    {
+		  socket->ToggleBlocking(false);
+      std::string msg( "Wrong packet sent." );
+      socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+        host->SetUserInactive(this);
+      break;
     }
   }
 }
@@ -75,7 +90,13 @@ void ClientRoutine::Run( void )
   {
     // check for recieving data
     int ret = socket->Recieve();
-    if (ret != SOCKET_ERROR)
+
+    if (ret == 0) ///< Socket disconnected, be done with it.
+    {
+      running = false;
+      continue;
+    }
+    else if (ret != SOCKET_ERROR)
     {
       // socket didn't block, and got data, interpret it.
       std::string msg;
@@ -91,14 +112,10 @@ void ClientRoutine::Run( void )
         break;
       }
     }
-    else if (ret == 0) ///< Socket disconnected, be done with it.
-    {
-      running = false;
-      continue;
-    }
      // socket blocked, process commands
     ProcessCommands();
   }
+  CommandCenter->PostMsg(name, CID_RemoveUser);
 }
 
 /**************************************************************************************************/
@@ -106,7 +123,6 @@ void ClientRoutine::Run( void )
 void ClientRoutine::ExitThread( void ) throw()
 {
   // Send fin message to client, unless an error has occured.
-  CommandCenter->PostMsg(name, CID_RemoveUser);
   host->SetUserInactive(this);
   NAPI::NetAPI->CloseSocket(socket);
   socket = 0;

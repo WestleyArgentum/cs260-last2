@@ -28,6 +28,14 @@ void Client::SendCommand(const Command &command)
   }
 }
 
+void Client::EndSession()
+{
+  if (thread_.IsRunning())
+	Kill();
+  else
+	  thread_.Terminate();
+}
+
 /**************************************************************************************************/
 /**************************************************************************************************/
 void Client::InitializeThread( void )
@@ -35,6 +43,7 @@ void Client::InitializeThread( void )
   socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
   socket->Bind();
   socket->Connect(ip_.c_str(), port_);
+  CommandCenter->PostMsg("Connected to server!", CID_Display);
 
   // TODO: FIX THE TIMER!!!!
   for (Timer timeout; timeout.TimeElapsed() < 5.0;)
@@ -42,9 +51,12 @@ void Client::InitializeThread( void )
      // Send server the username.
     int ret = socket->Recieve();
     if (ret == SOCKET_ERROR)
-      Sleep(1); // wouldblock
+      Sleep(10); // wouldblock
     else if (ret == 0)
-      return; // connection broken
+	{
+	   // connection broken
+	  CommandCenter->PostMsg("Connection broken.", CID_ErrorBox);
+	}
     else
     {
       if (socket->GetMsg().Type() == NAPI::PT_REQ_NAME)
@@ -54,8 +66,11 @@ void Client::InitializeThread( void )
 		socket->ToggleBlocking(false); // socket can't be blocking or it locks up
         break;
       }
-      else
-        return; // error occurred...
+	  else // server sent wrong type of message
+	  {
+		CommandCenter->PostMsg("No name request recieved.", CID_ErrorBox);
+		return;
+	  }
     }
 
   }

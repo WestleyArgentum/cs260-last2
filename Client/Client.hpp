@@ -21,7 +21,7 @@ public:
 
   void BeginSession(const std::string &ip, unsigned port);
   void SendCommand(const Command &command);
-  void EndSession() { Kill(); }
+  void EndSession();
 
 protected:
       // Routine functions

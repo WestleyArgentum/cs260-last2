@@ -12,6 +12,8 @@
 #include <mswsock.h>
 #pragma comment(lib, "ws2_32.lib")
 
+#include "WindowsLibrary/Threading.hpp"
+
   // Removing the warning
   //  - C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
 #pragma warning( disable : 4290 )
@@ -195,7 +197,7 @@ namespace NAPI ///< Networking API namespace
 
   class NetAPI_
   {
-	  static NetAPI_ *inst; // singleton
+	  Mutex mutex;
 	  std::map<std::string, TCPSOCKET> tcp_sockets;
     std::map<std::string, UDPSOCKET> udp_sockets;
 	  std::string localIP; // saved for convience.
