@@ -194,7 +194,7 @@ void HostRoutine::UpdateUserList(Command cmd)
 {
   // Add all the current users to the new client's userlist.
   Lock lock(mutex);
-  ClientRoutine *client = reinterpret_cast<ClientRoutine *>(cmd.data_);
+  ClientRoutine *client = activeUsers[cmd.str_];
   ActiveUserMap::iterator begin = activeUsers.begin(), end = activeUsers.end();
   while (begin != end)
     client->AddCommand(Command(CID_NewUser, begin++->first));
@@ -243,7 +243,6 @@ void HostRoutine::ExitThread( void ) throw()
   ClientRoutineMap::iterator cib = inactiveUsers.begin(), cie = inactiveUsers.end();
   while (cib != cie)
     delete cib++->second;
-  // close all sockets.
 }
 
 /**************************************************************************************************/
@@ -253,5 +252,4 @@ void HostRoutine::FlushThread( void )
   // TODO: FIX THIS!!! WON'T TERMINATE!!!!
   hosting = false;
   thread_.Terminate();
-  // TODO: maybe need to do other stuff later, but this works for now
 }

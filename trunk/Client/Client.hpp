@@ -21,6 +21,7 @@ public:
 
   void BeginSession(const std::string &ip, unsigned port);
   void SendCommand(const Command &command);
+  bool IsConnected() const { return connected; }
   void EndSession();
 
 protected:
