@@ -1,5 +1,7 @@
 #include "Components.hpp"
 
+#include "WindowsLibrary/CommandCenter.hpp"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // ComponentInfo Methods
@@ -23,7 +25,7 @@ Textbox::Textbox( const std::string &name, const ComponentInfo &info ) : name_(n
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Textbox::Create( HWND hWnd, HINSTANCE hInstance )
+HWND Textbox::Create( HWND parent, HINSTANCE hInstance )
 {
   handle_ = CreateWindow(
     "EDIT",
@@ -31,12 +33,21 @@ void Textbox::Create( HWND hWnd, HINSTANCE hInstance )
     info_.style_,                 // Style options for this textbox
     info_.posx_, info_.posy_,     // Textbox position on our window.
     info_.width_, info_.height_,  // Textbox height and width
-    hWnd,                         // Attatch this textbox to the window specified,
+    parent,                       // Attatch this textbox to the window specified,
     NULL,
     hInstance,                    // Within this application.
     NULL );
 
   SetTextLimit( 10000 );
+
+  return handle_;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Textbox::Init( void )
+{
+  wndProc_ = (WNDPROC)SetWindowLong( handle_, GWL_WNDPROC, (LPARAM)EditProc );
 }
 
 /**************************************************************************************************/
@@ -69,6 +80,39 @@ std::string Textbox::GetText( void )
 
   return str;
 }
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+LRESULT CALLBACK Textbox::EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPARAM lParam )
+{
+  Textbox *textbox = WinSys->HasComp<Textbox*>( hWndEdit );
+
+  switch ( msg )
+  {
+    case WM_KEYDOWN:
+		  switch (wParam)
+		  {
+			  case VK_RETURN:
+          {
+              // Get the message that the client would like to post.
+            std::string str = textbox->GetText();
+            textbox->Clear();
+
+              // Post this message so someone can process this message.
+            CommandCenter->PostMsg( str, CID_SendMessage );
+
+            // Maybe needed if there is an extra "enter" key being entered into the textbox or the
+            //  message getting sent...
+				    //PeekMessage( &msg, hWndEdit, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE );
+          }
+				  break;
+		  }
+      break;
+  }
+
+	return CallWindowProc( textbox->wndProc_, hWndEdit, msg, wParam, lParam );
+}
+
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -111,7 +155,7 @@ Button::Button( const std::string &name, int id, const ComponentInfo &info )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Button::Create( HWND hWnd, HINSTANCE hInstance )
+HWND Button::Create( HWND parent, HINSTANCE hInstance )
 {
   handle_ = CreateWindow(
     "BUTTON",
@@ -119,11 +163,13 @@ void Button::Create( HWND hWnd, HINSTANCE hInstance )
     info_.style_,                 // Style options for this textbox
     info_.posx_, info_.posy_,     // Textbox position on our window.
     info_.width_, info_.height_,  // Textbox height and width
-    hWnd,                         // Attatch this textbox to the window specified,
+    parent,                       // Attatch this textbox to the window specified,
     (HMENU)id_,                   // Give this button a particular command id so we can reference it
                                   //  as such when checking for button click.
     hInstance,                    // Within this application.
     NULL );
+
+  return handle_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +184,7 @@ Listbox::Listbox( const std::string &name, const ComponentInfo &info ) : name_(n
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Listbox::Create( HWND hWnd, HINSTANCE hInstance )
+HWND Listbox::Create( HWND parent, HINSTANCE hInstance )
 {
   handle_ = CreateWindow(
     "LISTBOX",
@@ -146,10 +192,12 @@ void Listbox::Create( HWND hWnd, HINSTANCE hInstance )
     info_.style_,                 // Style options for this textbox
     info_.posx_, info_.posy_,     // Textbox position on our window.
     info_.width_, info_.height_,  // Textbox height and width
-    hWnd,                         // Attatch this textbox to the window specified,
+    parent,                       // Attatch this textbox to the window specified,
     NULL,
     hInstance,                    // Within this application.
     NULL );
+
+  return handle_;
 }
 
 /**************************************************************************************************/

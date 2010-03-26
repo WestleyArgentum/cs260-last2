@@ -18,7 +18,8 @@ class Textbox : public IWindowComponent
 {
   public:
     Textbox( const std::string &name, const ComponentInfo &info );
-    virtual void Create( HWND hWnd, HINSTANCE hInstance );
+    virtual HWND Create( HWND parent, HINSTANCE hInstance );
+    virtual void Init( void );
 
     void SetTextLimit( unsigned limit );
     void SetText( const std::string &str );
@@ -29,18 +30,22 @@ class Textbox : public IWindowComponent
     void Clear( void );
 
   private:
+    static LRESULT CALLBACK EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPARAM lParam );
+
+  private:
     std::string name_;
     ComponentInfo info_;
     unsigned limit_;
 
     HWND handle_;
+    WNDPROC wndProc_;
 };    // class Textbox
 
 class Button : public IWindowComponent
 {
   public:
     Button( const std::string &name, int id, const ComponentInfo &info );
-    virtual void Create( HWND hWnd, HINSTANCE hInstance );
+    virtual HWND Create( HWND parent, HINSTANCE hInstance );
 
   private:
     std::string name_;    // Button name.
@@ -54,7 +59,7 @@ class Listbox : public IWindowComponent
 {
   public:
     Listbox( const std::string &name, const ComponentInfo &info );
-    virtual void Create( HWND hWnd, HINSTANCE hInstance );
+    virtual HWND Create( HWND parent, HINSTANCE hInstance );
 
     void AddString( const std::string &str );
     void RemoveString( const std::string &str );
