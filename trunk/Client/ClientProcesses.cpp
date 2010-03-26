@@ -4,7 +4,9 @@
 /**************************************************************************************************/
 void DisplayProcess::operator()( const Command &command )
 {
-  displaybox_->AddText( command.str_ );
+	std::string msg = command.str_;
+	msg.append("\r\n");
+	displaybox_->AddText( msg );
 }
 
 /**************************************************************************************************/

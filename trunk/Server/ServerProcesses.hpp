@@ -10,7 +10,7 @@ struct NewUserProcess : ICommandProcess
 {
   NewUserProcess(HostRoutine &host) : host_(host) {;}
   virtual void operator()(const Command &command)
-  { host_.UpdateUserList(command); host_.DistributeMessage(command); }
+  { host_.DistributeMessage(command); }
 
   HostRoutine &host_;
 };

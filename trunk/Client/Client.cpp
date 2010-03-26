@@ -35,7 +35,6 @@ void Client::InitializeThread( void )
   socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
   socket->Bind();
   socket->Connect(ip_.c_str(), port_);
-  socket->ToggleBlocking(false); // socket can't be blocking or it locks up
 
   // TODO: FIX THE TIMER!!!!
   for (Timer timeout; timeout.TimeElapsed() < 5.0;)
@@ -52,6 +51,7 @@ void Client::InitializeThread( void )
       {
          // Send the server our Nickname.
         socket->Send(NAPI::PT_DATA_STRING, name_.c_str(), name_.size());
+		socket->ToggleBlocking(false); // socket can't be blocking or it locks up
         break;
       }
       else
