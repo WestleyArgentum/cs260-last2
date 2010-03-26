@@ -42,7 +42,6 @@ void ClientRoutine::InitializeThread( void )
 {
    // ask for username
    // set non-blocking
-  socket->ToggleBlocking(false);
   socket->Send(NAPI::PT_REQ_NAME,0,0);
   for (Timer timeout; timeout.TimeElapsed() <  TIMEOUT_REQ_NAME;)
   {
@@ -52,14 +51,16 @@ void ClientRoutine::InitializeThread( void )
     else if (socket->GetMsg().Type() == NAPI::PT_DATA_STRING)
     {
        // save the name in the routine and in the socket
-      name.assign(socket->GetMsg().Data(), socket->GetMsg().DataSize());
-      socket->SetID(name);
+      name = socket->GetMsg().DataToStr();
+	  socket->SetID(name);
        // add user to the active users list so it can recieve commands.
       if (host->SetUserActive(GetID())) // if it couldn't be added, server is shutting down.
       {
          // inform the users of this new user
         CommandCenter->PostMsg(name, CID_NewUser);
+		socket->ToggleBlocking(false);
         running = true;
+		break;
       }
     }
   }
@@ -82,9 +83,9 @@ void ClientRoutine::Run( void )
       {
       case NAPI::PT_DATA_STRING:  ///< Message recieved.
          // Build the message and have the CommandCenter distribute it.
-        msg = name + ": ";
-        msg.append(socket->GetMsg().Data(), socket->GetMsg().DataSize());
-        CommandCenter->PostMsg(msg, CID_SendMessage);
+		  msg.assign(name.c_str()) += ": " + socket->GetMsg().DataToStr();
+		  CommandCenter->PostMsg(msg, CID_Display);
+		  CommandCenter->PostMsg(msg, CID_SendMessage);
         break;
       case NAPI::PT_DATA_ADDRESS: ///< Address info recieved.
         break;
