@@ -70,7 +70,7 @@ public:
   ~HostRoutine() { Quit(); }
 
   void DistributeMessage(Command cmd);
-  void UpdateUserList(Command cmd);
+  void UpdateUserList(const std::string &name);
   void Host() { thread_.Resume(); }
   void Quit() { Kill(); }
 

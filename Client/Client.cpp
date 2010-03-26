@@ -48,34 +48,32 @@ void Client::InitializeThread( void )
   // TODO: FIX THE TIMER!!!!
   for (Timer timeout; timeout.TimeElapsed() < 5.0;)
   {
-     // Send server the username.
     int ret = socket->Recieve();
     if (ret == SOCKET_ERROR)
-      Sleep(10); // wouldblock
+      ;//Sleep(10); // wouldblock
     else if (ret == 0)
-	{
-	   // connection broken
-	  CommandCenter->PostMsg("Connection broken.", CID_ErrorBox);
-	}
+	  {
+	     // connection broken
+	    CommandCenter->PostMsg("Connection broken.", CID_ErrorBox);
+      return;
+	  }
     else
     {
       if (socket->GetMsg().Type() == NAPI::PT_REQ_NAME)
       {
          // Send the server our Nickname.
         socket->Send(NAPI::PT_DATA_STRING, name_.c_str(), name_.size());
-		socket->ToggleBlocking(false); // socket can't be blocking or it locks up
+		    socket->ToggleBlocking(false); // socket can't be blocking or it locks up
         break;
       }
-	  else // server sent wrong type of message
-	  {
-		CommandCenter->PostMsg("No name request recieved.", CID_ErrorBox);
-		return;
-	  }
+	    else // server sent wrong type of message
+	    {
+		    CommandCenter->PostMsg("No name request recieved.", CID_ErrorBox);
+		    return;
+	    }
     }
 
   }
-
-
   connected = true;
 }
 
@@ -87,9 +85,7 @@ void Client::Run( void )
   {
     int ret = socket->Recieve();
     if (ret == SOCKET_ERROR)
-    {
-      Sleep(100);
-    }
+      ;
     else if (ret == 0)
     {
       connected = false;
