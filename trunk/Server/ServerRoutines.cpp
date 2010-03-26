@@ -46,7 +46,7 @@ void ClientRoutine::InitializeThread( void )
   {
     int ret = socket->Recieve();
     if (ret == SOCKET_ERROR)
-      Sleep(100); // wait for the user to respond...
+      ;//Sleep(100); // wait for the user to respond...
     else if (socket->GetMsg().Type() == NAPI::PT_DATA_STRING)
     {
        // save the name in the routine and in the socket
@@ -57,6 +57,7 @@ void ClientRoutine::InitializeThread( void )
       {
          // inform the users of this new user
         CommandCenter->PostMsg(name, CID_NewUser);
+        host->UpdateUserList(name);
 		    socket->ToggleBlocking(false);
         running = true;
 		    break;
@@ -190,14 +191,17 @@ void HostRoutine::DistributeMessage(Command cmd)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void HostRoutine::UpdateUserList(Command cmd)
+void HostRoutine::UpdateUserList(const std::string &name)
 {
   // Add all the current users to the new client's userlist.
   Lock lock(mutex);
-  ClientRoutine *client = activeUsers[cmd.str_];
+  ClientRoutine *client = activeUsers[name];
   ActiveUserMap::iterator begin = activeUsers.begin(), end = activeUsers.end();
   while (begin != end)
-    client->AddCommand(Command(CID_NewUser, begin++->first));
+    if (begin->first != name)
+      client->AddCommand(Command(CID_NewUser, begin++->first));
+    else
+      ++begin;
 }
 
 /**************************************************************************************************/
