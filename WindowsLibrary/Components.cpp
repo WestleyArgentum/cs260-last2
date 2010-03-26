@@ -86,6 +86,7 @@ std::string Textbox::GetText( void )
 LRESULT CALLBACK Textbox::EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPARAM lParam )
 {
   Textbox *textbox = WinSys->HasComp<Textbox*>( hWndEdit );
+  MSG message;
 
   switch ( msg )
   {
@@ -101,9 +102,7 @@ LRESULT CALLBACK Textbox::EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPAR
               // Post this message so someone can process this message.
             CommandCenter->PostMsg( str, CID_SendMessage );
 
-            // Maybe needed if there is an extra "enter" key being entered into the textbox or the
-            //  message getting sent...
-				    //PeekMessage( &msg, hWndEdit, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE );
+				    PeekMessage( &message, hWndEdit, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE );
           }
 				  break;
 		  }
