@@ -1,6 +1,8 @@
-#include "Components.hpp"
+#include "NetworkingLibrary/NetAPI.h"
 
+#include "Components.hpp"
 #include "WindowsLibrary/CommandCenter.hpp"
+#include "WindowsLibrary/DebugDiagnostic.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,8 +101,19 @@ LRESULT CALLBACK Textbox::EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPAR
             std::string str = textbox->GetText();
             textbox->Clear();
 
-              // Post this message so someone can process this message.
-            CommandCenter->PostMsg( str, CID_SendMessage );
+            try
+            {
+                // Post this message so someone can process this message.
+              CommandCenter->PostMsg( str, CID_SendMessage );
+            }
+            catch ( const NAPI::Error &e )
+            {
+              CommandCenter->PostMsg(
+                "Connection to the server has been lost due to some unknown error.\r\n"
+                "You will no longer be able to send messages. Please quit and try again.\r\n",
+                CID_Display );
+              DebugPrint( e.what() );
+            }
 
 				    PeekMessage( &message, hWndEdit, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE );
           }
