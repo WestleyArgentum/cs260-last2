@@ -152,23 +152,22 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   window.AddComponent( &button2 );
   window.AddComponent( &userlistbox );
 
-  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
-  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
-  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
-
   sendbox->SetTextLimit( 255 );
   displaybox.SetText( "Welcome!\r\n\r\n" );
 
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  CommandCenter->PostMsg( configuration.username_, CID_NewUser );
-
-  FileAccept obj( "Test", "Cool.txt" );
+  Client client(configuration.username_);
+  CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
+  CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
+  CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
+  CommandCenter->RegisterProcess( new SendMessageProcess( client ), CID_SendMessage );
 
     // Finally start processing our window until our client decides to quit the chat program.
   while ( window.Run() )
   {
+    client.BeginSession(configuration.ip_, configuration.port_);
   }
 
   return window.ReturnCode();

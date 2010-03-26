@@ -101,6 +101,7 @@ namespace NAPI ///< Networking API namespace
     int Size() const { return sizeof(Header) + hdr.data_size; }
     int DataSize() const { return hdr.data_size; }
     const char *Data() const { return data; }
+    std::string DataToStr() const { return std::string(Data(),DataSize()); }
     PacketType Type() const { return hdr.type; }
     unsigned GetSEQ() const { return hdr.seq; }
     unsigned GetACK() const { return hdr.ack; }

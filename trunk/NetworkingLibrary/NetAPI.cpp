@@ -83,6 +83,7 @@ bool TCPSocket::operator==(const TCPSocket &rhs) const
 /**************************************************************************************************/
 int TCPSocket::ToggleBlocking(bool v) throw (Error)
 {
+  blocking = v;
   u_long val = (v ? 0 : 1);
   int ret = ioctlsocket(socket, FIONBIO, &val);
   if (ret == SOCKET_ERROR) {
@@ -224,6 +225,7 @@ bool UDPSocket::SetID(const std::string &id)
 /**************************************************************************************************/
 int UDPSocket::ToggleBlocking(bool v) throw (Error)
 {
+  blocking = v;
   u_long val = (v ? 0 : 1);
   int ret = ioctlsocket(socket, FIONBIO, &val);
   if (ret == SOCKET_ERROR) {
