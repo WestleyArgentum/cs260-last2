@@ -28,3 +28,7 @@ void SendFileProcess::operator()( const Command &command )
   //FileTransfer filetransfer( command.str_ );
 }
 
+void SendMessageProcess::operator() ( const Command &command )
+{
+  client_.SendCommand(command);
+}

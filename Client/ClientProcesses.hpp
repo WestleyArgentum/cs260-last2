@@ -1,3 +1,4 @@
+#include "Client.hpp"
 #include "WindowsLibrary/Header.hpp"
 
 struct DisplayProcess : public ICommandProcess
@@ -32,3 +33,10 @@ struct SendFileProcess : public ICommandProcess
   virtual void operator()( const Command &command );
 };    // struct SendFileProcess
 
+struct SendMessageProcess : public ICommandProcess
+{
+  SendMessageProcess(Client &client) : client_(client) {;}
+  virtual void operator() ( const Command &command );
+
+  Client &client_;
+};
