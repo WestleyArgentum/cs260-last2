@@ -16,6 +16,7 @@ class OpenFileDialog
     void SetRelativeDir( const std::string &relative_dir );
 
     const char* GetFileName( void );    // Get the name of the file that the user wants to open.
+    const char* GetFileTitle( void );
 
   private:
     OPENFILENAME ofn_;
@@ -40,6 +41,7 @@ class SaveFileDialog
     void SetRelativeDir( const std::string &relative_dir );
 
     const char* GetFileName( void );    // Get the name of the file to save.
+    const char* GetFileTitle( void );
 
   private:
     OPENFILENAME ofn_;
