@@ -9,10 +9,10 @@
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileAccept::FileAccept( const std::string &from, const std::string &file ) : from_(from),
-  file_(file), result_(0), done_(false)
+FileAccept::FileAccept( const std::string &from, const std::string &file  )
+: from_(from), file_(file), result_(0), done_(false)
 {
-  thread_.Resume();
+  //thread_.Resume();
 }
 
 /**************************************************************************************************/
@@ -22,6 +22,15 @@ bool FileAccept::IsDone( void )
   Lock lock( mutex_ );
 
   return done_;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+bool FileAccept::IsFail( void )
+{
+  Lock lock( mutex_ );
+
+  return fail_;
 }
 
 /**************************************************************************************************/
@@ -83,10 +92,10 @@ void FileAccept::FlushThread( void )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileSend::FileSend( const std::string &to, const std::string &file ) : to_(to), file_(file),
-  done_(false)
+FileSend::FileSend( const std::string &to, const std::string &file )
+: to_(to), file_(file), done_(false)
 {
-  thread_.Resume();
+  //thread_.Resume();
 }
 
 /**************************************************************************************************/
@@ -100,9 +109,29 @@ bool FileSend::IsDone( void )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+bool FileSend::IsFail( void )
+{
+  Lock lock( mutex_ );
+
+  return fail_;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void FileSend::InitializeThread( void )
 {
   OpenFileDialog openfile( NULL );
+  if (!openfile.OpenFile( file_ ))
+  {
+     // failed to open file
+    CommandCenter->PostMsg("Couldn't open file: " + file_, CID_ErrorBox);
+    return;
+  }
+
+  // request file transfer from user.
+
+  // read file into memory and break into chunks.
+  // start sending data over UDP
 }
 
 /**************************************************************************************************/

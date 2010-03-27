@@ -8,19 +8,24 @@
 
 class Client : public RoutineObject
 {
+  typedef std::map<TransferID, IFileTransfer*> FileTransferList;
+
   Mutex mutex;
-  NAPI::TCPSOCKET socket; ///< TCP socket used to talk to the server.
-  std::string name_;
-  std::string ip_;
-  unsigned port_;
-  bool connected;
+  TransferID idbase;
+  FileTransferList transfers; ///< List of file transfers in progress.
+  NAPI::TCPSOCKET socket;     ///< TCP socket used to talk to the server.
+  std::string name_;          ///< Client Nickname
+  std::string ip_;            ///< IP of server to connect to.
+  unsigned port_;             ///< Port of server to connect to.
+  bool connected;             ///< Whether the client is connected to the server.
 public:
-  Client(const std::string &name) : socket(0), name_(name), port_(0), connected(false)
+  Client(const std::string &name) : idbase(0), socket(0), name_(name), port_(0), connected(false)
   { NAPI::NetAPI->Init(); }
   ~Client() { EndSession(); NAPI::NetAPI->Cleanup(); }
 
   void BeginSession(const std::string &ip, unsigned port);
-  void SendCommand(const Command &command);
+  void SendMsg(const std::string &msg);
+  void StartFileTransfer(const std::string &user, const std::string &file);
   bool IsConnected() const { return connected; }
   void EndSession();
 

@@ -112,6 +112,12 @@ int TCPSocket::Bind(unsigned port)
     throw er;
 	}
 
+  ret = sizeof(address);
+  if (getsockname(socket, (sockaddr*)&address, &ret) == SOCKET_ERROR) {
+    Error er = CreateError(Error::E_SocketError);
+    throw er;
+  }
+
 	bound = true;
 	return 0;
 }
@@ -136,11 +142,12 @@ int TCPSocket::Connect(const char *ip, unsigned port)
 	if (connected || !bound)
 		return -1;
 
-	SecureZeroMemory(&address, sizeof(address));
-	address.sin_family = AF_INET;
-	address.sin_port = htons(port);
-	address.sin_addr.s_addr = inet_addr(ip);
-	int ret = connect(socket, (sockaddr*)&address, sizeof(address));
+  NetAddress remote;
+	SecureZeroMemory(&remote, sizeof(remote));
+	remote.sin_family = AF_INET;
+	remote.sin_port = htons(port);
+	remote.sin_addr.s_addr = inet_addr(ip);
+	int ret = connect(socket, (sockaddr*)&remote, sizeof(remote));
   if (ret == SOCKET_ERROR) {
     Error er = CreateError(Error::E_SocketError);
     throw er;
@@ -239,11 +246,11 @@ int UDPSocket::ToggleBlocking(bool v) throw (Error)
 /**************************************************************************************************/
 /**************************************************************************************************/
 ///< Send data to the address specified.
-int UDPSocket::SendTo(const NetAddress &address, PacketType type, const void *data,
+int UDPSocket::SendTo(const NetAddress &remote, PacketType type, const void *data,
                       unsigned size, unsigned seq, unsigned ack) const throw (Error)
 {
   NetMessage msg(type,data,size,seq,ack);
-  int ret = sendto(socket, (const char *)&msg, msg.Size(), 0, (const sockaddr*)&address, sizeof(address));
+  int ret = sendto(socket, (const char *)&msg, msg.Size(), 0, (const sockaddr*)&remote, sizeof(remote));
 
   if (ret == SOCKET_ERROR) {
     Error er = CreateError(Error::E_SocketError);
@@ -256,10 +263,10 @@ int UDPSocket::SendTo(const NetAddress &address, PacketType type, const void *da
 /**************************************************************************************************/
 /**************************************************************************************************/
 ///< Recv Data on the socket. Stores the address of the sender in address.
-int UDPSocket::RecvFrom(NetAddress &address) throw (Error)
+int UDPSocket::RecvFrom(NetAddress &remote) throw (Error)
 {
-  int sz = sizeof(address);
-  int ret = recvfrom(socket, (char*)&rmsg, sizeof(rmsg), 0, (sockaddr*)&address, &sz);
+  int sz = sizeof(remote);
+  int ret = recvfrom(socket, (char*)&rmsg, sizeof(rmsg), 0, (sockaddr*)&remote, &sz);
   if (ret == SOCKET_ERROR) {
     Error er = CreateError(Error::E_SocketError);
     throw er;
@@ -382,6 +389,12 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
   // Make sure bind doesn't fail.
   int ret = bind(usock->socket, (sockaddr*)&usock->address, sizeof(usock->address));
   if (ret == SOCKET_ERROR) {
+    Error er = CreateError(Error::E_SocketError);
+    throw er;
+  }
+
+  ret = sizeof(usock->address);
+  if (getsockname(usock->socket, (sockaddr*)&usock->address, &ret) == SOCKET_ERROR) {
     Error er = CreateError(Error::E_SocketError);
     throw er;
   }

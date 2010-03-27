@@ -3,7 +3,7 @@
 #include "WindowsLibrary/Threading.hpp"
 
 #include <string>
-#include <vector>
+#include <set>
 #include <hash_map>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,12 +48,12 @@ enum CommandID
 
 struct Command
 {
-  Command( CommandID id = CID_Unknown, std::string str = "<null>", void *data = 0 )
+  Command( CommandID id = CID_Unknown, std::string str = "<null>", const void *data = 0 )
     : id_(id), str_(str), data_(data) {;}
 
   CommandID id_;
   std::string str_;
-  void *data_;
+  const void *data_;
 };    // struct Command
 
 struct ICommandProcess
@@ -68,11 +68,11 @@ class CommandCenter_
 
     void RegisterProcess( ICommandProcess *method, CommandID cid = CID_Unknown );
 
-    void PostMsg( const std::string &message, CommandID cid );
+    void PostMsg( const std::string &message, CommandID cid, const void *data = 0 );
     void PostCommand( const Command &command );
 
   private:
-    typedef std::vector<ICommandProcess*>                   CommandProcesses;
+    typedef std::set<ICommandProcess*>                      CommandProcesses;
     typedef stdext::hash_map< CommandID, CommandProcesses > CommandProcessMap;
 
       /// Map of all commands processes that only expect to recived one particular command.

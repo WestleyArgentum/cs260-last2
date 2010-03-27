@@ -81,6 +81,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
                 {
                   CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ),
                     CID_Display );
+                  CommandCenter->PostMsg( dialog.GetFileName(), CID_SendFile, selected);
                 }
               }
               else
@@ -171,7 +172,9 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
   CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
-  CommandCenter->RegisterProcess( new SendMessageProcess( client ),      CID_SendMessage );
+  CommandCenter->RegisterProcess( new SendMessageProcess( &client ),      CID_SendMessage );
+  CommandCenter->RegisterProcess( new SendFileProcess( &client ), CID_SendFile );
+  CommandCenter->RegisterProcess( new ErrorBoxProcess(), CID_ErrorBox );
 
   client.BeginSession(configuration.ip_, configuration.port_);
 

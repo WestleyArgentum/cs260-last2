@@ -17,21 +17,26 @@ void Client::BeginSession(const std::string &ip, unsigned port)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::SendCommand(const Command &command)
+void Client::SendMsg(const std::string &msg)
 {
-  //Lock lock(mutex);
-  switch (command.id_)
-  {
-  case CID_SendMessage:
-    socket->Send(NAPI::PT_DATA_STRING, command.str_.c_str(), command.str_.size());
-    break;
-  }
+  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
 }
 
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::StartFileTransfer(const std::string &user, const std::string &file)
+{
+   // send a request to send a file to the user.
+  transfers[idbase] = new FileSend(user, file);
+  socket->Send(NAPI::PT_SEND_FILE, &FileTransferInfo(idbase++,user,file), sizeof(FileTransferInfo));
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void Client::EndSession()
 {
   if (thread_.IsRunning())
-	Kill();
+	  Kill();
   else
 	  thread_.Terminate();
 }
@@ -40,24 +45,28 @@ void Client::EndSession()
 /**************************************************************************************************/
 void Client::InitializeThread( void )
 {
-  socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
-  socket->Bind();
-  socket->Connect(ip_.c_str(), port_);
+  try {
+    socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
+    socket->Bind();
+    socket->Connect(ip_.c_str(), port_);
+  }
+  catch (NAPI::Error &er) {
+    CommandCenter->PostMsg(er.what(), CID_ErrorBox);
+    throw er;
+  }
   CommandCenter->PostMsg("Connected to server!", CID_Display);
 
   // TODO: FIX THE TIMER!!!!
   for (Timer timeout; timeout.TimeElapsed() < 5.0;)
   {
     int ret = socket->Recieve();
-    if (ret == SOCKET_ERROR)
-      ;//Sleep(10); // wouldblock
-    else if (ret == 0)
+    if (ret == 0)
 	  {
 	     // connection broken
 	    CommandCenter->PostMsg("Connection broken.", CID_ErrorBox);
       return;
 	  }
-    else
+    else if (ret != SOCKET_ERROR)
     {
       if (socket->GetMsg().Type() == NAPI::PT_REQ_NAME)
       {
@@ -84,13 +93,12 @@ void Client::Run( void )
   while (connected)
   {
     int ret = socket->Recieve();
-    if (ret == SOCKET_ERROR)
-      ;
-    else if (ret == 0)
+    if (ret == 0) // connection closed
     {
+      CommandCenter->PostMsg("Connection lost.", CID_ErrorBox);
       connected = false;
     }
-    else
+    else if (ret != SOCKET_ERROR) // data recieved!
     {
       switch (socket->GetMsg().Type())
       {

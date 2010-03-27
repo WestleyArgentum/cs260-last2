@@ -30,15 +30,18 @@ struct RemoveUserProcess : public ICommandProcess
 
 struct SendFileProcess : public ICommandProcess
 {
+  SendFileProcess( Client * client ) : client_(client) {;}
   virtual void operator()( const Command &command );
+
+  Client *client_;
 };    // struct SendFileProcess
 
 struct SendMessageProcess : public ICommandProcess
 {
-  SendMessageProcess(Client &client) : client_(client) {;}
+  SendMessageProcess( Client *client ) : client_(client) {;}
   virtual void operator() ( const Command &command );
 
-  Client &client_;
+  Client *client_;
 };
 
 struct ErrorBoxProcess : public ICommandProcess

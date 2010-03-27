@@ -19,7 +19,7 @@ void CommandCenter_::RegisterProcess( ICommandProcess *method, CommandID cid )
 {
   //Lock lock( mutex_ );
 
-  deletion_.push_back( method );
+  deletion_.insert( method );
 
   if ( cid == CID_Unknown )
   {
@@ -28,22 +28,22 @@ void CommandCenter_::RegisterProcess( ICommandProcess *method, CommandID cid )
     {
       CommandProcesses &list = GetProcessList( static_cast<CommandID>(i) );
 
-      list.push_back( method );
+      list.insert( method );
     }
   }
   else
   {
     CommandProcesses &list = GetProcessList( cid );
 
-    list.push_back( method );
+    list.insert( method );
   }
 }
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void CommandCenter_::PostMsg( const std::string &message, CommandID cid )
+void CommandCenter_::PostMsg( const std::string &message, CommandID cid, const void *data )
 {
-  Command command( cid, message );
+  Command command( cid, message, data );
 
   PostCommand( command );
 }

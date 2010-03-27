@@ -27,16 +27,21 @@ void RemoveUserProcess::operator()( const Command &command )
 /**************************************************************************************************/
 void SendFileProcess::operator()( const Command &command )
 {
-  //FileTransfer filetransfer( command.str_ );
+  if (client_->IsConnected())
+    client_->StartFileTransfer(command.str_, (const char*)command.data_);
 }
 
+/**************************************************************************************************/
+/**************************************************************************************************/
 void SendMessageProcess::operator() ( const Command &command )
 {
-  if (client_.IsConnected())
-    client_.SendCommand(command);
+  if (client_->IsConnected())
+    client_->SendMsg(command.str_);
 }
 
+/**************************************************************************************************/
+/**************************************************************************************************/
 void ErrorBoxProcess::operator() ( const Command &command )
 {
-	MessageBox(0, "ERROR", command.str_.c_str(), 0);
+	MessageBox(0, command.str_.c_str(), "An error has occurred.", 0);
 }
