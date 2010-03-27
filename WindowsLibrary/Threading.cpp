@@ -126,8 +126,8 @@ void Thread::Resume( void )
 /**************************************************************************************************/
 void Thread::WaitForDeath( void )
 {
-  WaitForSingleObject( handle_, INFINITE );
   running = false;
+  WaitForSingleObject( handle_, INFINITE );
 }
 
 /**************************************************************************************************/
