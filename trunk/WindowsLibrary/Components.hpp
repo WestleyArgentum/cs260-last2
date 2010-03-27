@@ -75,4 +75,3 @@ class Listbox : public IWindowComponent
     HWND handle_;
     char selected_[33];   // Size of max username length. (32, 33 is accounting for the NULL)
 };    // class Listbox
-

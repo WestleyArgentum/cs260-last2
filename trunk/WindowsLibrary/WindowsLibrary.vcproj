@@ -63,6 +63,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="comctl32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -129,6 +130,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="comctl32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -194,6 +196,18 @@
 				</File>
 				<File
 					RelativePath=".\FileDialogs.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ProgressBar"
+				>
+				<File
+					RelativePath=".\ProgressBar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ProgressBar.hpp"
 					>
 				</File>
 			</Filter>

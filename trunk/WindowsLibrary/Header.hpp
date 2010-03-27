@@ -5,4 +5,4 @@
 #include "WindowsLibrary/Console.hpp"         // CreateConsole()
 #include "WindowsLibrary/FileDialogs.hpp"     // OpenFileDialog, SaveFileDialog
 #include "WindowsLibrary/Window.hpp"          // Window
-
+#include "WindowsLibrary/ProgressBar.hpp"     // ProgressBar
