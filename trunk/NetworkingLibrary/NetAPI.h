@@ -92,8 +92,6 @@ namespace NAPI ///< Networking API namespace
       // TODO: Add source and destination fields.
 
 		  PacketType type; ///< Type of packet being sent.
-      char src;        ///< Source ID
-      char dst;        ///< Destination ID
 		  unsigned seq;    ///< Sequence number
 		  unsigned ack;    ///< Acknoledgement number
 		  short data_size; ///< Size of data appended.
