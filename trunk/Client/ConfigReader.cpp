@@ -29,7 +29,7 @@ Config::Config( const char *configname )
         iStream.ignore();
         iStream.getline( name, sizeof(name) );
 
-        username_.assign( name, sizeof(name) );
+        username_.assign( name, strlen(name) );
       }
       else if ( dataname == "[SERVER]" )  // Specifing server information.
       {
