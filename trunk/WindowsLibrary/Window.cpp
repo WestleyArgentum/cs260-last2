@@ -154,7 +154,11 @@ bool Window::Run( void )
 /**************************************************************************************************/
 Window::Window( void ) : width_(0), height_(0), handle_(NULL)
 {
-  InitCommonControls();
+  INITCOMMONCONTROLSEX common_controls;
+  common_controls.dwSize = sizeof(INITCOMMONCONTROLSEX);
+  common_controls.dwICC = ICC_PROGRESS_CLASS;
+
+  InitCommonControlsEx( &common_controls );
 }
 
 /**************************************************************************************************/

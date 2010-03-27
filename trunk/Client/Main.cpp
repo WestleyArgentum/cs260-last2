@@ -40,6 +40,20 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
       PostQuitMessage( 0 );
       break;
 
+    case WM_KEYDOWN:
+      switch ( wParam )
+      {
+        case VK_RETURN:
+            // Get the message that the client would like to post.
+          str = sendbox->GetText();
+          sendbox->Clear();
+
+            // Post this message so someone can process this message.
+          CommandCenter->PostMsg( str, CID_SendMessage );
+          break;
+      }
+      break;
+
     case WM_COMMAND:
       id = LOWORD( wParam );
 
@@ -75,7 +89,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
               if ( selected )
               {
-                OpenFileDialog dialog( hWnd );
+                OpenFileDialog dialog( NULL );
 
                 if ( dialog.OpenFile() )
                 {
@@ -168,7 +182,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
+  //ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
 
   Client client(configuration.username_);
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -184,7 +198,6 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   while ( WinSys->Run() )
   {
     bar.Step();
-    Sleep(10);
   }
 
   return WinSys->ReturnCode();
