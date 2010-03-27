@@ -185,11 +185,11 @@ namespace NAPI ///< Networking API namespace
     int ToggleBlocking(bool val) throw (Error);
 
     ///< Send data to the address specified.
-    int SendTo(const NetAddress &address, PacketType type, const void *data, 
+    int SendTo(const NetAddress &remote, PacketType type, const void *data, 
       unsigned size, unsigned seq, unsigned ack) const throw (Error);
 
     ///< Recv Data on the socket. Stores the address of the sender in address.
-    int RecvFrom(NetAddress &address) throw (Error);
+    int RecvFrom(NetAddress &remote) throw (Error);
   };
 
    // Handle to a UDPSocket
