@@ -25,10 +25,19 @@ void RemoveUserProcess::operator()( const Command &command )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void RejectFileProcess::operator()( const Command &command )
+{
+  //if (client_->IsConnected())
+  //  client_->SendFileRequest(command.str_);
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void SendFileProcess::operator()( const Command &command )
 {
+   // data is the user selected, str_ is the filename & path.
   if (client_->IsConnected())
-    client_->StartFileTransfer(command.str_, (const char*)command.data_);
+    client_->SendFileRequest((const char*)command.data_, command.str_ );
 }
 
 /**************************************************************************************************/

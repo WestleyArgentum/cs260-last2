@@ -5,6 +5,7 @@
 #include "WindowsLibrary/Threading.hpp"
 #include "WindowsLibrary/Timer.hpp"
 #include "WindowsLibrary/CommandCenter.hpp"
+#include "Client/FileTransfer.hpp"
 
 #include <queue>
 
@@ -38,6 +39,7 @@ public:
   ClientNick GetNick() const { return name; }
 
   void BeginSession() { thread_.Resume(); }
+  void SendFileTransferInfo( NAPI::PacketType pt, const FileTransferInfo &info );
   void EndSession() { Kill(); }
   void AddCommand(Command cmd); ///< Used to inform client of things while in thread.
 
@@ -70,6 +72,7 @@ public:
   ~HostRoutine() { Quit(); }
 
   void DistributeMessage(Command cmd);
+  void ProcessFileTransferRequest( NAPI::PacketType pt, const FileTransferInfo &info );
   void UpdateUserList(const std::string &name);
   void Host() { thread_.Resume(); }
   void Quit() { Kill(); }

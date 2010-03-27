@@ -93,6 +93,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
                 if ( dialog.OpenFile() )
                 {
+                   // TODO: Get just the file name, not entire path.
                   CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ),
                     CID_Display );
                   CommandCenter->PostMsg( dialog.GetFileName(), CID_SendFile, selected);
@@ -182,7 +183,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  //ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
+  ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
 
   Client client(configuration.username_);
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -190,6 +191,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
   CommandCenter->RegisterProcess( new SendMessageProcess( &client ),      CID_SendMessage );
   CommandCenter->RegisterProcess( new SendFileProcess( &client ), CID_SendFile );
+  CommandCenter->RegisterProcess( new RejectFileProcess( &client ), CID_RejectFile );
   CommandCenter->RegisterProcess( new ErrorBoxProcess(), CID_ErrorBox );
 
   client.BeginSession(configuration.ip_, configuration.port_);
@@ -198,6 +200,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   while ( WinSys->Run() )
   {
     bar.Step();
+    Sleep(100);
   }
 
   return WinSys->ReturnCode();

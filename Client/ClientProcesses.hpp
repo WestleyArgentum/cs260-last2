@@ -36,6 +36,14 @@ struct SendFileProcess : public ICommandProcess
   Client *client_;
 };    // struct SendFileProcess
 
+struct RejectFileProcess : public ICommandProcess
+{
+  RejectFileProcess( Client * client ) : client_(client) {;}
+  virtual void operator() ( const Command &command );
+
+  Client *client_;
+};
+
 struct SendMessageProcess : public ICommandProcess
 {
   SendMessageProcess( Client *client ) : client_(client) {;}

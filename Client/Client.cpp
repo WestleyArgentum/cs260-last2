@@ -24,11 +24,23 @@ void Client::SendMsg(const std::string &msg)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::StartFileTransfer(const std::string &user, const std::string &file)
+void Client::SendFileRequest(const std::string &user, const std::string &file)
 {
-   // send a request to send a file to the user.
-  transfers[idbase] = new FileSend(user, file);
-  socket->Send(NAPI::PT_SEND_FILE, &FileTransferInfo(idbase++,user,file), sizeof(FileTransferInfo));
+   // create a new file sending object, it waits for the signal to begin.
+  FileSend *trans = new FileSend(user,file);
+   // add the database of transfers, referenced by id.
+  transfers[idbase] = trans;
+   // create a struct holding the correct data relating to the file transfer and send it out
+  FileTransferInfo ftInfo(idbase++, user, name_, file, trans->GetSocketInfo());
+  socket->Send(NAPI::PT_SEND_FILE, &ftInfo, sizeof(FileTransferInfo));
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::SendFileResponse( const FileTransferInfo *info )
+{
+  FileAccept *accept = new FileAccept(*info);
+  transfers[idbase++] = accept;
 }
 
 /**************************************************************************************************/
@@ -110,6 +122,9 @@ void Client::Run( void )
         break;
       case NAPI::PT_DEL_NICK:
         CommandCenter->PostMsg(socket->GetMsg().DataToStr(), CID_RemoveUser);
+        break;
+      case NAPI::PT_SEND_FILE: ///< Someone is attempting to send a file.
+        SendFileResponse(reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data()));
         break;
       }
     }
