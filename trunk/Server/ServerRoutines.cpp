@@ -30,6 +30,13 @@ void ClientRoutine::ProcessCommands()
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void ClientRoutine::SendFileTransferInfo( NAPI::PacketType pt, const FileTransferInfo &info )
+{
+  socket->Send(pt, &info, sizeof(FileTransferInfo));
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void ClientRoutine::AddCommand(Command cmd)
 {
   Lock lock(mutex);
@@ -109,7 +116,11 @@ void ClientRoutine::Run( void )
 		  CommandCenter->PostMsg(msg, CID_Display);
 		  CommandCenter->PostMsg(msg, CID_SendMessage);
         break;
-      case NAPI::PT_DATA_ADDRESS: ///< Address info recieved.
+      case NAPI::PT_REJECT_FILE:   // Forward the FileTransferInfo data to the requested user.
+      case NAPI::PT_SEND_FILE:
+        msg.assign(socket->GetMsg().Data());
+        const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
+        host->ProcessFileTransferRequest( socket->GetMsg().Type(), *info );
         break;
       }
     }
@@ -187,6 +198,15 @@ void HostRoutine::DistributeMessage(Command cmd)
   ActiveUserMap::iterator begin = activeUsers.begin(), end = activeUsers.end();
   while (begin != end)
     begin++->second->AddCommand(cmd);
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void HostRoutine::ProcessFileTransferRequest( NAPI::PacketType pt, const FileTransferInfo &info )
+{
+  std::string dest = info.user_;
+  if (activeUsers.count(dest))
+    activeUsers[dest]->SendFileTransferInfo(pt, info);
 }
 
 /**************************************************************************************************/

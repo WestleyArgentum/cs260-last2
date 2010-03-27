@@ -3,16 +3,25 @@
 #include "WindowsLibrary/CommandCenter.hpp"
 #include "WindowsLibrary/FileDialogs.hpp"
 
+
+FileTransferInfo::FileTransferInfo(TransferID id, const std::string &user, const std::string &from,
+  const std::string &file, const NAPI::NetAddress &adr) : id_(id), udp_(adr)
+{
+  strcpy(user_, user.c_str());
+  strcpy(from_, from.c_str());
+  strcpy(file_,file.c_str());
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // FileAccept Methods
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileAccept::FileAccept( const std::string &from, const std::string &file  )
-: from_(from), file_(file), result_(0), done_(false)
+FileAccept::FileAccept( const FileTransferInfo &ftInfo ) : remote_(ftInfo.udp_), id(ftInfo.id_),
+from_(ftInfo.from_), file_(ftInfo.file_), result_(0), done_(false), fail_(false)
 {
-  //thread_.Resume();
+  thread_.Resume();
 }
 
 /**************************************************************************************************/
@@ -52,18 +61,27 @@ void FileAccept::Run( void )
   if ( result_ == IDNO )
   {
       // File transfer rejected.
+    CommandCenter->PostMsg("NO!!!", CID_RejectFile);
     return;
   }
 
   SaveFileDialog saveas( NULL );
   saveas.SetRelativeDir( "..\\Data\\dropfolder" );
-
     // Select the destination of where to save the file and to save the file as.
   if ( !saveas.SaveFile( file_ ) )
   {
       // User canceled to save the file at a particular location. File transfer rejected.
+    CommandCenter->PostMsg("NOOO!!!!!", CID_RejectFile);
     return;
   }
+
+   // save the new file name if they changed it.
+  file_ = saveas.GetFileName();
+   // put from as the sender, that way the server knows where to route it.
+  FileTransferInfo ftInfo(id, from_, "", "", GetSocketInfo());
+  CommandCenter->PostMsg("", CID_AcceptFile, &ftInfo);
+
+  // start recieving file!
 
   // Connect to the client wanting to send us a file.
   // Download file.
@@ -93,7 +111,7 @@ void FileAccept::FlushThread( void )
 /**************************************************************************************************/
 /**************************************************************************************************/
 FileSend::FileSend( const std::string &to, const std::string &file )
-: to_(to), file_(file), done_(false)
+: to_(to), file_(file), done_(false), fail_(false)
 {
   //thread_.Resume();
 }

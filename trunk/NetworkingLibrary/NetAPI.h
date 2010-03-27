@@ -78,6 +78,7 @@ namespace NAPI ///< Networking API namespace
 	  PT_ADD_NICK,        ///< Message used to update client user list.
     PT_DEL_NICK,        ///< Message used to update client user list.
     PT_SEND_FILE,       ///< Client informing sender it's ready to accept the file.
+    PT_REJECT_FILE,     ///< Client informing sender it's rejecting the file.
   };
 
   class NetMessage
@@ -91,6 +92,8 @@ namespace NAPI ///< Networking API namespace
       // TODO: Add source and destination fields.
 
 		  PacketType type; ///< Type of packet being sent.
+      char src;        ///< Source ID
+      char dst;        ///< Destination ID
 		  unsigned seq;    ///< Sequence number
 		  unsigned ack;    ///< Acknoledgement number
 		  short data_size; ///< Size of data appended.

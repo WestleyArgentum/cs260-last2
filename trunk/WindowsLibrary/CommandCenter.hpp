@@ -39,6 +39,9 @@ enum CommandID
   ,CID_NewUser
   ,CID_RemoveUser
   ,CID_SendFile
+  ,CID_RespondFile
+  ,CID_AcceptFile
+  ,CID_RejectFile
   ,CID_SendMessage
   ,CID_ErrorBox
 
