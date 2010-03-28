@@ -17,9 +17,16 @@ void Client::BeginSession(const std::string &ip, unsigned port)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::SendMsg(const std::string &msg)
+void Client::SendMsg(NAPI::PacketType pt, const std::string &msg)
 {
-  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+  socket->Send(pt, msg.c_str(), msg.size());
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::SendMsg(NAPI::PacketType pt, const void *data, unsigned size)
+{
+  socket->Send(pt, data, size);
 }
 
 /**************************************************************************************************/
@@ -31,7 +38,7 @@ void Client::SendFileRequest(const std::string &user, const std::string &file)
    // add the database of transfers, referenced by id.
   transfers[idbase] = trans;
    // create a struct holding the correct data relating to the file transfer and send it out
-  FileTransferInfo ftInfo(idbase++, user, name_, file, trans->GetSocketInfo());
+  FileTransferInfo ftInfo(idbase++, CID_SendFile, user, name_, file, trans->GetSocketInfo());
   socket->Send(NAPI::PT_SEND_FILE, &ftInfo, sizeof(FileTransferInfo));
 }
 
@@ -126,6 +133,20 @@ void Client::Run( void )
       case NAPI::PT_SEND_FILE: ///< Someone is attempting to send a file.
         SendFileResponse(reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data()));
         break;
+      case NAPI::PT_ACCEPT_FILE:
+        {
+          const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
+          if (transfers.count(info->id_))
+            transfers[info->id_]->StartTransfer(info->udp_);
+        }
+        break;
+      case NAPI::PT_REJECT_FILE:
+        {
+          const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
+          if (transfers.count(info->id_))
+            transfers[info->id_]->Quit();
+        }
+        break;
       }
     }
   }
@@ -137,6 +158,7 @@ void Client::ExitThread( void )
 {
   // TODO: Keep the File Transferring going...
   NAPI::NetAPI->CloseSocket(socket);
+  socket = 0;
 }
 
 /**************************************************************************************************/

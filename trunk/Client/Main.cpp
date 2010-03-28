@@ -183,7 +183,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
+  //ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
 
   Client client(configuration.username_);
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -199,8 +199,8 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Finally start processing our window until our client decides to quit the chat program.
   while ( WinSys->Run() )
   {
-    bar.Step();
-    Sleep(100);
+    //bar.Step();
+    //Sleep(100);
   }
 
   return WinSys->ReturnCode();

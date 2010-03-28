@@ -116,6 +116,7 @@ void ClientRoutine::Run( void )
 		  CommandCenter->PostMsg(msg, CID_Display);
 		  CommandCenter->PostMsg(msg, CID_SendMessage);
         break;
+      case NAPI::PT_ACCEPT_FILE:
       case NAPI::PT_REJECT_FILE:   // Forward the FileTransferInfo data to the requested user.
       case NAPI::PT_SEND_FILE:
         msg.assign(socket->GetMsg().Data());

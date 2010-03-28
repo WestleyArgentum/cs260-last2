@@ -27,8 +27,15 @@ void RemoveUserProcess::operator()( const Command &command )
 /**************************************************************************************************/
 void RejectFileProcess::operator()( const Command &command )
 {
-  //if (client_->IsConnected())
-  //  client_->SendFileRequest(command.str_);
+  if (client_->IsConnected())
+    client_->SendMsg(NAPI::PT_REJECT_FILE, command.data_, sizeof(FileTransferInfo));
+}
+/**************************************************************************************************/
+/**************************************************************************************************/
+void AcceptFileProcess::operator()( const Command &command )
+{
+  if (client_->IsConnected())
+    client_->SendMsg(NAPI::PT_ACCEPT_FILE, command.data_, sizeof(FileTransferInfo));
 }
 
 /**************************************************************************************************/
@@ -45,7 +52,7 @@ void SendFileProcess::operator()( const Command &command )
 void SendMessageProcess::operator() ( const Command &command )
 {
   if (client_->IsConnected())
-    client_->SendMsg(command.str_);
+    client_->SendMsg(NAPI::PT_DATA_STRING, command.str_);
 }
 
 /**************************************************************************************************/
