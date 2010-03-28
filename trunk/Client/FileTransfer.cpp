@@ -71,7 +71,7 @@ void FileAccept::Run( void )
    // save the new file name if they changed it.
   file_ = saveas.GetFileName();
    // put from as the sender, that way the server knows where to route it.
-  FileTransferInfo info(id, MT_ACCEPT_FILE, from_, "", "", GetSocketInfo());
+  FileTransferInfo info(id, MT_ACCEPT_FILE, from_, "", file_, GetSocketInfo());
   CommandCenter->PostMsg("", CID_SendFile, &info);
 
   ProgressBar progress(file_);
