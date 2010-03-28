@@ -58,29 +58,23 @@ namespace NAPI ///< Networking API namespace
   enum PacketType {
     // Special Messages
 	  PT_INVALID,         ///< Packet is corrupt or some other error occured.
-	  PT_MULTI_USE,       ///< Reserved for special use.
     PT_DIRECTED,        ///< Message is directed to a specific desitination, stored in the data.
 
     // Request Messages
 	  PT_REQ_NAME,        ///< Requests a name from a User to reference the socket with.
-    PT_REQ_ADDRESS,     ///< Requests the address of the User specified in the data as a string.
-    PT_REQ_UDPSOCK,     ///< Requests for a UDP connection to be created between the two.
 
     // Data Messages
 	  PT_DATA_STRING,     ///< String Data. Used for messages.
     PT_DATA_PACKET,     ///< Plain Data packet, used in UDP
-    PT_DATA_ADDRESS,    ///< New address data of sender.
-    
-    // User Messages
-	  PT_USER_CONNECTED,  ///< User has connected!
-    PT_USER_DISCONNECT, ///< User is going to disconnect.
 
-    // Misc Messages
+    // Chat Messages
 	  PT_ADD_NICK,        ///< Message used to update client user list.
     PT_DEL_NICK,        ///< Message used to update client user list.
-    PT_SEND_FILE,       ///< Client informing sender it's ready to accept the file.
-    PT_REJECT_FILE,     ///< Client informing sender it's rejecting the file.
-    PT_ACCEPT_FILE,     ///< Client informing sender it's accepting the file.
+
+    //// File Messages
+    //PT_SEND_FILE,       ///< Client informing sender it's ready to accept the file.
+    //PT_REJECT_FILE,     ///< Client informing sender it's rejecting the file.
+    //PT_ACCEPT_FILE,     ///< Client informing sender it's accepting the file.
   };
 
   class NetMessage

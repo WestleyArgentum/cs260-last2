@@ -28,29 +28,13 @@ struct RemoveUserProcess : public ICommandProcess
 };    // struct RemoveUserProcess
 
 
-struct SendFileProcess : public ICommandProcess
+struct SendFileTransferInfoProcess : public ICommandProcess
 {
-  SendFileProcess( Client * client ) : client_(client) {;}
+  SendFileTransferInfoProcess( Client * client ) : client_(client) {;}
   virtual void operator()( const Command &command );
 
   Client *client_;
 };    // struct SendFileProcess
-
-struct RejectFileProcess : public ICommandProcess
-{
-  RejectFileProcess( Client * client ) : client_(client) {;}
-  virtual void operator()( const Command &command );
-
-  Client *client_;
-};
-
-struct AcceptFileProcess : public ICommandProcess
-{
-  AcceptFileProcess( Client *client ) : client_(client) {;}
-  virtual void operator()( const Command &command );
-
-  Client *client_;
-};
 
 struct SendMessageProcess : public ICommandProcess
 {

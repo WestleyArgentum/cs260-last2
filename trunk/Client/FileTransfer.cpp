@@ -5,15 +5,6 @@
 #include "WindowsLIbrary/ProgressBar.hpp"
 
 
-FileTransferInfo::FileTransferInfo(TransferID id, CommandID cmd, const std::string &user,
-  const std::string &from, const std::string &file, const NAPI::NetAddress &adr)
-  : id_(id), cmd_(cmd), udp_(adr)
-{
-  strcpy(user_, user.c_str());
-  strcpy(from_, from.c_str());
-  strcpy(file_,file.c_str());
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // FileAccept Methods
@@ -63,7 +54,7 @@ void FileAccept::Run( void )
   if ( result_ == IDNO )
   {
       // File transfer rejected.
-    CommandCenter->PostMsg("NO!!!", CID_RejectFile);
+    CommandCenter->PostMsg("", CID_SendFile, &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",GetSocketInfo()));
     return;
   }
 
@@ -73,15 +64,15 @@ void FileAccept::Run( void )
   if ( !saveas.SaveFile( file_ ) )
   {
       // User canceled to save the file at a particular location. File transfer rejected.
-    CommandCenter->PostMsg("NOOO!!!!!", CID_RejectFile);
+    CommandCenter->PostMsg("", CID_SendFile, &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",GetSocketInfo()));
     return;
   }
 
    // save the new file name if they changed it.
   file_ = saveas.GetFileName();
    // put from as the sender, that way the server knows where to route it.
-  FileTransferInfo ftInfo(id, CID_AcceptFile, from_, "", "", GetSocketInfo());
-  CommandCenter->PostMsg("Yesss", CID_AcceptFile, &ftInfo);
+  FileTransferInfo info(id, MT_ACCEPT_FILE, from_, "", "", GetSocketInfo());
+  CommandCenter->PostMsg("", CID_SendFile, &info);
 
   ProgressBar progress(file_);
 
@@ -127,6 +118,7 @@ FileSend::FileSend( const std::string &to, const std::string &file )
 /**************************************************************************************************/
 void FileSend::StartTransfer(const NAPI::NetAddress &remote)
 {
+   // Save the udp socket info and start the transfer.
   remote_ = remote;
   thread_.Resume();
 }
@@ -156,12 +148,10 @@ void FileSend::InitializeThread( void )
   OpenFileDialog openfile( NULL );
   if (!openfile.OpenFile( file_ ))
   {
-     // failed to open file
+     // failed to open file, transfer will timeout on other side as notification.
     CommandCenter->PostMsg("Couldn't open file: " + file_, CID_ErrorBox);
     return;
   }
-
-  // request file transfer from user.
 
   // read file into memory and break into chunks.
   // start sending data over UDP

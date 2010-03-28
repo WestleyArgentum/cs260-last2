@@ -190,9 +190,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
   CommandCenter->RegisterProcess( new SendMessageProcess( &client ),      CID_SendMessage );
-  CommandCenter->RegisterProcess( new SendFileProcess( &client ), CID_SendFile );
-  CommandCenter->RegisterProcess( new AcceptFileProcess( &client ), CID_AcceptFile );
-  CommandCenter->RegisterProcess( new RejectFileProcess( &client ), CID_RejectFile );
+  CommandCenter->RegisterProcess( new SendFileTransferInfoProcess( &client ), CID_SendFile );
   CommandCenter->RegisterProcess( new ErrorBoxProcess(), CID_ErrorBox );
 
   client.BeginSession(configuration.ip_, configuration.port_);

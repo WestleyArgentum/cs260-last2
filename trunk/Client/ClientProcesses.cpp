@@ -25,26 +25,11 @@ void RemoveUserProcess::operator()( const Command &command )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void RejectFileProcess::operator()( const Command &command )
-{
-  if (client_->IsConnected())
-    client_->SendMsg(NAPI::PT_REJECT_FILE, command.data_, sizeof(FileTransferInfo));
-}
-/**************************************************************************************************/
-/**************************************************************************************************/
-void AcceptFileProcess::operator()( const Command &command )
-{
-  if (client_->IsConnected())
-    client_->SendMsg(NAPI::PT_ACCEPT_FILE, command.data_, sizeof(FileTransferInfo));
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-void SendFileProcess::operator()( const Command &command )
+void SendFileTransferInfoProcess::operator()( const Command &command )
 {
    // data is the user selected, str_ is the filename & path.
   if (client_->IsConnected())
-    client_->SendFileRequest((const char*)command.data_, command.str_ );
+    client_->HandleFileTransfer(command.data_);
 }
 
 /**************************************************************************************************/
@@ -52,7 +37,7 @@ void SendFileProcess::operator()( const Command &command )
 void SendMessageProcess::operator() ( const Command &command )
 {
   if (client_->IsConnected())
-    client_->SendMsg(NAPI::PT_DATA_STRING, command.str_);
+    client_->SendMsg(command.str_);
 }
 
 /**************************************************************************************************/
