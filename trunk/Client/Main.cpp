@@ -190,6 +190,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new NewUserProcess( &userlistbox ),    CID_NewUser );
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
   CommandCenter->RegisterProcess( new SendMessageProcess( &client ),      CID_SendMessage );
+  CommandCenter->RegisterProcess( new StartFileTransferProcess( &client ), CID_StartTransfer );
   CommandCenter->RegisterProcess( new SendFileTransferInfoProcess( &client ), CID_SendFile );
   CommandCenter->RegisterProcess( new ErrorBoxProcess(), CID_ErrorBox );
 

@@ -27,6 +27,13 @@ struct RemoveUserProcess : public ICommandProcess
   Listbox *listbox_;
 };    // struct RemoveUserProcess
 
+struct StartFileTransferProcess : public ICommandProcess
+{
+  StartFileTransferProcess( Client *client ) : client_(client) {;}
+  virtual void operator()( const Command &command );
+
+  Client *client_;
+};
 
 struct SendFileTransferInfoProcess : public ICommandProcess
 {
