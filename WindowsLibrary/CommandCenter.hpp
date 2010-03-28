@@ -40,7 +40,7 @@ enum CommandID
   ,CID_RemoveUser
   ,CID_SendFile
   ,CID_StartTransfer
-  ,CID_RespondFile
+  ,CID_TransferResponse
   ,CID_AcceptFile
   ,CID_RejectFile
   ,CID_SendMessage
