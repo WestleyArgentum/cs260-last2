@@ -39,14 +39,6 @@ void SendFileTransferInfoProcess::operator()( const Command &command )
   if (client_->IsConnected())
     client_->SendFileTransfer(command.data_);
 }
-/**************************************************************************************************/
-/**************************************************************************************************/
-void RecvFileTransferInfoProcess::operator()( const Command &command )
-{
-   // data is the user selected, str_ is the filename & path.
-  if (client_->IsConnected())
-    client_->RecvFileTransfer(command.data_);
-}
 
 /**************************************************************************************************/
 /**************************************************************************************************/
