@@ -145,14 +145,6 @@ bool FileSend::IsFail( void )
 /**************************************************************************************************/
 void FileSend::InitializeThread( void )
 {
-  OpenFileDialog openfile( NULL );
-  if (!openfile.OpenFile( file_ ))
-  {
-     // failed to open file, transfer will timeout on other side as notification.
-    CommandCenter->PostMsg("Couldn't open file: " + file_, CID_ErrorBox);
-    return;
-  }
-
   // read file into memory and break into chunks.
   // start sending data over UDP
 }
