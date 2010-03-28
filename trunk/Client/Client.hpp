@@ -27,6 +27,7 @@ public:
   void BeginSession( const std::string &ip, unsigned port );
   void SendFileRequest( const std::string &user, const std::string &file );
   void HandleFileTransfer( const void *info );
+  void SendFileTransfer( const void *info );
   void SendMsg( const std::string &msg );
   bool IsConnected() const { return connected; }
   void EndSession();
