@@ -19,13 +19,14 @@ class Client : public RoutineObject
   unsigned port_;             ///< Port of server to connect to.
   bool connected;             ///< Whether the client is connected to the server.
 public:
-  Client(const std::string &name) : idbase(0), socket(0), name_(name), port_(0), connected(false)
+  Client( const std::string &name ) : idbase(0), socket(0), name_(name), port_(0), connected(false)
     { NAPI::NetAPI->Init(); }
   ~Client() { EndSession(); NAPI::NetAPI->Cleanup(); }
 
-  void BeginSession(const std::string &ip, unsigned port);
-  void SendMsg(const std::string &msg);
-  void SendFileRequest(const std::string &user, const std::string &file);
+  void BeginSession( const std::string &ip, unsigned port );
+  void SendMsg( NAPI::PacketType pt, const std::string &msg );
+  void SendMsg( NAPI::PacketType pt, const void *data, unsigned size );
+  void SendFileRequest( const std::string &user, const std::string &file );
   void SendFileResponse( const FileTransferInfo *info );
   bool IsConnected() const { return connected; }
   void EndSession();

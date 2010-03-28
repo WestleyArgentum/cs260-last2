@@ -2,10 +2,12 @@
 
 #include "WindowsLibrary/CommandCenter.hpp"
 #include "WindowsLibrary/FileDialogs.hpp"
+#include "WindowsLIbrary/ProgressBar.hpp"
 
 
-FileTransferInfo::FileTransferInfo(TransferID id, const std::string &user, const std::string &from,
-  const std::string &file, const NAPI::NetAddress &adr) : id_(id), udp_(adr)
+FileTransferInfo::FileTransferInfo(TransferID id, CommandID cmd, const std::string &user,
+  const std::string &from, const std::string &file, const NAPI::NetAddress &adr)
+  : id_(id), cmd_(cmd), udp_(adr)
 {
   strcpy(user_, user.c_str());
   strcpy(from_, from.c_str());
@@ -78,8 +80,13 @@ void FileAccept::Run( void )
    // save the new file name if they changed it.
   file_ = saveas.GetFileName();
    // put from as the sender, that way the server knows where to route it.
-  FileTransferInfo ftInfo(id, from_, "", "", GetSocketInfo());
-  CommandCenter->PostMsg("", CID_AcceptFile, &ftInfo);
+  FileTransferInfo ftInfo(id, CID_AcceptFile, from_, "", "", GetSocketInfo());
+  CommandCenter->PostMsg("Yesss", CID_AcceptFile, &ftInfo);
+
+  ProgressBar progress(file_);
+
+  for (unsigned i = 100; --i;)
+    progress.Step(), Sleep(100);
 
   // start recieving file!
 

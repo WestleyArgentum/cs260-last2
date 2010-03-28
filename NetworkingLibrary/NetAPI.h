@@ -59,6 +59,7 @@ namespace NAPI ///< Networking API namespace
     // Special Messages
 	  PT_INVALID,         ///< Packet is corrupt or some other error occured.
 	  PT_MULTI_USE,       ///< Reserved for special use.
+    PT_DIRECTED,        ///< Message is directed to a specific desitination, stored in the data.
 
     // Request Messages
 	  PT_REQ_NAME,        ///< Requests a name from a User to reference the socket with.
@@ -79,6 +80,7 @@ namespace NAPI ///< Networking API namespace
     PT_DEL_NICK,        ///< Message used to update client user list.
     PT_SEND_FILE,       ///< Client informing sender it's ready to accept the file.
     PT_REJECT_FILE,     ///< Client informing sender it's rejecting the file.
+    PT_ACCEPT_FILE,     ///< Client informing sender it's accepting the file.
   };
 
   class NetMessage

@@ -14,6 +14,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkingLibrary", "NetworkingLibrary\NetworkingLibrary.vcproj", "{E3E1A5AF-C1EA-4BAC-9999-8F4D36815C5A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3} = {76A9AFB5-15F5-49E9-A91C-8E8EA54C50A3}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcproj", "{E70B6AB2-DC84-496E-9D7B-544F79194758}"
 	ProjectSection(ProjectDependencies) = postProject
