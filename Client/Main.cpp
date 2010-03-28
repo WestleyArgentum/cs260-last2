@@ -96,7 +96,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
                    // TODO: Get just the file name, not entire path.
                   CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ),
                     CID_Display );
-                  CommandCenter->PostMsg( dialog.GetFileName(), CID_SendFile, selected);
+                  CommandCenter->PostMsg( dialog.GetFileName(), CID_StartTransfer, selected);
                 }
               }
               else
