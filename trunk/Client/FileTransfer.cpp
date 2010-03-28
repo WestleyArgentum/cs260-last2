@@ -161,11 +161,6 @@ void FileSend::InitializeThread( void )
     return;
   }
 
-  ProgressBar progress(file_);
-
-  for (unsigned i = 100; --i;)
-    progress.Step(), Sleep(100);
-
   // request file transfer from user.
 
   // read file into memory and break into chunks.
@@ -176,6 +171,11 @@ void FileSend::InitializeThread( void )
 /**************************************************************************************************/
 void FileSend::Run( void )
 {
+
+  ProgressBar progress(file_);
+
+  for (unsigned i = 100; --i;)
+    progress.Step(), Sleep(100);
 }
 
 /**************************************************************************************************/
