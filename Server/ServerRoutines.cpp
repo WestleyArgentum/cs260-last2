@@ -30,9 +30,9 @@ void ClientRoutine::ProcessCommands()
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void ClientRoutine::SendFileTransferInfo( NAPI::PacketType pt, const FileTransferInfo &info )
+void ClientRoutine::SendFileTransferInfo( const FileTransferInfo *info )
 {
-  socket->Send(pt, &info, sizeof(FileTransferInfo));
+  socket->Send(NAPI::PT_DIRECTED, info, sizeof(FileTransferInfo));
 }
 
 /**************************************************************************************************/
@@ -107,21 +107,19 @@ void ClientRoutine::Run( void )
     else if (ret != SOCKET_ERROR)
     {
       // socket didn't block, and got data, interpret it.
-      std::string msg;
       switch (socket->GetMsg().Type())
       {
       case NAPI::PT_DATA_STRING:  ///< Message recieved.
-         // Build the message and have the CommandCenter distribute it.
-		  msg.assign(name.c_str()) += ": " + socket->GetMsg().DataToStr();
-		  CommandCenter->PostMsg(msg, CID_Display);
-		  CommandCenter->PostMsg(msg, CID_SendMessage);
+        {
+             // Build the message and have the CommandCenter distribute it.
+          std::string msg(name.c_str());
+          msg += ": " + socket->GetMsg().DataToStr();
+		      CommandCenter->PostMsg(msg, CID_Display);
+		      CommandCenter->PostMsg(msg, CID_SendMessage);
+        }
         break;
-      case NAPI::PT_ACCEPT_FILE:
-      case NAPI::PT_REJECT_FILE:   // Forward the FileTransferInfo data to the requested user.
-      case NAPI::PT_SEND_FILE:
-        msg.assign(socket->GetMsg().Data());
-        const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
-        host->ProcessFileTransferRequest( socket->GetMsg().Type(), *info );
+      case NAPI::PT_DIRECTED: ///< Direct this message towards a single user.
+        host->ProcessFileTransferRequest( socket->GetMsg().Data() );
         break;
       }
     }
@@ -160,6 +158,7 @@ bool HostRoutine::SetUserActive(ClientIDTag id)
 {
   if (!hosting)
     return false;
+
   Lock lock(mutex);
   ClientRoutineMap::iterator client = pendingUsers.find(id);
   if (client != pendingUsers.end())
@@ -203,11 +202,11 @@ void HostRoutine::DistributeMessage(Command cmd)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void HostRoutine::ProcessFileTransferRequest( NAPI::PacketType pt, const FileTransferInfo &info )
+void HostRoutine::ProcessFileTransferRequest( const void *info_ )
 {
-  std::string dest = info.user_;
-  if (activeUsers.count(dest))
-    activeUsers[dest]->SendFileTransferInfo(pt, info);
+  const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(info_);
+  if (activeUsers.count(info->to_))
+    activeUsers[info->to_]->SendFileTransferInfo(info);
 }
 
 /**************************************************************************************************/

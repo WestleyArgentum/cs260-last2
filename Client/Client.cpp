@@ -1,6 +1,7 @@
 #include "Client.hpp"
 #include "WindowsLibrary/Timer.hpp"
 #include "WindowsLibrary/CommandCenter.hpp"
+#include "NetworkingLibrary/ChatProtocol.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,16 +18,41 @@ void Client::BeginSession(const std::string &ip, unsigned port)
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::SendMsg(NAPI::PacketType pt, const std::string &msg)
+void Client::HandleFileTransfer( const void *info_ )
 {
-  socket->Send(pt, msg.c_str(), msg.size());
+  const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(info_);
+  switch (info->type_)
+  {
+  case MT_SEND_FILE:
+    {
+      FileAccept *accept = new FileAccept(*info);
+      transfers[idbase++] = accept;
+    }
+    break;
+  case MT_ACCEPT_FILE:
+    {
+      if (transfers.count(info->id_))
+        transfers[info->id_]->StartTransfer(info->udp_);
+      else {
+        FileTransferInfo response(info->id_, MT_INVALID_MSG, info->from_, info->to_, info->file_, info->udp_);
+        socket->Send(NAPI::PT_DIRECTED, &response, sizeof(response));
+      }
+    }
+    break;
+  case MT_REJECT_FILE:
+    {
+      if (transfers.count(info->id_))
+        transfers[info->id_]->Quit();
+    }
+    break;
+  }
 }
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::SendMsg(NAPI::PacketType pt, const void *data, unsigned size)
+void Client::SendMsg(const std::string &msg)
 {
-  socket->Send(pt, data, size);
+  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
 }
 
 /**************************************************************************************************/
@@ -38,16 +64,8 @@ void Client::SendFileRequest(const std::string &user, const std::string &file)
    // add the database of transfers, referenced by id.
   transfers[idbase] = trans;
    // create a struct holding the correct data relating to the file transfer and send it out
-  FileTransferInfo ftInfo(idbase++, CID_SendFile, user, name_, file, trans->GetSocketInfo());
-  socket->Send(NAPI::PT_SEND_FILE, &ftInfo, sizeof(FileTransferInfo));
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-void Client::SendFileResponse( const FileTransferInfo *info )
-{
-  FileAccept *accept = new FileAccept(*info);
-  transfers[idbase++] = accept;
+  FileTransferInfo info(idbase++, MT_SEND_FILE, user, name_, file, trans->GetSocketInfo());
+  socket->Send(NAPI::PT_DIRECTED, &info, sizeof(info));
 }
 
 /**************************************************************************************************/
@@ -130,22 +148,8 @@ void Client::Run( void )
       case NAPI::PT_DEL_NICK:
         CommandCenter->PostMsg(socket->GetMsg().DataToStr(), CID_RemoveUser);
         break;
-      case NAPI::PT_SEND_FILE: ///< Someone is attempting to send a file.
-        SendFileResponse(reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data()));
-        break;
-      case NAPI::PT_ACCEPT_FILE:
-        {
-          const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
-          if (transfers.count(info->id_))
-            transfers[info->id_]->StartTransfer(info->udp_);
-        }
-        break;
-      case NAPI::PT_REJECT_FILE:
-        {
-          const FileTransferInfo *info = reinterpret_cast<const FileTransferInfo*>(socket->GetMsg().Data());
-          if (transfers.count(info->id_))
-            transfers[info->id_]->Quit();
-        }
+      case NAPI::PT_DIRECTED:
+        HandleFileTransfer(socket->GetMsg().Data());
         break;
       }
     }

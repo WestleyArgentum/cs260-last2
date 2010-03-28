@@ -1,11 +1,11 @@
 #pragma once
 
-#include "NetworkingLibrary/NetAPI.h"
+#include "NetworkingLibrary/ChatProtocol.hpp"
 #include "WindowsLibrary/Threading.hpp"
 
 #include <string>
 
-typedef unsigned TransferID;
+//typedef unsigned TransferID;
 
 class IFileTransfer
 {
@@ -22,19 +22,6 @@ public:
   virtual void StartTransfer(const NAPI::NetAddress &remote) = 0;
   NAPI::NetAddress GetSocketInfo() { return socket->GetAdr(); }
 };    // IFileTransfer
-
-struct FileTransferInfo
-{
-  FileTransferInfo(TransferID id, CommandID cmd, const std::string &user, const std::string &from,
-                    const std::string &file, const NAPI::NetAddress &adr);
-
-  char user_[32];        ///< Username to send to.
-  char from_[32];        ///< User sending the file.
-  CommandID cmd_;        ///< The descriptor of the transfer ( send, accept, reject )
-  TransferID id_;        ///< An ID to keep track of which transfer
-  char file_[MAX_PATH];  ///< Filename to send.
-  NAPI::NetAddress udp_; ///< The UDP socket to communicate with.
-};
 
 class FileAccept : public RoutineObject, public IFileTransfer
 {
