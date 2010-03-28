@@ -21,7 +21,7 @@ struct FileTransferInfo
   FileTransferInfo(TransferID id, MessageType type, const std::string &to,
     const std::string &from, const std::string &file, const NAPI::NetAddress &adr)
     : id_(id), type_(type), udp_(adr)
-  { strcpy(to_, to.c_str()); strcpy(from_,from.c_str()); }
+  { strcpy(to_, to.c_str()); strcpy(from_,from.c_str()); strcpy(file_,file.c_str()); }
 
   char to_[32];          ///< Username to send to.
   char from_[32];        ///< User sending the file.
