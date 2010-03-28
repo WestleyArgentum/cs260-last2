@@ -72,7 +72,7 @@ class FileSend : public RoutineObject, public IFileTransfer
   public:
     FileSend( const std::string &to, const std::string &file );
 
-    virtual void StartTransfer(const NAPI::NetAddress &remote) {}
+    virtual void StartTransfer(const NAPI::NetAddress &remote);
 
     virtual bool IsDone( void );
     virtual bool IsFail( void );
@@ -80,6 +80,7 @@ class FileSend : public RoutineObject, public IFileTransfer
 
   private:
     Mutex mutex_;
+    NAPI::NetAddress remote_;
 
     std::string to_;
     std::string file_;

@@ -125,6 +125,14 @@ FileSend::FileSend( const std::string &to, const std::string &file )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void FileSend::StartTransfer(const NAPI::NetAddress &remote)
+{
+  remote_ = remote;
+  thread_.Resume();
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 bool FileSend::IsDone( void )
 {
   Lock lock( mutex_ );
@@ -152,6 +160,11 @@ void FileSend::InitializeThread( void )
     CommandCenter->PostMsg("Couldn't open file: " + file_, CID_ErrorBox);
     return;
   }
+
+  ProgressBar progress(file_);
+
+  for (unsigned i = 100; --i;)
+    progress.Step(), Sleep(100);
 
   // request file transfer from user.
 
