@@ -214,24 +214,44 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="FileTransfer"
+			Name="File"
 			>
-			<File
-				RelativePath=".\FileJoiner.cpp"
+			<Filter
+				Name="Transfer"
 				>
-			</File>
-			<File
-				RelativePath=".\FileJoiner.hpp"
+				<File
+					RelativePath=".\FileTransfer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileTransfer.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Splitter"
 				>
-			</File>
-			<File
-				RelativePath=".\FileTransfer.cpp"
+				<File
+					RelativePath=".\FileSplitter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileSplitter.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Joiner"
 				>
-			</File>
-			<File
-				RelativePath=".\FileTransfer.hpp"
-				>
-			</File>
+				<File
+					RelativePath=".\FileJoiner.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FileJoiner.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Main.cpp"
