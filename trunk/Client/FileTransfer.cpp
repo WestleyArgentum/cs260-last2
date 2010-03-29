@@ -2,7 +2,8 @@
 
 #include "WindowsLibrary/CommandCenter.hpp"
 #include "WindowsLibrary/FileDialogs.hpp"
-#include "WindowsLIbrary/ProgressBar.hpp"
+#include "WindowsLibrary/ProgressBar.hpp"
+#include "WindowsLibrary/Timer.hpp"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,9 @@ void FileAccept::InitializeThread( void )
 /**************************************************************************************************/
 void FileAccept::Run( void )
 {
+   // overloaded operator for the address comparisons
+  using NAPI::operator ==;
+
   if ( result_ == IDNO )
   {
       // File transfer rejected.
@@ -84,6 +88,44 @@ void FileAccept::Run( void )
   // Connect to the client wanting to send us a file.
   // Download file.
   // Close connection.
+
+  //while (!IsDone() && !IsFail())
+  //{
+  //  // wait for a packet to arrive. timeout after a certain time limit.
+  //  for (Timer t; t.TimeElapsed() < TIMEOUT_FILE_TRANSFER;)
+  //  {
+  //    NAPI::NetAddress address;
+  //    int ret = socket->RecvFrom(address);
+  //    if (ret == 0)
+  //      continue; // got nothing....
+  //    else if (ret != SOCKET_ERROR)
+  //    {
+  //      // got something, is it from the correct address?
+  //      if (address == remote_)
+  //      {
+  //        // correct address, hand it to the filejoiner.
+  //        // joiner should determine whether it had the packet already.
+  //        // send back a response that we got the packet.
+  //      }
+  //      else
+  //      {
+  //        // throw it away
+  //      }
+  //    }
+  //  }
+  //}
+
+
+  // get packet type
+  // if (type == DATA_PACKET)
+  // check to see if we've recieved this chunk before
+  // if not, store it and send a response
+  // if yes, send a response saying we don't need it anymore
+  // if timeout, set fail, attempt to send notification to other user.
+  // check if we have a good contiguous size of memory to write to a file
+  // once written, delete the data from memory, but keep the id so we can check
+  //       if it gets sent again for some reason
+
 }
 
 /**************************************************************************************************/

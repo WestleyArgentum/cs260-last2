@@ -217,6 +217,14 @@
 			Name="FileTransfer"
 			>
 			<File
+				RelativePath=".\FileJoiner.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FileJoiner.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FileTransfer.cpp"
 				>
 			</File>
