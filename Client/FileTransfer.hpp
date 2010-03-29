@@ -3,9 +3,9 @@
 #include "NetworkingLibrary/ChatProtocol.hpp"
 #include "WindowsLibrary/Threading.hpp"
 
-#include <string>
+//#include <string>
 
-//typedef unsigned TransferID;
+const double TIMEOUT_FILE_TRANSFER = 60.0; ///< 1 minute timeout period
 
 class IFileTransfer
 {
@@ -16,9 +16,11 @@ protected:
 public:
   IFileTransfer() { socket = NAPI::NetAPI->NewUDPSocket("UDP"); }
   virtual ~IFileTransfer() { NAPI::NetAPI->CloseSocket(socket); }
+
   virtual bool IsDone( void ) = 0;
   virtual bool IsFail( void ) = 0;
   virtual void Quit( void )  = 0;
+
   virtual void StartTransfer(const NAPI::NetAddress &remote) = 0;
   NAPI::NetAddress GetSocketInfo() { return socket->GetAdr(); }
 };    // IFileTransfer

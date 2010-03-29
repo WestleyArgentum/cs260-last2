@@ -3,14 +3,15 @@
 namespace NAPI
 {
 
-
-// LAME!!!!
+/**************************************************************************************************/
+/**************************************************************************************************/
 bool operator==(const NetAddress &lhs, const NetAddress &rhs){
   return lhs.sin_family == rhs.sin_family && lhs.sin_port == rhs.sin_port &&
           lhs.sin_addr.s_addr == rhs.sin_addr.s_addr;
 }
 
-// LAME!!!!
+/**************************************************************************************************/
+/**************************************************************************************************/
 bool operator!=(const NetAddress &lhs, const NetAddress &rhs){
   return lhs.sin_family != rhs.sin_family && lhs.sin_port != rhs.sin_port &&
           lhs.sin_addr.s_addr != rhs.sin_addr.s_addr;
