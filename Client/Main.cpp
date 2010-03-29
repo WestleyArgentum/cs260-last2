@@ -7,6 +7,8 @@
 #include "ConfigReader.hpp"
 #include "ClientProcesses.hpp"
 
+#include "FileSplitter.hpp"
+
 enum ButtonIDs
 {
    BID_Send = 100   ///< Button id for sending a message to the server.
@@ -183,7 +185,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  //ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
+  ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
 
   Client client(configuration.username_);
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -201,6 +203,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   {
     //bar.Step();
     //Sleep(100);
+    Sleep(120);
   }
 
   return WinSys->ReturnCode();
