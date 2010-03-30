@@ -99,8 +99,9 @@ void FileAccept::Run( void )
   CommandCenter->PostMsg("", CID_SendFileTransferInfo, &info);
 
   ProgressBar progress(file_);
-  unsigned chunks = (unsigned)size_ / MAX_CHUNK_SIZE;
-  unsigned recvchunks = 0, percent = 0;
+  float chunks = float(size_) / MAX_CHUNK_SIZE;
+  float recvchunks = 0;
+  unsigned percent = 0;
 
   // start recieving file!
   FileJoiner joiner(file_, size_);
@@ -138,9 +139,9 @@ void FileAccept::Run( void )
           //DebugPrint("RECV: Got a packet from correct address.\nSEQ= %i\nACK= %i\nSize= %i",seq,ack,socket->GetMsg().DataSize());
           if (joiner.SaveChunk(seq, socket->GetMsg().Data(), socket->GetMsg().DataSize()))
           {
-            if ((float(++recvchunks)/chunks * 100.f) > percent)
+            if ((++recvchunks/chunks * 100.f) > percent)
             {
-              percent = recvchunks/chunks;
+              percent = unsigned(recvchunks/chunks * 100.f);
               progress.Step(); // TODO: FIX THIS!!!!
             }
           }
@@ -277,8 +278,9 @@ void FileSend::Run( void )
     fail_ = true;
 
   ProgressBar progress(file_);
-  unsigned chunks = (unsigned)splitter.GetFileSize() / MAX_CHUNK_SIZE;
-  unsigned sentchunks = 0, percent = 0;
+  float chunks = float(splitter.GetFileSize()) / MAX_CHUNK_SIZE;
+  float sentchunks = 0;
+  unsigned percent = 0;
 
   //DebugPrint("SEND: Beginning file transfer.\nSize= %i",splitter.GetFileSize());
 
@@ -323,9 +325,9 @@ void FileSend::Run( void )
             }
             seq = socket->GetMsg().GetACK();
             ack = socket->GetMsg().GetSEQ() + 1;
-            if ((float(++sentchunks)/chunks * 100.f) > percent)
+            if ((++sentchunks/chunks * 100.f) > percent)
             {
-              percent = sentchunks/chunks;
+              percent = unsigned(sentchunks/chunks * 100.f);
               progress.Step();
             }
             break; // no timeout
