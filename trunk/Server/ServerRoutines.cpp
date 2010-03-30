@@ -217,11 +217,10 @@ void HostRoutine::UpdateUserList(const std::string &name)
   Lock lock(mutex);
   ClientRoutine *client = activeUsers[name];
   ActiveUserMap::iterator begin = activeUsers.begin(), end = activeUsers.end();
-  while (begin != end)
-    if (begin->first != name)
-      client->AddCommand(Command(CID_NewUser, begin++->first));
-    else
-      ++begin;
+  while (begin != end) {
+    client->AddCommand(Command(CID_NewUser, begin++->first));
+    Sleep(100);
+  }
 }
 
 /**************************************************************************************************/
