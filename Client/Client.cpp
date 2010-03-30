@@ -143,12 +143,16 @@ void Client::MonitorFileTransfers( void )
   {
     if (begin->second->IsDone())
     {
+      Lock lock(mutex);
+
       begin->second->Finish();
       delete begin->second;
       transfers.erase(begin++);
     }
     else if (begin->second->IsFail())
     {
+      Lock lock(mutex);
+
       begin->second->Cancel();
       delete begin->second;
       transfers.erase(begin++);
@@ -239,7 +243,6 @@ void Client::Run( void )
     } // else if (ret!= SOCKET_ERROR)
 
      // Check if any tranfers are done or failed...
-    Lock lock(mutex);
     MonitorFileTransfers();
   }
 }
