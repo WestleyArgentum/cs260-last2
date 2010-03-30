@@ -19,7 +19,7 @@
 
 #include "WindowsLibrary/Header.hpp"
 
-#include "ConfigReader.hpp"
+#include "NetworkingLibrary/ConfigReader.hpp"
 #include "ClientProcesses.hpp"
 
 #include "FileSplitter.hpp"

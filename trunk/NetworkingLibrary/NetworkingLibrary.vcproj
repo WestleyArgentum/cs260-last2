@@ -166,6 +166,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="ConfigReader"
+			>
+			<File
+				RelativePath=".\ConfigReader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ConfigReader.hpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
