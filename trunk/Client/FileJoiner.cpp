@@ -112,8 +112,8 @@ bool FileJoiner::SaveChunk( unsigned id, const void *data, unsigned size )
       filemap_[begin_].written_ = true;
       ++begin_;
     }
-    if (complete_)
-      fclose(fileptr_); //fout.close();
+    //if (complete_)
+    //  fclose(fileptr_); //fout.close();
   }
 
   return true;
@@ -132,4 +132,6 @@ bool FileJoiner::IsComplete( void ) const
 void FileJoiner::Cancel( void )
 {
   // TODO: Clear all data. Close & delete file.
+  if ( fileptr_ )
+    fclose( fileptr_ );
 }
