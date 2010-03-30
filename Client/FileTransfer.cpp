@@ -131,7 +131,7 @@ void FileAccept::Run( void )
           //DebugPrint("RECV: Got a packet from correct address.\nSEQ= %i\nACK= %i\nSize= %i",seq,ack,socket->GetMsg().DataSize());
           if (joiner.SaveChunk(seq, socket->GetMsg().Data(), socket->GetMsg().DataSize()))
           {
-            if ((++recvchunks/chunks) > percent)
+            if (((++recvchunks * 100 )/chunks) > percent)
             {
               percent = recvchunks/chunks;
               progress.Step(); // TODO: FIX THIS!!!!
@@ -311,7 +311,7 @@ void FileSend::Run( void )
             }
             seq = socket->GetMsg().GetACK();
             ack = socket->GetMsg().GetSEQ() + 1;
-            if ((++sentchunks/chunks) > percent)
+            if ((( ++sentchunks * 100 )/chunks) > percent)
             {
               percent = sentchunks/chunks;
               progress.Step(); // TODO: FIX THIS!!!!
@@ -335,6 +335,7 @@ void FileSend::Run( void )
       if (timeout.TimeElapsed() > TIMEOUT_FILE_TRANSFER)
       {
         //DebugPrint("SEND: Connection timed out! Time= %f\nSEQ= %i", timeout.TimeElapsed(), seq);
+        CommandCenter->PostMsg("Connection timed out.", CID_ErrorBox);
         Cancel(); // connection timed out.
         break;
       }
