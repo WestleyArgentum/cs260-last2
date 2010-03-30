@@ -374,6 +374,9 @@ void FileSend::Run( void )
     }
   }
 
+  if (IsFail())
+    CommandCenter->PostMsg("Transfer failed: " + file_, CID_ErrorBox);
+
   //DebugPrint("SEND: Exiting run...");
 
 }
