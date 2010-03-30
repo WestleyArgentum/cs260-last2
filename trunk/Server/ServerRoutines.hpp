@@ -74,7 +74,7 @@ public:
   void ProcessFileTransferRequest( const void *info_ );
   void UpdateUserList(const std::string &name);
   void Host() { thread_.Resume(); }
-  void Quit() { Kill(); }
+  void Quit() { thread_.Terminate(); }
 
 protected:
   virtual void InitializeThread( void );
