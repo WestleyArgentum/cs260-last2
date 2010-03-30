@@ -38,7 +38,6 @@ enum CommandID
   ,CID_Display
   ,CID_NewUser
   ,CID_RemoveUser
-  //,CID_SendFile
   ,CID_StartTransfer
   ,CID_SendFileTransferInfo
   ,CID_AcceptFile
