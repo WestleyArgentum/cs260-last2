@@ -12,8 +12,11 @@ Client::~Client()
 {
   EndSession();
   FileTransferList::iterator begin = transfers.begin(), end = transfers.end();
+
   while (begin != end)
-    delete begin->second;
+  {
+    delete (begin++)->second;
+  }
 
   NAPI::NetAPI->Cleanup();
 }
