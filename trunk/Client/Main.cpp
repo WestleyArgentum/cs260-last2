@@ -141,7 +141,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
           DragQueryFile( (HDROP)wParam, 0, buffer, sizeof(buffer) - 1 );
           DragFinish( (HDROP)wParam );
 
-          CommandCenter->PostMsg( buffer + std::string( "\r\n" ), CID_Display );
+          //CommandCenter->PostMsg( buffer + std::string( "\r\n" ), CID_Display );
         }
       }
       break;

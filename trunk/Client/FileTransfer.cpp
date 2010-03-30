@@ -228,6 +228,8 @@ FileSend::FileSend( const std::string &to, const std::string &from, unsigned id 
 {
   type = TRANSFER_SEND;
   OpenFileDialog dialog( NULL );
+  dialog.SetRelativeDir( "..\\Data\\dropfolder" );
+
   if (dialog.OpenFile())
   {
     path_ = dialog.GetFileName(); // save the file path for opening
