@@ -21,7 +21,8 @@ FileSplitter::~FileSplitter( void ) throw()
   Erase( 0, chunks_.size() );
 
     // Close our file.
-  fclose( pFile_ );
+  if ( pFile_ )
+    fclose( pFile_ );
 }
 
 /**************************************************************************************************/
