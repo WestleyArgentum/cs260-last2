@@ -83,7 +83,7 @@ void ClientRoutine::InitializeThread( void )
 		  socket->ToggleBlocking(false);
       std::string msg( "Wrong packet sent." );
       socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
-        host->SetUserInactive(this);
+      host->SetUserInactive(this);
       break;
     }
   }

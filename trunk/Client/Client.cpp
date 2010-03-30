@@ -7,6 +7,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Client Public Methods
 
+
+Client::~Client()
+{
+  EndSession();
+  FileTransferList::iterator begin = transfers.begin(), end = transfers.end();
+  while (begin != end)
+    delete begin->second;
+
+  NAPI::NetAPI->Cleanup();
+}
+
 /**************************************************************************************************/
 /**************************************************************************************************/
 void Client::BeginSession(const std::string &ip, unsigned port)
