@@ -367,7 +367,7 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 {
-	static unsigned port = 8009;
+	static unsigned port = 8001;
   std::string nid = id;
   for (int i = 0; udp_sockets.count(nid); ++i)
 	nid = id + char(i + '0');
