@@ -20,8 +20,7 @@ int main(int argc, char *argv[])
   // create hosting server
   // if creation fails, let the user know and quit.
   std::cout << "ChatServer2.0\nHosting from: " << NetAPI->LocalIP() << " Port: " << port << std::endl;
-  std::cout << "You can enter commands to control the server here.\nCommands:\n"
-               "server:quit .......... Quits the server, disconnecting all users.\n";
+  std::cout << "Close this window to exit.\n";
 
   // while the server hasn't posted a quit message update all ports.
   std::string cmd;
