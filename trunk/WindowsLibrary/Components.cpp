@@ -88,9 +88,9 @@ void Textbox::SetText( const std::string &str )
 /**************************************************************************************************/
 std::string Textbox::GetText( void )
 {
-  char *buffer = new char[limit_];
+  char *buffer = new char[limit_ + 1];
   std::string str;
-  int characters = (int)SendMessage( handle_, WM_GETTEXT, limit_, (LPARAM)buffer );
+  int characters = (int)SendMessage( handle_, WM_GETTEXT, limit_ + 1, (LPARAM)buffer );
 
   str.assign( buffer, characters );
   delete buffer;
