@@ -34,6 +34,7 @@ class FileAccept : public RoutineObject, public IFileTransfer
 {
   public:
     FileAccept(const FileTransferInfo &ftInfo );
+    FileAccept( void ) { Cancel(); }
 
     virtual bool IsDone( void );
     virtual bool IsFail( void );
@@ -65,6 +66,7 @@ class FileSend : public RoutineObject, public IFileTransfer
 {
   public:
     FileSend( const std::string &to, const std::string &from, unsigned id );
+    ~FileSend( void );
 
     virtual void StartTransfer(const NAPI::NetAddress &remote);
 
