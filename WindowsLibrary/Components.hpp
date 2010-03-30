@@ -61,6 +61,7 @@ class Listbox : public IWindowComponent
     Listbox( const std::string &name, const ComponentInfo &info );
     virtual HWND Create( HWND parent, HINSTANCE hInstance );
 
+    bool Exists( const std::string &str );
     void AddString( const std::string &str );
     void RemoveString( const std::string &str );
 
