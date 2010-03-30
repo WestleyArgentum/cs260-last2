@@ -11,7 +11,7 @@ void FileJoiner::FileChunk::SetData( const void *data, unsigned size )
   if (size)
   {
     if (!data_)
-      data = new char[size];
+      data_ = new char[size];
 
     memcpy(data_, data, size);
     size_ = size;
@@ -39,14 +39,14 @@ void FileJoiner::FileChunk::ClearData()
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileJoiner::FileJoiner( const std::string &file, unsigned size )
-: file_(file), filesize_(size), datasize_(0), begin_(0), end_(0) 
+FileJoiner::FileJoiner( const std::string &file, __int64 size )
+: file_(file), fileptr_(0), filesize_(size), datasize_(0), begin_(0), end_(0), complete_(false)
 {
    // Check if size can't be broken perfectly into correct chunk sizes.
   if (size % MAX_CHUNK_SIZE)
-    nchunks_ = size/MAX_CHUNK_SIZE + 1;
+    nchunks_ = (unsigned)size/MAX_CHUNK_SIZE + 1;
   else
-    nchunks_ = size/MAX_CHUNK_SIZE;
+    nchunks_ = (unsigned)size/MAX_CHUNK_SIZE;
 
    // Make the allocation all at once now. sizeof(FileChunk) = 8,  so even with a
    // 2 GB file max size of this array could be 2 MB if the chunks are 1KB each.
@@ -57,8 +57,11 @@ FileJoiner::FileJoiner( const std::string &file, unsigned size )
 /**************************************************************************************************/
 FileJoiner::~FileJoiner( void )
 {
+  if (fileptr_)
+    fclose(fileptr_);
+
   if (!complete_)
-    ; // TODO: delete the file if it was opened and not finished!!
+    ;//std::remove(file_); // TODO: delete the file if it was opened and not finished!!
 }
 
 /**************************************************************************************************/
@@ -66,8 +69,8 @@ FileJoiner::~FileJoiner( void )
 bool FileJoiner::OpenFile( void )
 {
    // Attempt to open the file as a binary write file.
-  fout.open(file_.c_str(), std::ios_base::out, std::ios_base::binary);
-  return fout.is_open() && fout.good();
+  fileptr_ = fopen(file_.c_str(), "wb");
+  return fileptr_ != 0; //fout.is_open() && fout.good();
 }
 
 /**************************************************************************************************/
@@ -95,7 +98,7 @@ bool FileJoiner::SaveChunk( unsigned id, const void *data, unsigned size )
     ++end_;
 
    // Check if all data has arrived.
-  if (datasize_ == filesize_ || end_ == nchunks_)
+  if (datasize_ == filesize_)
     complete_ = true;
 
   // check if the contiguous size is large enough to write.
@@ -104,13 +107,13 @@ bool FileJoiner::SaveChunk( unsigned id, const void *data, unsigned size )
     // write the contiguous chunks to the file and pull them out of memory
     while (begin_ != end_)
     {
-      fout.write(filemap_[begin_].data_, filemap_[begin_].size_);
+      fwrite(filemap_[begin_].data_, 1, filemap_[begin_].size_, fileptr_);
       filemap_[begin_].ClearData();
       filemap_[begin_].written_ = true;
       ++begin_;
     }
     if (complete_)
-      fout.close();
+      fclose(fileptr_); //fout.close();
   }
 
   return true;

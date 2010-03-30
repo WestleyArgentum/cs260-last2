@@ -91,15 +91,8 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
               if ( selected )
               {
-                OpenFileDialog dialog( NULL );
-
-                if ( dialog.OpenFile() )
-                {
-                   // TODO: Get just the file name, not entire path.
-                  CommandCenter->PostMsg( dialog.GetFileName() + std::string( "\r\n" ),
-                    CID_Display );
-                  CommandCenter->PostMsg( dialog.GetFileName(), CID_StartTransfer, selected);
-                }
+                 // Start the file transfer object, have it open a file dialog.
+                CommandCenter->PostMsg( selected, CID_StartTransfer );
               }
               else
               {
@@ -185,7 +178,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
     // Load in the server port/ip and client's name.
   Config configuration( "..\\Data\\Config.txt" );
 
-  ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
+  //ProgressBar bar( "ThisIsAnAmazingTextFile.txt transfering..." );
 
   Client client(configuration.username_);
   CommandCenter->RegisterProcess( new DisplayProcess( &displaybox ),     CID_Display );
@@ -193,7 +186,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   CommandCenter->RegisterProcess( new RemoveUserProcess( &userlistbox ), CID_RemoveUser );
   CommandCenter->RegisterProcess( new SendMessageProcess( &client ),      CID_SendMessage );
   CommandCenter->RegisterProcess( new StartFileTransferProcess( &client ), CID_StartTransfer );
-  CommandCenter->RegisterProcess( new SendFileTransferInfoProcess( &client ), CID_TransferResponse );
+  CommandCenter->RegisterProcess( new SendFileTransferInfoProcess( &client ), CID_SendFileTransferInfo );
   CommandCenter->RegisterProcess( new ErrorBoxProcess(), CID_ErrorBox );
 
   client.BeginSession(configuration.ip_, configuration.port_);
@@ -203,7 +196,7 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int nCmdShow )
   {
     //bar.Step();
     //Sleep(100);
-    Sleep(120);
+    //Sleep(120);
   }
 
   return WinSys->ReturnCode();

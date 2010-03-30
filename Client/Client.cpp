@@ -5,7 +5,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// Client Methods
+// Client Public Methods
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -15,6 +15,44 @@ void Client::BeginSession(const std::string &ip, unsigned port)
   port_ = port;
   thread_.Resume();
 }
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::SendMsg(const std::string &msg)
+{
+  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::SendFileRequest(const std::string &user)
+{
+   // create a new file sending object, it waits for the signal to begin.
+  FileSend *trans = new FileSend(user,name_,idbase);
+   // add the database of transfers, referenced by id.
+  transfers[idbase++] = trans;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::SendFileTransferInfo( const void *info_ )
+{
+  socket->Send(NAPI::PT_DIRECTED, info_, sizeof(FileTransferInfo));
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void Client::EndSession()
+{
+  if (thread_.IsRunning())
+	  Kill();
+  else
+	  thread_.Terminate();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Client Private Methods
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -31,10 +69,15 @@ void Client::HandleFileTransfer( const void *info_ )
     break;
   case MT_ACCEPT_FILE:
     {
-      if (transfers.count(info->id_))
-        transfers[info->id_]->StartTransfer(info->udp_);
+      if (transfers.count(info->id_) && transfers[info->id_]->Type() == TRANSFER_SEND)
+      {
+         // Cast to the correct type and start the transfer.
+        static_cast<FileSend*>(transfers[info->id_])->StartTransfer(info->udp_);
+      }
       else {
-        FileTransferInfo response(info->id_, MT_INVALID_MSG, info->from_, info->to_, info->file_, info->udp_);
+        FileTransferInfo response(info->id_, MT_INVALID_MSG, info->from_, info->to_,
+                                  info->file_, info->filesize_, info->udp_);
+
         socket->Send(NAPI::PT_DIRECTED, &response, sizeof(response));
       }
     }
@@ -42,7 +85,7 @@ void Client::HandleFileTransfer( const void *info_ )
   case MT_REJECT_FILE:
     {
       if (transfers.count(info->id_))
-        transfers[info->id_]->Quit();
+        transfers[info->id_]->Cancel();
     }
     break;
   }
@@ -50,40 +93,25 @@ void Client::HandleFileTransfer( const void *info_ )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-void Client::SendMsg(const std::string &msg)
+void Client::MonitorFileTransfers( void )
 {
-  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+   // Checks if any file transfers have finished or failed.
+  FileTransferList::iterator begin = transfers.begin(), end = transfers.end();
+  while (begin != end) 
+  {
+    if (begin->second->IsDone() || begin->second->IsFail())
+    {
+      delete begin->second;
+      transfers.erase(begin++);
+    }
+    else
+      ++begin;
+  }
 }
 
-/**************************************************************************************************/
-/**************************************************************************************************/
-void Client::SendFileRequest(const std::string &user, const std::string &file)
-{
-   // create a new file sending object, it waits for the signal to begin.
-  FileSend *trans = new FileSend(user,file);
-   // add the database of transfers, referenced by id.
-  transfers[idbase] = trans;
-   // create a struct holding the correct data relating to the file transfer and send it out
-  FileTransferInfo info(idbase++, MT_SEND_FILE, user, name_, file, trans->GetSocketInfo());
-  socket->Send(NAPI::PT_DIRECTED, &info, sizeof(info));
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-void Client::SendFileTransfer( const void *info_ )
-{
-  socket->Send(NAPI::PT_DIRECTED, info_, sizeof(FileTransferInfo));
-}
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-void Client::EndSession()
-{
-  if (thread_.IsRunning())
-	  Kill();
-  else
-	  thread_.Terminate();
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Client Protected Methods
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -158,8 +186,11 @@ void Client::Run( void )
       case NAPI::PT_DIRECTED:
         HandleFileTransfer(socket->GetMsg().Data());
         break;
-      }
-    }
+      } // switch
+    } // else if (ret!= SOCKET_ERROR)
+
+     // Check if any tranfers are done or failed...
+    MonitorFileTransfers();
   }
 }
 
