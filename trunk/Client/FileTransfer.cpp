@@ -4,6 +4,7 @@
 #include "WindowsLibrary/FileDialogs.hpp"
 #include "WindowsLibrary/ProgressBar.hpp"
 #include "WindowsLibrary/Timer.hpp"
+#include "WindowsLibrary/DebugDiagnostic.hpp"
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,9 +13,10 @@
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileAccept::FileAccept( const FileTransferInfo &ftInfo ) : remote_(ftInfo.udp_), id(ftInfo.id_),
-from_(ftInfo.from_), file_(ftInfo.file_), result_(0), done_(false), fail_(false)
+FileAccept::FileAccept( const FileTransferInfo &info ) : remote_(info.udp_), id(info.id_),
+from_(info.from_), file_(info.file_), size_(info.filesize_), result_(0), done_(false), fail_(false)
 {
+  type = TRANSFER_ACCEPT;
   thread_.Resume();
 }
 
@@ -34,6 +36,15 @@ bool FileAccept::IsFail( void )
   Lock lock( mutex_ );
 
   return fail_;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void FileAccept::Cancel( void )
+{
+  Lock lock( mutex_ );
+
+  fail_ = true;
 }
 
 /**************************************************************************************************/
@@ -58,7 +69,8 @@ void FileAccept::Run( void )
   if ( result_ == IDNO )
   {
       // File transfer rejected.
-    CommandCenter->PostMsg("", CID_SendFile, &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",GetSocketInfo()));
+    CommandCenter->PostMsg("", CID_SendFileTransferInfo,
+      &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",0,GetSocketInfo()));
     return;
   }
 
@@ -68,64 +80,84 @@ void FileAccept::Run( void )
   if ( !saveas.SaveFile( file_ ) )
   {
       // User canceled to save the file at a particular location. File transfer rejected.
-    CommandCenter->PostMsg("", CID_SendFile, &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",GetSocketInfo()));
+    CommandCenter->PostMsg("", CID_SendFileTransferInfo,
+      &FileTransferInfo(id, MT_REJECT_FILE, from_,"","",0,GetSocketInfo()));
     return;
   }
 
    // save the new file name if they changed it.
   file_ = saveas.GetFileName();
    // put from as the sender, that way the server knows where to route it.
-  FileTransferInfo info(id, MT_ACCEPT_FILE, from_, "", file_, GetSocketInfo());
-  CommandCenter->PostMsg("", CID_TransferResponse, &info);
+  FileTransferInfo info(id, MT_ACCEPT_FILE, from_, "", file_, 0, GetSocketInfo());
+  CommandCenter->PostMsg("", CID_SendFileTransferInfo, &info);
 
   ProgressBar progress(file_);
-
-  for (unsigned i = 100; --i;)
-    progress.Step(), Sleep(100);
+  unsigned chunks = (unsigned)size_ / MAX_CHUNK_SIZE;
+  unsigned recvchunks = 0, percent = 0;
 
   // start recieving file!
-
-  // Connect to the client wanting to send us a file.
-  // Download file.
-  // Close connection.
-
-  //while (!IsDone() && !IsFail())
-  //{
-  //  // wait for a packet to arrive. timeout after a certain time limit.
-  //  for (Timer t; t.TimeElapsed() < TIMEOUT_FILE_TRANSFER;)
-  //  {
-  //    NAPI::NetAddress address;
-  //    int ret = socket->RecvFrom(address);
-  //    if (ret == 0)
-  //      continue; // got nothing....
-  //    else if (ret != SOCKET_ERROR)
-  //    {
-  //      // got something, is it from the correct address?
-  //      if (address == remote_)
-  //      {
-  //        // correct address, hand it to the filejoiner.
-  //        // joiner should determine whether it had the packet already.
-  //        // send back a response that we got the packet.
-  //      }
-  //      else
-  //      {
-  //        // throw it away
-  //      }
-  //    }
-  //  }
-  //}
+  FileJoiner joiner(file_, size_);
+  if (!joiner.OpenFile())
+  {
+    // failed somehow.
+    Cancel();
+    // TODO: send a message informing of canceling...
+    return;
+  }
 
 
-  // get packet type
-  // if (type == DATA_PACKET)
-  // check to see if we've recieved this chunk before
-  // if not, store it and send a response
-  // if yes, send a response saying we don't need it anymore
-  // if timeout, set fail, attempt to send notification to other user.
-  // check if we have a good contiguous size of memory to write to a file
-  // once written, delete the data from memory, but keep the id so we can check
-  //       if it gets sent again for some reason
+  //DebugPrint("RECV: Connection esablished waiting for packets... filesize: %i",size_);
 
+
+  while (!IsDone() && !IsFail())
+  {
+    // wait for a packet to arrive. timeout after a certain time limit.
+    for (Timer t; t.TimeElapsed() < TIMEOUT_FILE_TRANSFER;)
+    {
+      NAPI::NetAddress address;
+      int ret = socket->RecvFrom(address);
+      if (ret == 0)
+      {
+        //DebugPrint("RECV: Recieved no data but not SOCKET_ERROR");
+        continue; // got nothing....
+      }
+      else if (ret != SOCKET_ERROR)
+      {
+        // got something, is it from the correct address?
+        if (address == remote_)
+        {
+          // correct address, hand it to the filejoiner.
+          unsigned seq = socket->GetMsg().GetSEQ(), ack = socket->GetMsg().GetACK();
+          //DebugPrint("RECV: Got a packet from correct address.\nSEQ= %i\nACK= %i\nSize= %i",seq,ack,socket->GetMsg().DataSize());
+          if (joiner.SaveChunk(seq, socket->GetMsg().Data(), socket->GetMsg().DataSize()))
+          {
+            if ((++recvchunks/chunks) > percent)
+            {
+              percent = recvchunks/chunks;
+              progress.Step(); // TODO: FIX THIS!!!!
+            }
+          }
+           // Send a packet back saying we got the packet
+          socket->SendTo(remote_, NAPI::PT_DATA_PACKET, 0, 0, ack, seq + 1);
+
+          if (joiner.IsComplete())
+          {
+            //DebugPrint("RECV: File joining complete.\nSize recieved: %i\nChunks recieved: %i",joiner.datasize_,joiner.end_);
+            done_ = true;
+          }
+
+          break;
+        }
+        else
+        {
+          //DebugPrint("RECV: Got a packet from some other random address...");
+          // throw it away
+        }
+      }
+    }
+  }
+
+  //DebugPrint("RECV: Exiting run...");
 }
 
 /**************************************************************************************************/
@@ -142,6 +174,7 @@ void FileAccept::ExitThread( void ) throw()
 /**************************************************************************************************/
 void FileAccept::FlushThread( void )
 {
+  Cancel();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,10 +183,30 @@ void FileAccept::FlushThread( void )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileSend::FileSend( const std::string &to, const std::string &file )
-: to_(to), file_(file), done_(false), fail_(false)
+FileSend::FileSend( const std::string &to, const std::string &from, unsigned id )
+: to_(to), done_(false), fail_(false)
 {
-  //thread_.Resume();
+  type = TRANSFER_SEND;
+  OpenFileDialog dialog( NULL );
+  if (dialog.OpenFile())
+  {
+    path_ = dialog.GetFileName(); // save the file path for opening
+    file_ = path_.substr(path_.find_last_of("/\\") + 1); // save the filename for other user
+
+     // If the file can't be opened, fail and return immediately.
+    if (!splitter.Open( path_, MAX_CHUNK_SIZE ))
+    {
+      Cancel();
+      return;
+    }
+
+    FileTransferInfo info(id, MT_SEND_FILE, to, from, file_, splitter.GetFileSize(), GetSocketInfo());
+    CommandCenter->PostMsg("", CID_SendFileTransferInfo, &info);
+
+    // Wait for the response before starting the thread.
+  }
+  else
+    Cancel();
 }
 
 /**************************************************************************************************/
@@ -185,9 +238,19 @@ bool FileSend::IsFail( void )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void FileSend::Cancel( void )
+{
+  Lock lock( mutex_ );
+
+  fail_ = true;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void FileSend::InitializeThread( void )
 {
-  // read file into memory and break into chunks.
+  // read in up to 1000 chunks into memory, file into memory and break into chunks.
+  //for (unsigned count = 1000; count && splitter.Read(); --count);
   // start sending data over UDP
 }
 
@@ -195,11 +258,91 @@ void FileSend::InitializeThread( void )
 /**************************************************************************************************/
 void FileSend::Run( void )
 {
+  using NAPI::operator ==;
+  unsigned seq = 0, ack = 0;
+  if (!splitter.Read())
+    fail_ = true;
 
   ProgressBar progress(file_);
+  unsigned chunks = (unsigned)splitter.GetFileSize() / MAX_CHUNK_SIZE;
+  unsigned sentchunks = 0, percent = 0;
 
-  for (unsigned i = 100; --i;)
-    progress.Step(), Sleep(100);
+  //DebugPrint("SEND: Beginning file transfer.\nSize= %i",splitter.GetFileSize());
+
+   // while the file transfer isn't done or failed
+  while (!IsDone() && !IsFail())
+  {
+    //DebugPrint("SEND: Grabbing chunk: %i", seq);
+    FileSplitter::FileChunk &chunk = splitter.GetChunk(seq);
+    for (Timer timeout;;)
+    {
+       // Send the next packet
+      int ret = socket->SendTo(remote_, NAPI::PT_DATA_PACKET, chunk.data_, chunk.size_, seq, ack);
+      if (ret == SOCKET_ERROR)
+      {
+        // TODO: something went wrong, do something about it...
+        //DebugPrint("SEND: ret == SOCKET_ERROR on SendTo.");
+        fail_ = true;
+      }
+
+      NAPI::NetAddress address;
+      ret = socket->RecvFrom(address);
+      if (ret == 0)
+      {
+        // got nothing...
+        //DebugPrint("SEND: Got no response. Timer= %f",timeout.TimeElapsed());
+      }
+      else if (ret != SOCKET_ERROR && address == remote_)
+      {
+        if (socket->GetMsg().Type() == NAPI::PT_DATA_PACKET)
+        {
+          //DebugPrint("SEND: Got a packet of the correct type.\n SEQ= %i\nACK= %i",socket->GetMsg().GetSEQ(),socket->GetMsg().GetACK());
+          // erase old data and send next chunk...
+          if (socket->GetMsg().GetACK() == (seq + 1))
+          {
+            splitter.Erase(seq);
+            if (!splitter.Read())
+            {
+              //DebugPrint("SEND: Reached EOF.");
+              // file done sending
+              done_ = true;
+              // let the other side know somehow.
+              break;
+            }
+            seq = socket->GetMsg().GetACK();
+            ack = socket->GetMsg().GetSEQ() + 1;
+            if ((++sentchunks/chunks) > percent)
+            {
+              percent = sentchunks/chunks;
+              progress.Step(); // TODO: FIX THIS!!!!
+            }
+            break; // no timeout
+          }
+        }
+        else
+        {
+          //DebugPrint("SEND: Wrong type of message recieved from correct sender...");
+          // wrong type of packet, send something back maybe...
+        }
+      }
+      else
+      {
+        //DebugPrint("SEND: Message from other random source...");
+        // Wrong sender, throw packet away and continue waiting...
+      }
+
+       // Check if the connection has timed out...
+      if (timeout.TimeElapsed() > TIMEOUT_FILE_TRANSFER)
+      {
+        //DebugPrint("SEND: Connection timed out! Time= %f\nSEQ= %i", timeout.TimeElapsed(), seq);
+        Cancel(); // connection timed out.
+        break;
+      }
+    }
+  }
+
+  //DebugPrint("SEND: Exiting run...");
+
 }
 
 /**************************************************************************************************/
@@ -216,4 +359,5 @@ void FileSend::ExitThread( void ) throw()
 /**************************************************************************************************/
 void FileSend::FlushThread( void )
 {
+  Cancel();
 }

@@ -34,7 +34,7 @@ class FileJoiner
   typedef std::vector<FileChunk> FileMap;
 
 public:
-  FileJoiner( const std::string &file, unsigned size );
+  FileJoiner( const std::string &file, __int64 size );
   ~FileJoiner( void );
 
    // Attempts to open the file with the requested name.
@@ -50,12 +50,12 @@ public:
 private:
   FileMap filemap_;   ///< A virtual map of the file in chunks.
   std::string file_;  ///< Name of the file we're writing to.
-  std::ofstream fout; ///< File writing object.
-  unsigned filesize_; ///< Goal size of file.
-  unsigned datasize_; ///< Current size of data brought in.
+  FILE *fileptr_;     ///< The file to write to.
+  __int64 filesize_;  ///< Goal size of file.
+  __int64 datasize_;  ///< Current size of data brought in.
   unsigned nchunks_;  ///< Number of chunks in the filemap_.
-  unsigned begin_;   ///< Beginning of the contiguous section of chunks.
-  unsigned end_;     ///< End of the contiguous section of chunks.
+  unsigned begin_;    ///< Beginning of the contiguous section of chunks.
+  unsigned end_;      ///< End of the contiguous section of chunks.
   bool complete_;     ///< If the join process is complete.
 };  // FileJoiner
 

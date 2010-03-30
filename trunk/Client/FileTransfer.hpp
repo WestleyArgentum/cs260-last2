@@ -2,16 +2,20 @@
 
 #include "NetworkingLibrary/ChatProtocol.hpp"
 #include "WindowsLibrary/Threading.hpp"
+#include "FileSplitter.hpp"
+#include "FileJoiner.hpp"
 
 //#include <string>
 
 const double TIMEOUT_FILE_TRANSFER = 60.0; ///< 1 minute timeout period
+enum TransferType { TRANSFER_ACCEPT, TRANSFER_SEND };
 
 class IFileTransfer
 {
 protected:
   NAPI::NetAddress remote;
   NAPI::UDPSOCKET socket;
+  TransferType type;
 
 public:
   IFileTransfer() { socket = NAPI::NetAPI->NewUDPSocket("UDP"); }
@@ -19,9 +23,9 @@ public:
 
   virtual bool IsDone( void ) = 0;
   virtual bool IsFail( void ) = 0;
-  virtual void Quit( void )  = 0;
+  virtual void Cancel( void )  = 0;
 
-  virtual void StartTransfer(const NAPI::NetAddress &remote) = 0;
+  virtual TransferType Type( void ) const { return type; }
   NAPI::NetAddress GetSocketInfo() { return socket->GetAdr(); }
 };    // IFileTransfer
 
@@ -30,11 +34,9 @@ class FileAccept : public RoutineObject, public IFileTransfer
   public:
     FileAccept(const FileTransferInfo &ftInfo );
 
-    virtual void StartTransfer(const NAPI::NetAddress &remote) {}
-
     virtual bool IsDone( void );
     virtual bool IsFail( void );
-    virtual void Quit( void ) { fail_ = true; }
+    virtual void Cancel( void );
 
   private:
     Mutex mutex_;
@@ -44,6 +46,7 @@ class FileAccept : public RoutineObject, public IFileTransfer
     std::string from_;
     std::string file_;
 
+    __int64 size_;
     int result_;
     bool done_;
     bool fail_;
@@ -59,19 +62,21 @@ class FileAccept : public RoutineObject, public IFileTransfer
 class FileSend : public RoutineObject, public IFileTransfer
 {
   public:
-    FileSend( const std::string &to, const std::string &file );
+    FileSend( const std::string &to, const std::string &from, unsigned id );
 
     virtual void StartTransfer(const NAPI::NetAddress &remote);
 
     virtual bool IsDone( void );
     virtual bool IsFail( void );
-    virtual void Quit( void ) { fail_ = true; }
+    virtual void Cancel( void );
 
   private:
     Mutex mutex_;
     NAPI::NetAddress remote_;
+    FileSplitter splitter;
 
     std::string to_;
+    std::string path_;
     std::string file_;
 
     bool done_;

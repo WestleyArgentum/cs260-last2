@@ -19,8 +19,11 @@ class FileSplitter
     };    // FileChunk
 
   public:
-    FileSplitter( const std::string &filename, unsigned short chunksize );
+    FileSplitter( void );
     ~FileSplitter( void ) throw();
+
+     // Opens the file, returns true if the file was opened sucessfully.
+    bool Open( const std::string &filename, unsigned chunksize );
 
       // Returns if the file was opened successfully.
     bool IsOpen( void ) { return pFile_ != NULL; }

@@ -9,25 +9,8 @@
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-FileSplitter::FileSplitter( const std::string &filename, unsigned short chunksize )
-  : filename_(filename), pFile_(NULL), chunksize_( chunksize )
+FileSplitter::FileSplitter( void ) :  pFile_(NULL), chunksize_( MAX_CHUNK_SIZE )
 {
-    // Cap the chunk size that we read from the disk to be the maximum chunk size we specified.
-  if ( chunksize_ > MAX_CHUNK_SIZE )
-  {
-    chunksize_ = MAX_CHUNK_SIZE;
-  }
-
-    // Get the statistics on our file that we are going to be splitting.
-  int error = _stat64( filename_.c_str(), &stats_ );
-
-  if ( error )
-  {
-    return;
-  }
-
-    // Open up the file that we are splitting to send over the network!
-  pFile_ = fopen( filename_.c_str(), "rb" );
 }
 
 /**************************************************************************************************/
@@ -39,6 +22,32 @@ FileSplitter::~FileSplitter( void ) throw()
 
     // Close our file.
   fclose( pFile_ );
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+bool FileSplitter::Open( const std::string &filename, unsigned chunksize )
+{
+  filename_ = filename;
+  chunksize_ = chunksize;
+    // Cap the chunk size that we read from the disk to be the maximum chunk size we specified.
+  if ( chunksize_ > MAX_CHUNK_SIZE )
+  {
+    chunksize_ = MAX_CHUNK_SIZE;
+  }
+
+    // Get the statistics on our file that we are going to be splitting.
+  int error = _stat64( filename_.c_str(), &stats_ );
+
+  if ( error )
+  {
+    return false;
+  }
+
+    // Open up the file that we are splitting to send over the network!
+  pFile_ = fopen( filename_.c_str(), "rb" );
+
+  return IsOpen();
 }
 
 /**************************************************************************************************/
