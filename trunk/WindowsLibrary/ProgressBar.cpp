@@ -244,6 +244,7 @@ void ProgressBar::Run( void )
       if ( msg.message == WM_QUIT )
       {
         PostQuitMessage(0);
+        return;
       }
 
       TranslateMessage( &msg );
@@ -263,5 +264,6 @@ void ProgressBar::ExitThread( void ) throw()
 void ProgressBar::FlushThread( void )
 {
   quit_.Release();
+  SendMessage(win_, WM_QUIT, 0, 0);
 }
 
