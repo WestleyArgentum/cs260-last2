@@ -174,6 +174,7 @@ void FileAccept::Run( void )
       {
          // Tell the other side the transfer timed out.
         socket->SendTo(remote_, NAPI::PT_BROKEN_TRANSFER, 0, 0, 0, 0);
+        fail_ = true;
       }
     }
   }
@@ -368,7 +369,7 @@ void FileSend::Run( void )
       {
         //DebugPrint("SEND: Connection timed out! Time= %f\nSEQ= %i", timeout.TimeElapsed(), seq);
         CommandCenter->PostMsg("Connection timed out.", CID_ErrorBox);
-        Cancel(); // connection timed out.
+        fail_ = true;
         break;
       }
     }

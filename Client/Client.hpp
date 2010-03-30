@@ -22,7 +22,7 @@ class Client : public RoutineObject
 public:
   Client( const std::string &name ) : idbase(0), socket(0), name_(name), port_(0), connected(false)
     { NAPI::NetAPI->Init(); }
-  ~Client() { EndSession(); NAPI::NetAPI->Cleanup(); }
+  virtual ~Client();
 
   void BeginSession( const std::string &ip, unsigned port );
   void SendFileRequest( const std::string &user );
