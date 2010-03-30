@@ -36,5 +36,7 @@ class ProgressBar : public RoutineObject
     HWND pbHandle_;
 
     std::string title_;
+
+    Event quit_;
 };    // ProgressBar
 
