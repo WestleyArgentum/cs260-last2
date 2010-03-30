@@ -170,7 +170,7 @@ DWORD WINAPI RoutineObject::Routine( void *arg )
   RoutineObject *object = reinterpret_cast<RoutineObject*>(arg);
 
     // Announce that we are starting a particular thread and the id of that thread.
-  std::cout << "Starting thread: " << object->thread_.id_ << std::endl;
+  //std::cout << "Starting thread: " << object->thread_.id_ << std::endl;
 
   try
   {
@@ -186,7 +186,7 @@ DWORD WINAPI RoutineObject::Routine( void *arg )
     std::cerr << "Unknown error occured." << std::endl;
   }
 
-  std::cout << "Thread exiting: " << object->thread_.id_ << std::endl;
+  //std::cout << "Thread exiting: " << object->thread_.id_ << std::endl;
   object->ExitThread();
 
   return 0;
