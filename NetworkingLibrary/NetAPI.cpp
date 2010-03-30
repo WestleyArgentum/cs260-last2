@@ -367,7 +367,7 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 {
-	
+	static unsigned port = 8009;
   std::string nid = id;
   for (int i = 0; udp_sockets.count(nid); ++i)
 	nid = id + char(i + '0');
@@ -385,7 +385,7 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
   SecureZeroMemory(&usock->address, sizeof(usock->address));
   usock->address.sin_addr.s_addr = inet_addr(LocalIP().c_str());
   usock->address.sin_family = AF_INET;
-  usock->address.sin_port = 0;
+  usock->address.sin_port = port++;
 
   // Make sure bind doesn't fail.
   int ret = bind(usock->socket, (sockaddr*)&usock->address, sizeof(usock->address));
