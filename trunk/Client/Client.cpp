@@ -99,8 +99,15 @@ void Client::MonitorFileTransfers( void )
   FileTransferList::iterator begin = transfers.begin(), end = transfers.end();
   while (begin != end) 
   {
-    if (begin->second->IsDone() || begin->second->IsFail())
+    if (begin->second->IsDone())
     {
+      begin->second->Finish();
+      delete begin->second;
+      transfers.erase(begin++);
+    }
+    else if (begin->second->IsFail())
+    {
+      begin->second->Cancel();
       delete begin->second;
       transfers.erase(begin++);
     }

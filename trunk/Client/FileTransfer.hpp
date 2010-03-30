@@ -23,7 +23,8 @@ public:
 
   virtual bool IsDone( void ) = 0;
   virtual bool IsFail( void ) = 0;
-  virtual void Cancel( void )  = 0;
+  virtual void Cancel( void ) = 0;
+  virtual void Finish( void ) = 0;
 
   virtual TransferType Type( void ) const { return type; }
   NAPI::NetAddress GetSocketInfo() { return socket->GetAdr(); }
@@ -37,6 +38,7 @@ class FileAccept : public RoutineObject, public IFileTransfer
     virtual bool IsDone( void );
     virtual bool IsFail( void );
     virtual void Cancel( void );
+    virtual void Finish( void );
 
   private:
     Mutex mutex_;
@@ -69,6 +71,7 @@ class FileSend : public RoutineObject, public IFileTransfer
     virtual bool IsDone( void );
     virtual bool IsFail( void );
     virtual void Cancel( void );
+    virtual void Finish( void );
 
   private:
     Mutex mutex_;
