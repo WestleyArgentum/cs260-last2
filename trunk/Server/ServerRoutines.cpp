@@ -64,7 +64,6 @@ void ClientRoutine::InitializeThread( void )
       {
          // inform the users of this new user
         CommandCenter->PostMsg(name, CID_NewUser);
-        host->UpdateUserList(name);
 		    socket->ToggleBlocking(false);
         running = true;
 		    break;
@@ -93,6 +92,7 @@ void ClientRoutine::InitializeThread( void )
 /**************************************************************************************************/
 void ClientRoutine::Run( void )
 {
+  host->UpdateUserList(name);
   // use a mutex inbetween calls to send and recieve on the socket
   while (running)
   {
