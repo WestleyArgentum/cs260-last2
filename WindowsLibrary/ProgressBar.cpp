@@ -54,7 +54,7 @@ ProgressBar::ProgressBar( const std::string &title ) : title_(title)
     WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
     win_x_pos, win_y_pos,
     win_width, win_height,
-    WinSys->GetHwnd(),
+    NULL,
     NULL,
     hInstance,
     NULL );
@@ -90,6 +90,8 @@ ProgressBar::ProgressBar( const std::string &title ) : title_(title)
     //  start having this window be updated.
   ShowWindow( win_, SW_SHOWNORMAL );
   UpdateWindow( win_ );
+
+  thread_.Resume();
 }
 
 /**************************************************************************************************/
@@ -145,5 +147,43 @@ void ProgressBar::Destroy( void )
     DestroyWindow( pbHandle_ );
     pbHandle_ = NULL;
   }
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void ProgressBar::InitializeThread( void )
+{
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void ProgressBar::Run( void )
+{
+  MSG msg;
+
+    // Process all messages recieved by the OS for our window's created.
+  while ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
+  {
+    if ( msg.message == WM_QUIT )
+    {
+      PostQuitMessage(0);
+    }
+
+    TranslateMessage( &msg );
+    DispatchMessage( &msg );
+  }
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void ProgressBar::ExitThread( void ) throw()
+{
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void ProgressBar::FlushThread( void )
+{
+  SendMessage( win_, WM_QUIT, 0, 0 );
 }
 

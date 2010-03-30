@@ -4,11 +4,13 @@
 #include "Window.hpp"
 #include <string>
 
-class ProgressBar
+#include "Threading.hpp"
+
+class ProgressBar : public RoutineObject
 {
   public:
     ProgressBar( const std::string &title );
-    ~ProgressBar( void ) throw();
+    virtual ~ProgressBar( void ) throw();
 
     void SetRange( unsigned short min, unsigned short max );
     void SetStep( unsigned short step );
@@ -17,6 +19,13 @@ class ProgressBar
 
   private:
     void Destroy( void );
+
+    virtual void InitializeThread( void );
+    virtual void Run( void );
+    virtual void ExitThread( void ) throw();
+
+    virtual void FlushThread( void );
+
 
   private:
       // Main window info of the progress bar
