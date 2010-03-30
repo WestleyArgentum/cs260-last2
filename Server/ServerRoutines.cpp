@@ -25,7 +25,7 @@ void ClientRoutine::ProcessCommands()
       socket->Send(NAPI::PT_DATA_STRING, cmd.str_.c_str(), cmd.str_.size());
       break;
     }
-    Sleep(100);
+    Sleep(200);
   }
 }
 
