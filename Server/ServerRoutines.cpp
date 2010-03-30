@@ -25,6 +25,7 @@ void ClientRoutine::ProcessCommands()
       socket->Send(NAPI::PT_DATA_STRING, cmd.str_.c_str(), cmd.str_.size());
       break;
     }
+    Sleep(100);
   }
 }
 
@@ -219,7 +220,7 @@ void HostRoutine::UpdateUserList(const std::string &name)
   ActiveUserMap::iterator begin = activeUsers.begin(), end = activeUsers.end();
   while (begin != end) {
     client->AddCommand(Command(CID_NewUser, begin++->first));
-    Sleep(100);
+    //Sleep(100);
   }
 }
 
