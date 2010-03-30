@@ -214,11 +214,23 @@ HWND Listbox::Create( HWND parent, HINSTANCE hInstance )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+bool Listbox::Exists( const std::string &str )
+{
+  LRESULT index = SendMessage( handle_, LB_FINDSTRING, (WPARAM)-1, (LPARAM)str.c_str() );
+
+  return index != LB_ERR;
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 void Listbox::AddString( const std::string &str )
 {
   Lock lock( mutex_ );
 
-  SendMessage( handle_, LB_ADDSTRING, 0, (LPARAM)str.c_str() );
+  if ( !Exists( str ) )
+  {
+    SendMessage( handle_, LB_ADDSTRING, 0, (LPARAM)str.c_str() );
+  }
 }
 
 /**************************************************************************************************/
