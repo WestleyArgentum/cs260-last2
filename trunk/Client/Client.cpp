@@ -33,6 +33,7 @@ void Client::SendMsg(const std::string &msg)
 /**************************************************************************************************/
 void Client::SendFileRequest(const std::string &user)
 {
+  Lock lock(mutex);
    // create a new file sending object, it waits for the signal to begin.
   FileSend *trans = new FileSend(user,name_,idbase);
    // add the database of transfers, referenced by id.
@@ -208,6 +209,7 @@ void Client::Run( void )
     } // else if (ret!= SOCKET_ERROR)
 
      // Check if any tranfers are done or failed...
+    Lock lock(mutex);
     MonitorFileTransfers();
   }
 }
