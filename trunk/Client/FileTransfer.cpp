@@ -120,7 +120,7 @@ void FileAccept::Run( void )
   while (!IsDone() && !IsFail())
   {
     // wait for a packet to arrive. timeout after a certain time limit.
-    for (Timer t; t.TimeElapsed() < TIMEOUT_FILE_TRANSFER;)
+    for (Timer t;;)
     {
       NAPI::NetAddress address;
       int ret = socket->RecvFrom(address);
@@ -134,6 +134,14 @@ void FileAccept::Run( void )
         // got something, is it from the correct address?
         if (address == remote_)
         {
+          if (socket->GetMsg().Type() == NAPI::PT_BROKEN_TRANSFER )
+          {
+            // transfer failed.
+            CommandCenter->PostMsg("Transfer failed: " + file_, CID_ErrorBox);
+            fail_ = true;
+            break;
+          }
+
           // correct address, hand it to the filejoiner.
           unsigned seq = socket->GetMsg().GetSEQ(), ack = socket->GetMsg().GetACK();
           //DebugPrint("RECV: Got a packet from correct address.\nSEQ= %i\nACK= %i\nSize= %i",seq,ack,socket->GetMsg().DataSize());
@@ -162,9 +170,17 @@ void FileAccept::Run( void )
           // throw it away
         }
       }
+      if ( t.TimeElapsed() < TIMEOUT_FILE_TRANSFER )
+      {
+         // Tell the other side the transfer timed out.
+        socket->SendTo(remote_, NAPI::PT_BROKEN_TRANSFER, 0, 0, 0, 0);
+      }
     }
   }
 
+   // If transfer failed or was canceled, inform other side.
+  if (IsFail())
+    socket->SendTo(remote_, NAPI::PT_BROKEN_TRANSFER, 0, 0, 0, 0);
   //DebugPrint("RECV: Exiting run...");
 }
 
@@ -333,10 +349,12 @@ void FileSend::Run( void )
             break; // no timeout
           }
         }
-        else
+        else if (socket->GetMsg().Type() == NAPI::PT_BROKEN_TRANSFER)
         {
+          CommandCenter->PostMsg("Transfer failed: " + file_, CID_ErrorBox);
+          fail_ = true;
+          break;
           //DebugPrint("SEND: Wrong type of message recieved from correct sender...");
-          // wrong type of packet, send something back maybe...
         }
       }
       else
