@@ -59,6 +59,7 @@ namespace NAPI ///< Networking API namespace
     // Special Messages
 	  PT_INVALID,         ///< Packet is corrupt or some other error occured.
     PT_DIRECTED,        ///< Message is directed to a specific desitination, stored in the data.
+    PT_BROKEN_TRANSFER, ///< Transfer failed. Quit.
 
     // Request Messages
 	  PT_REQ_NAME,        ///< Requests a name from a User to reference the socket with.
