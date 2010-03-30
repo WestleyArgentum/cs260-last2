@@ -135,7 +135,7 @@ void FileAccept::Run( void )
   while (!IsDone() && !IsFail())
   {
     // wait for a packet to arrive. timeout after a certain time limit.
-    for (Timer t;;)
+    for (Timer t; !IsFail() ;)
     {
       NAPI::NetAddress address;
       int ret = socket->RecvFrom(address);
@@ -328,7 +328,7 @@ void FileSend::Run( void )
   {
     //DebugPrint("SEND: Grabbing chunk: %i", seq);
     FileSplitter::FileChunk &chunk = splitter.GetChunk(seq);
-    for (Timer timeout;;)
+    for (Timer timeout; !IsFail() ;)
     {
        // Send the next packet
       int ret = socket->SendTo(remote_, NAPI::PT_DATA_PACKET, chunk.data_, chunk.size_, seq, ack);
