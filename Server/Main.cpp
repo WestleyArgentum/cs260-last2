@@ -17,6 +17,7 @@
 //#include "WindowsLibrary/CommandCenter.hpp"
 #include "NetworkingLibrary/NetAPI.h"
 #include "ServerProcesses.hpp"
+#include "NetworkingLibrary/ConfigReader.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -24,9 +25,9 @@ int main(int argc, char *argv[])
   // initialize NetAPI
   NetAPI->Init();
   // read in port from config file
-  unsigned port = 8000; // hard coded for now. //TODO: FIX THIS!!!
+  Config configuration( "..\\Data\\Config.txt" );
 
-  HostRoutine host(port);
+  HostRoutine host(configuration.port_);
   CommandCenter->RegisterProcess(new SendMessageProcess(host), CID_SendMessage);
   CommandCenter->RegisterProcess(new NewUserProcess(host), CID_NewUser);
   CommandCenter->RegisterProcess(new RemoveUserProcess(host), CID_RemoveUser);
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
   host.Host();
   // create hosting server
   // if creation fails, let the user know and quit.
-  std::cout << "ChatServer2.0\nHosting from: " << NetAPI->LocalIP() << " Port: " << port << std::endl;
+  std::cout << "ChatServer2.0\nHosting from: " << NetAPI->LocalIP() << " Port: " << configuration.port_ << std::endl;
   std::cout << "Close this window to exit.\n";
 
   // while the server hasn't posted a quit message update all ports.
