@@ -165,6 +165,9 @@ int TCPSocket::Connect(const char *ip, unsigned port)
 	remote.sin_addr.s_addr = inet_addr(ip);
 	int ret = connect(socket, (sockaddr*)&remote, sizeof(remote));
   if (ret == SOCKET_ERROR) {
+		if (!blocking)
+			return ret; // would have blocked
+
     Error er = CreateError(Error::E_SocketError);
     throw er;
 	}
@@ -180,6 +183,9 @@ int TCPSocket::Send(PacketType type, const void *data, unsigned size) const
   NetMessage msg(type, data, size);
   int ret = send(socket, (const char*)&msg, msg.Size(), 0);
   if (ret == SOCKET_ERROR) {
+		if (!blocking)
+			return ret; // would have blocked
+
     Error er = CreateError(Error::E_SocketError);
     throw er;
 	}

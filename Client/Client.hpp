@@ -33,6 +33,7 @@ class Client : public RoutineObject
   std::string ip_;            ///< IP of server to connect to.
   unsigned port_;             ///< Port of server to connect to.
   bool connected;             ///< Whether the client is connected to the server.
+  Event quit_;
 
 public:
   Client( const std::string &name ) : idbase(0), socket(0), name_(name), port_(0), connected(false)

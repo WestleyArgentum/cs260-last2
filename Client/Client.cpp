@@ -137,22 +137,20 @@ void Client::HandleFileTransfer( const void *info_ )
 /**************************************************************************************************/
 void Client::MonitorFileTransfers( void )
 {
+  Lock lock(mutex);
+
    // Checks if any file transfers have finished or failed.
   FileTransferList::iterator begin = transfers.begin(), end = transfers.end();
   while (begin != end) 
   {
     if (begin->second->IsDone())
     {
-      Lock lock(mutex);
-
       begin->second->Finish();
       delete begin->second;
       transfers.erase(begin++);
     }
     else if (begin->second->IsFail())
     {
-      Lock lock(mutex);
-
       begin->second->Cancel();
       delete begin->second;
       transfers.erase(begin++);
@@ -173,12 +171,36 @@ void Client::InitializeThread( void )
   try {
     socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
     socket->Bind();
-    socket->Connect(ip_.c_str(), port_);
+    socket->ToggleBlocking(false);
   }
   catch (NAPI::Error &er) {
     CommandCenter->PostMsg(er.what(), CID_ErrorBox);
     throw er;
   }
+
+  CommandCenter->PostMsg("Attempting to connect to the server...", CID_Display);
+
+    // Wait to connect to the 
+  for ( Timer timeout;; )
+  {
+    if ( timeout.TimeElapsed() > 10.0 )     // Connection timeout
+    {
+      CommandCenter->PostMsg("Unable to connect to the server. Is it running?", CID_Display);
+      return;
+    }
+    if ( quit_.Wait(0) != WAIT_TIMEOUT )    // Program quiting
+    {
+      return;
+    }
+      // If connected to the server!
+    if ( socket->Connect(ip_.c_str(), port_) != SOCKET_ERROR )
+    {
+      break;
+    }
+
+    Sleep(100);
+  }
+
   CommandCenter->PostMsg("Connected to server!", CID_Display);
 
   // TODO: FIX THE TIMER!!!!
@@ -261,4 +283,5 @@ void Client::ExitThread( void )
 void Client::FlushThread( void )
 {
   connected = false;
+  quit_.Release();
 }
