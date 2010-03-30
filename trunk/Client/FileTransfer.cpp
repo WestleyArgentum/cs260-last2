@@ -139,7 +139,7 @@ void FileAccept::Run( void )
           //DebugPrint("RECV: Got a packet from correct address.\nSEQ= %i\nACK= %i\nSize= %i",seq,ack,socket->GetMsg().DataSize());
           if (joiner.SaveChunk(seq, socket->GetMsg().Data(), socket->GetMsg().DataSize()))
           {
-            if ((++recvchunks/chunks * 100.f) > percent)
+            if (unsigned(++recvchunks/chunks * 100.f) > percent)
             {
               percent = unsigned(recvchunks/chunks * 100.f);
               progress.Step(); // TODO: FIX THIS!!!!
@@ -325,7 +325,7 @@ void FileSend::Run( void )
             }
             seq = socket->GetMsg().GetACK();
             ack = socket->GetMsg().GetSEQ() + 1;
-            if ((++sentchunks/chunks * 100.f) > percent)
+            if (unsigned(++sentchunks/chunks * 100.f) > percent)
             {
               percent = unsigned(sentchunks/chunks * 100.f);
               progress.Step();
