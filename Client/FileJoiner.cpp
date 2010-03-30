@@ -76,7 +76,7 @@ FileJoiner::~FileJoiner( void )
     fclose(fileptr_);
 
   if (!complete_)
-    ;//std::remove(file_); // TODO: delete the file if it was opened and not finished!!
+    std::remove(file_.c_str());
 }
 
 /**************************************************************************************************/
