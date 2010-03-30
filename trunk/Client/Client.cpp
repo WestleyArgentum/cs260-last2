@@ -20,7 +20,13 @@ void Client::BeginSession(const std::string &ip, unsigned port)
 /**************************************************************************************************/
 void Client::SendMsg(const std::string &msg)
 {
-  socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+  try {
+    socket->Send(NAPI::PT_DATA_STRING, msg.c_str(), msg.size());
+  }
+  catch (NAPI::Error &er) {
+    CommandCenter->PostMsg(er.what(), CID_ErrorBox);
+    // cleanup stuff somehow...
+  }
 }
 
 /**************************************************************************************************/
@@ -37,7 +43,12 @@ void Client::SendFileRequest(const std::string &user)
 /**************************************************************************************************/
 void Client::SendFileTransferInfo( const void *info_ )
 {
-  socket->Send(NAPI::PT_DIRECTED, info_, sizeof(FileTransferInfo));
+  try {
+    socket->Send(NAPI::PT_DIRECTED, info_, sizeof(FileTransferInfo));
+  }
+  catch (NAPI::Error &er) {
+    CommandCenter->PostMsg(er.what(), CID_ErrorBox);
+  }
 }
 
 /**************************************************************************************************/
