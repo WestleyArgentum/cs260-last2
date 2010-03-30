@@ -54,7 +54,7 @@ ProgressBar::ProgressBar( const std::string &title ) : title_(title)
     WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
     win_x_pos, win_y_pos,
     win_width, win_height,
-    NULL,
+    WinSys->GetHwnd(),
     NULL,
     hInstance,
     NULL );
