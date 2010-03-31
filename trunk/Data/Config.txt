@@ -1,6 +1,6 @@
 [Username]
-kittyy
+left
 
 [Server]
-IP: 192.168.1.107
+IP: 10.10.20.125
 Port: 8000

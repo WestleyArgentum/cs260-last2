@@ -165,8 +165,15 @@ int TCPSocket::Connect(const char *ip, unsigned port)
 	remote.sin_addr.s_addr = inet_addr(ip);
 	int ret = connect(socket, (sockaddr*)&remote, sizeof(remote));
   if (ret == SOCKET_ERROR) {
-		if (!blocking)
-			return ret; // would have blocked
+    if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
+    {
+      struct timeval time;
+      time.tv_sec = 0;
+      time.tv_usec = 0;
+
+      //if ( select( 0, socket, socket, NULL, &time ) )
+			  return ret; // would have blocked
+    }
 
     Error er = CreateError(Error::E_SocketError);
     throw er;
@@ -183,7 +190,7 @@ int TCPSocket::Send(PacketType type, const void *data, unsigned size) const
   NetMessage msg(type, data, size);
   int ret = send(socket, (const char*)&msg, msg.Size(), 0);
   if (ret == SOCKET_ERROR) {
-		if (!blocking)
+    if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
 			return ret; // would have blocked
 
     Error er = CreateError(Error::E_SocketError);
@@ -200,7 +207,7 @@ int TCPSocket::Recieve()
 	int ret = recv(socket, reinterpret_cast<char*>(&rmsg), sizeof(rmsg), 0);
 	if (ret == SOCKET_ERROR)
 	{
-		if (!blocking)
+    if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
 			return ret; // would have blocked
 
     Error er = CreateError(Error::E_SocketError);
