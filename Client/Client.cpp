@@ -188,7 +188,7 @@ void Client::InitializeThread( void )
       CommandCenter->PostMsg("Unable to connect to the server. Is it running?", CID_Display);
       return;
     }
-    if ( quit_.Wait(0) != WAIT_TIMEOUT )    // Program quiting
+    if ( quit_.Wait(0) == WAIT_OBJECT_0 )    // Program quiting
     {
       return;
     }
@@ -200,6 +200,8 @@ void Client::InitializeThread( void )
 
     Sleep(100);
   }
+
+  socket->ToggleBlocking(true);
 
   CommandCenter->PostMsg("Connected to server!", CID_Display);
 
