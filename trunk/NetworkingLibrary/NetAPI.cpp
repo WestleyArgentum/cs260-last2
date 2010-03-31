@@ -403,8 +403,8 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 {
-	unsigned port = 0;
-  for (unsigned i = 0; i < udp_ports.size(); ++i)
+	unsigned port = 0, i = 0;
+  for (; i < udp_ports.size(); ++i)
   {
     if (!udp_ports[i].second)
     {
@@ -435,7 +435,7 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
   usock->address.sin_addr.s_addr = inet_addr(LocalIP().c_str());
   usock->address.sin_family = AF_INET;
   usock->address.sin_port = htons(port);
-  usock->port = port;
+  usock->port = i;
 
   // Make sure bind doesn't fail.
   int ret = bind(usock->socket, (sockaddr*)&usock->address, sizeof(usock->address));
