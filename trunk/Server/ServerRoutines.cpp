@@ -290,5 +290,6 @@ void HostRoutine::FlushThread( void )
 {
   // TODO: FIX THIS!!! WON'T TERMINATE!!!!
   hosting = false;
+  quit_.Release();
   thread_.Terminate();
 }

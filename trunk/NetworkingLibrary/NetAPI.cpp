@@ -233,7 +233,7 @@ int TCPSocket::Close()
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-TCPSOCKET TCPSocket::Accept()
+TCPSOCKET TCPSocket::Accept( void )
 {
 	int size;
   TCPSOCKET tcp = NetAPI->NewTCPSocket("DEFAULT");

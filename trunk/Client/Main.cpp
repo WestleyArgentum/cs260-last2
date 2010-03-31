@@ -38,6 +38,26 @@ namespace
 
 /**************************************************************************************************/
 /**************************************************************************************************/
+void SendMsg( const std::string &str )
+{
+  try
+  {
+      // Post this message so someone can process this message.
+    if (!str.empty())
+      CommandCenter->PostMsg( str, CID_SendMessage );
+  }
+  catch ( const NAPI::Error &e )
+  {
+    CommandCenter->PostMsg(
+      "Connection to the server has been lost due to some unknown error.\r\n"
+      "You will no longer be able to send messages. Please quit and try again.\r\n",
+      CID_Display );
+    DebugPrint( e.what() );
+  }
+}
+
+/**************************************************************************************************/
+/**************************************************************************************************/
 LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
   PAINTSTRUCT ps;
@@ -66,7 +86,7 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
           sendbox->Clear();
 
             // Post this message so someone can process this message.
-          CommandCenter->PostMsg( str, CID_SendMessage );
+          SendMsg(str);
           break;
       }
       break;
@@ -84,19 +104,8 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
             str = sendbox->GetText();
             sendbox->Clear();
 
-            try
-            {
-                // Post this message so someone can process this message.
-              CommandCenter->PostMsg( str, CID_SendMessage );
-            }
-            catch ( const NAPI::Error &e )
-            {
-              CommandCenter->PostMsg(
-                "Connection to the server has been lost due to some unknown error.\r\n"
-                "You will no longer be able to send messages. Please quit and try again.\r\n",
-                CID_Display );
-              DebugPrint( e.what() );
-            }
+            SendMsg(str);
+
             break;
 
             // Send a file.

@@ -86,11 +86,6 @@ namespace NAPI ///< Networking API namespace
     // Chat Messages
 	  PT_ADD_NICK,        ///< Message used to update client user list.
     PT_DEL_NICK,        ///< Message used to update client user list.
-
-    //// File Messages
-    //PT_SEND_FILE,       ///< Client informing sender it's ready to accept the file.
-    //PT_REJECT_FILE,     ///< Client informing sender it's rejecting the file.
-    //PT_ACCEPT_FILE,     ///< Client informing sender it's accepting the file.
   };
 
   class NetMessage
@@ -160,7 +155,7 @@ namespace NAPI ///< Networking API namespace
 	  int Recieve() throw (Error);
 	  int Close();
 
-	  TCPSocket * Accept();
+	  TCPSocket * Accept( void );
 
 	  bool bound;
 	  bool connected;
