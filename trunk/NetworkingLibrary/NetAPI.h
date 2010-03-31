@@ -177,7 +177,7 @@ namespace NAPI ///< Networking API namespace
 
     // Only the NetAPI_ can create and destroy sockets.
     UDPSocket();
-    ~UDPSocket() {}
+    ~UDPSocket();
   public:
      // Change the ID the socket is referenced by.
     bool SetID(const std::string &id);
