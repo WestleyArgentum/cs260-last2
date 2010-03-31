@@ -76,6 +76,7 @@ class HostRoutine : public RoutineObject
   ClientRoutineMap pendingUsers;  ///< The clients themselves.
   ClientRoutineMap inactiveUsers; ///< Clients that have left or failed to connect.
   NAPI::TCPSOCKET listener;
+  Event quit_;
   unsigned port;
   bool hosting;
 

@@ -19,6 +19,11 @@
 #include "WindowsLibrary/CommandCenter.hpp"
 #include "WindowsLibrary/DebugDiagnostic.hpp"
 
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+void SendMsg( const std::string &msg );
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // ComponentInfo Methods
@@ -119,19 +124,7 @@ LRESULT CALLBACK Textbox::EditProc( HWND hWndEdit, UINT msg, WPARAM wParam, LPAR
             std::string str = textbox->GetText();
             textbox->Clear();
 
-            try
-            {
-                // Post this message so someone can process this message.
-              CommandCenter->PostMsg( str, CID_SendMessage );
-            }
-            catch ( const NAPI::Error &e )
-            {
-              CommandCenter->PostMsg(
-                "Connection to the server has been lost due to some unknown error.\r\n"
-                "You will no longer be able to send messages. Please quit and try again.\r\n",
-                CID_Display );
-              DebugPrint( e.what() );
-            }
+            SendMsg(str);
 
 				    PeekMessage( &message, hWndEdit, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE );
           }

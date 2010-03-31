@@ -169,39 +169,15 @@ void Client::MonitorFileTransfers( void )
 void Client::InitializeThread( void )
 {
   try {
+    CommandCenter->PostMsg("Attempting to connect to the server...", CID_Display);
     socket = NAPI::NetAPI->NewTCPSocket("ClientTCP");
     socket->Bind();
-    socket->ToggleBlocking(false);
+    socket->Connect(ip_.c_str(), port_);
   }
   catch (NAPI::Error &er) {
     CommandCenter->PostMsg(er.what(), CID_ErrorBox);
     throw er;
   }
-
-  CommandCenter->PostMsg("Attempting to connect to the server...", CID_Display);
-
-    // Wait to connect to the 
-  for ( Timer timeout;; )
-  {
-    if ( timeout.TimeElapsed() > 10.0 )     // Connection timeout
-    {
-      CommandCenter->PostMsg("Unable to connect to the server. Is it running?", CID_Display);
-      return;
-    }
-    if ( quit_.Wait(0) == WAIT_OBJECT_0 )    // Program quiting
-    {
-      return;
-    }
-      // If connected to the server!
-    if ( socket->Connect(ip_.c_str(), port_) != SOCKET_ERROR )
-    {
-      break;
-    }
-
-    Sleep(100);
-  }
-
-  socket->ToggleBlocking(true);
 
   CommandCenter->PostMsg("Connected to server!", CID_Display);
 
