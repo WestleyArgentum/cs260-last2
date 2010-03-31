@@ -27,5 +27,11 @@ struct Config
 
   std::string ip_;        ///< Server IP address.
   unsigned short port_;   ///< Server Port address.
+
+  struct PortRange
+  {
+    unsigned short low_;
+    unsigned short high_;
+  } range_;
 };
 
