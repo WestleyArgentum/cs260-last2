@@ -313,6 +313,9 @@ void FileSend::InitializeThread( void )
 /**************************************************************************************************/
 void FileSend::Run( void )
 {
+  if (IsFail())
+    return;
+
   using NAPI::operator ==;
   unsigned seq = 0, ack = 0;
   if (!splitter.Read())
@@ -421,4 +424,5 @@ void FileSend::ExitThread( void ) throw()
 void FileSend::FlushThread( void )
 {
   fail_ = true;
+  thread_.Resume();
 }
