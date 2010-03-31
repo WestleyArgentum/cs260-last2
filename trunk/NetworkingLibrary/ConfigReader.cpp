@@ -77,6 +77,32 @@ Config::Config( const char *configname )
           //  the 'dataname' earlier.
         continue;
       }
+      else if ( dataname == "[UDP_RANGE]" )
+      {
+        iStream >> dataname;
+
+        while ( iStream.good() )
+        {
+          std::transform( dataname.begin(), dataname.end(), dataname.begin(), toupper );
+
+          if ( dataname == "HIGH:" )        // Specifing server ip address.
+          {
+            iStream >> range_.high_;
+          }
+          else if ( dataname == "LOW:" ) // Server port.
+          {
+            iStream >> range_.low_;
+          }
+          else
+          {
+            break;
+          }
+
+          iStream >> dataname;
+        }
+
+        continue;
+      }
 
       iStream >> dataname;
     }
