@@ -14,6 +14,7 @@
 */
 /**************************************************************************************************/
 #include "NetAPI.h"
+#include "ConfigReader.hpp"
 
 namespace NAPI
 {
@@ -345,6 +346,13 @@ int NetAPI_::Init()
 	localIP = inet_ntoa(*(in_addr*)*gethostbyname("")->h_addr_list);
 	init = true;
 
+  Config config( "..\\Data\\Config.txt" );\
+  unsigned low = config.range_.low_;
+  unsigned high = config.range_.high_;
+
+  while (low <= high)
+    udp_ports.push_back(udp_port(low++,false));
+
 	return 0;
 }
 
@@ -395,7 +403,20 @@ TCPSOCKET NetAPI_::NewTCPSocket(const std::string &id) throw (Error)
 /**************************************************************************************************/
 UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
 {
-	static unsigned port = 8001;
+	unsigned port = 0;
+  for (unsigned i = 0; i < udp_ports.size(); ++i)
+  {
+    if (!udp_ports[i].second)
+    {
+      port = udp_ports[i].first;
+      udp_ports[i].second = true;
+      break;
+    }
+  }
+
+  if (port == 0)
+    throw "No ports available for UDP sockets...";
+
   std::string nid = id;
   for (int i = 0; udp_sockets.count(nid); ++i)
 	nid = id + char(i + '0');
@@ -413,7 +434,8 @@ UDPSOCKET NetAPI_::NewUDPSocket(const std::string &id) throw (Error)
   SecureZeroMemory(&usock->address, sizeof(usock->address));
   usock->address.sin_addr.s_addr = inet_addr(LocalIP().c_str());
   usock->address.sin_family = AF_INET;
-  usock->address.sin_port = htons(port++);
+  usock->address.sin_port = htons(port);
+  usock->port = port;
 
   // Make sure bind doesn't fail.
   int ret = bind(usock->socket, (sockaddr*)&usock->address, sizeof(usock->address));
@@ -497,6 +519,7 @@ int NetAPI_::CloseSocket(UDPSOCKET socket)
 {
   Lock lock(mutex);
   udp_sockets.erase(socket->id);
+  udp_ports[socket->port].second = false;
   delete socket;
   return 0;
 }

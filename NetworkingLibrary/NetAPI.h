@@ -172,6 +172,7 @@ namespace NAPI ///< Networking API namespace
     SOCKET socket;       ///< Actual socket.
     NetAddress address;  ///< Local address.
     NetMessage rmsg;     ///< Recieve message.
+    unsigned port;       ///< Port connected on.
     bool blocking;
 
     // Only the NetAPI_ can create and destroy sockets.
@@ -205,9 +206,11 @@ namespace NAPI ///< Networking API namespace
 
   class NetAPI_
   {
+    typedef std::pair<unsigned,bool> udp_port;
 	  Mutex mutex;
 	  std::map<std::string, TCPSOCKET> tcp_sockets;
     std::map<std::string, UDPSOCKET> udp_sockets;
+    std::vector< udp_port > udp_ports;
 	  std::string localIP; // saved for convience.
 	  WSADATA wsData;
 	  bool init;
