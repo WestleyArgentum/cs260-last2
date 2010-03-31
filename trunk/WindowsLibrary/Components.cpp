@@ -64,7 +64,10 @@ HWND Textbox::Create( HWND parent, HINSTANCE hInstance )
 /**************************************************************************************************/
 void Textbox::Init( void )
 {
-  wndProc_ = (WNDPROC)SetWindowLong( handle_, GWL_WNDPROC, (LPARAM)EditProc );
+  if ( !( info_.style_ & ES_READONLY ) )
+  {
+    wndProc_ = (WNDPROC)SetWindowLong( handle_, GWL_WNDPROC, (LPARAM)EditProc );
+  }
 }
 
 /**************************************************************************************************/
