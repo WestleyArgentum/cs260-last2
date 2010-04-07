@@ -134,7 +134,7 @@ namespace Framework
 		//Begin the scene
 		if (SUCCEEDED(pDevice->BeginScene()))
 		{
-			DrawWorld();
+			DrawWorld( dt );
 
 			DrawDebugInfo();
 
@@ -148,7 +148,7 @@ namespace Framework
 	}
 
 
-	void Graphics::DrawWorld()
+	void Graphics::DrawWorld( float dt )
 	{
 		//Setup the world, view, and projection matrices
 		SetupMatrices();
@@ -159,7 +159,7 @@ namespace Framework
 		//TODO: Need Visibility to cull off screen sprites
 		ObjectLinkList<Sprite>::iterator it = SpriteList.begin();
 		for(;it!=SpriteList.end();++it)
-			it->Draw(pDevice, Shaders[Basic]);
+			it->Draw(pDevice, Shaders[Basic], dt);
 
 	}
 

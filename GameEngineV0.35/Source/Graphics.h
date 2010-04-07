@@ -55,7 +55,7 @@ namespace Framework
 		//Draw Debug Data
 		void DrawDebugInfo();
 		//Draw the world
-		void DrawWorld();
+		void DrawWorld( float dt );
 		//TODO: Need to handle device lost / device reset
 		void DeviceLost();
 		void DeviceReset();
