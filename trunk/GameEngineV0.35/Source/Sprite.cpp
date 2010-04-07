@@ -44,7 +44,7 @@ namespace Framework
 	}
 
 
-	void Sprite::Draw(IDirect3DDevice9*	pDevice,ID3DXEffect* shader)
+	void Sprite::Draw(IDirect3DDevice9*	pDevice,ID3DXEffect* shader, float dt)
 	{
 
 		//Transform the sprite.
@@ -69,6 +69,11 @@ namespace Framework
 		shader->Begin(&numberOfPasses,0);
 		shader->SetTexture( "texture0" , pTexture );
 		shader->SetVector( "color" , &Color );
+
+    static float totaltime = 0.0f;
+    totaltime += dt;
+    shader->SetFloat("fTime", totaltime );
+
 		for(UINT pass=0;pass<numberOfPasses;++pass)
 		{
 			shader->BeginPass(pass);

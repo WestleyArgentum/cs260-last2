@@ -41,6 +41,6 @@ namespace Framework
 		//Blend color of this sprite
 		Vec4 Color;
 		//Draw the sprite to the screen
-		void Draw(IDirect3DDevice9*pDevice,ID3DXEffect* shader);
+		void Draw(IDirect3DDevice9*pDevice,ID3DXEffect* shader, float dt);
 	};
 }
