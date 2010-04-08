@@ -19,6 +19,11 @@ namespace Framework
 		stream >> i;
 	}
 
+  void TextSerializer::ReadUnsignedInt( unsigned int &ui )
+  {
+    stream >> ui;
+  }
+
 	void TextSerializer::ReadFloat(float& f)
 	{
 		stream >> f;
@@ -28,5 +33,11 @@ namespace Framework
 	{
 		stream >> str;
 	}
+
+  void TextSerializer::ReadLine( std::string &str )
+  {
+    stream.ignore();
+    std::getline( stream, str );
+  }
 
 }

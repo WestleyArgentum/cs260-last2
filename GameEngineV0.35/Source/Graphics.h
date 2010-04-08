@@ -11,6 +11,7 @@
 
 #include "Engine.h"
 #include "Sprite.h"
+#include "Text.h"
 
 namespace Framework
 {	
@@ -39,6 +40,7 @@ namespace Framework
 		//Get a texture asset. Will return null if texture is not loaded
 		IDirect3DTexture9* GetTexture(std::string);
 		Vec2 ScreenToWorldSpace(Vec2);
+    Vec2 WorldToScreenSpace(Vec2);
 		void SetWindwProperties(HWND hWnd,int screenWidth,int screenHeight);
 	private:
 		void Initialize();
@@ -93,6 +95,7 @@ namespace Framework
 		D3DPRESENT_PARAMETERS PresentParameters;
 		Vec2 SurfaceSize;
 		ObjectLinkList<Sprite> SpriteList;
+    ObjectLinkList<Text> TextList;
 	};
 
 	//A global pointer to the Graphics system, used to access it anywhere.

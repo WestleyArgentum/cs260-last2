@@ -23,7 +23,9 @@ namespace Framework
 		virtual bool IsGood();
 		virtual void ReadInt(int& i);
 		virtual void ReadFloat(float& f);
+    virtual void ReadUnsignedInt( unsigned int &ui );
 		virtual void ReadString(std::string& str);
+    virtual void ReadLine( std::string &str );
 	};
 
 }

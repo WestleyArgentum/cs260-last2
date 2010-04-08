@@ -55,7 +55,7 @@ namespace Framework
 		LineTo(end);;
 	}
 
-	void  Drawer::DrawCircle(Vec2 center, float radius)
+	void Drawer::DrawCircle(Vec2 center, float radius)
 	{
 		const unsigned numberOfSegments = 16;
 		const float increment = 2.0f * (D3DX_PI) / float(numberOfSegments);
@@ -68,7 +68,7 @@ namespace Framework
 		}
 	}
 
-	void  Drawer::DrawBox(Vec2 center,float size)
+	void Drawer::DrawBox(Vec2 center,float size)
 	{
 		float halfSize = size / 2.0f;
 		MoveTo( center + Vec2(halfSize,halfSize) );
@@ -78,5 +78,16 @@ namespace Framework
 		LineTo( center + Vec2(halfSize,halfSize)  );
 	}
 
+  void Drawer::DrawRectangle( Vec2 center, float width, float height )
+  {
+		float halfWidth  = width  / 2.0f;
+    float halfHeight = height / 2.0f;
+
+		MoveTo( center + Vec2(  halfWidth,  halfHeight ) );
+		LineTo( center + Vec2(  halfWidth, -halfHeight ) );
+		LineTo( center + Vec2( -halfWidth, -halfHeight ) );
+		LineTo( center + Vec2( -halfWidth,  halfHeight )  );
+		LineTo( center + Vec2(  halfWidth,  halfHeight )  );
+  }
 
 }
