@@ -75,10 +75,11 @@ float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 	offset *= 1 / distance(IN.tex0, (mouse) );
 	
 	float4 color  = tex2D( Sampler0, IN.tex0 + offset );
-	//color.b       += cos_time * 0.3f;
-	//color.g       += cos_time * 0.03f;
-	//color.r       -= cos_time * 2;
-	//color         *= 0.82f;
+	color.b       += cos_time * 0.3f;
+	color.g       += cos_time * 0.03f;
+	color.r       -= cos_time * 2;
+	color         *= 0.82f;
+	color.a = 1.0f;
 
 	return color;
 }

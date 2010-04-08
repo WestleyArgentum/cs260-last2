@@ -29,6 +29,7 @@ namespace Framework
 		void DrawCircle(Vec2 center, float radius);
 		///Draw an axis aligned box.
 		void DrawBox(Vec2 center, float size);
+    void DrawRectangle( Vec2 center, float width, float height );
 		///Draw a line between two points.
 		void DrawSegment(Vec2 start, Vec2 end);
 		static Drawer Instance;

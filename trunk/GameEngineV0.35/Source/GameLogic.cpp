@@ -17,6 +17,7 @@
 #include "ComponentCreator.h"
 #include "Camera.h"
 #include "TextSerialization.h"
+#include "DebugDraw.h"
 #include <ctime>
 
 namespace Framework
@@ -224,6 +225,8 @@ namespace Framework
 				body->AddForce( (WorldMousePosition - body->Position) * 50 );
 			}
 		}
+
+    Drawer::Instance.DrawCircle( Vec2(0, 0), 3 );
 	}
 	GOC * GameLogic::CreateObjectAt(Vec2& position,float rotation,const std::string& file)
 	{

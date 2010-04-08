@@ -20,12 +20,14 @@ namespace Framework
 	{
 	public:
 		///Open the serialization stream from a file.
-		virtual bool Open(const std::string& file)=0;
+		virtual bool Open(const std::string& file) = 0;
 		///Does the stream still have data?
-		virtual bool IsGood()=0;
-		virtual void ReadInt(int& i)=0;
-		virtual void ReadFloat(float& f)=0;
-		virtual void ReadString(std::string& str)=0;
+		virtual bool IsGood() = 0;
+		virtual void ReadInt(int& i) = 0;
+    virtual void ReadUnsignedInt( unsigned int &ui ) = 0;
+		virtual void ReadFloat(float& f) = 0;
+		virtual void ReadString(std::string& str) = 0;
+    virtual void ReadLine( std::string &str ) = 0;
 	};
 
 	//Serialization Operators 
@@ -50,10 +52,19 @@ namespace Framework
 		stream.ReadInt(i);
 	}
 
+	inline void StreamRead(ISerializer& stream, unsigned int &ui)
+	{
+		stream.ReadUnsignedInt(ui);
+	}
+
 	inline void StreamRead(ISerializer& stream,std::string& str)
 	{
 		stream.ReadString(str);
 	}
 
+	inline void StreamLine(ISerializer& stream,std::string& str)
+	{
+		stream.ReadLine(str);
+	}
 
 }

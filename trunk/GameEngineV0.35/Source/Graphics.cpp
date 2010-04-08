@@ -87,6 +87,7 @@ namespace Framework
 
 		RegisterComponent(Sprite);
 		RegisterComponent(Camera);
+    RegisterComponent(Text);
 
 		//FACTORY->AddComponentCreator("Sprite", new ComponentCreatorType<Sprite>() );
 		//FACTORY->AddComponentCreator("CameraView", new ComponentCreatorType<CameraView>
@@ -162,6 +163,10 @@ namespace Framework
 		for(;it!=SpriteList.end();++it)
 			it->Draw(pDevice, Shaders[Basic], dt);
 
+    for ( ObjectLinkList<Text>::iterator it = TextList.begin(); it != TextList.end(); ++it )
+    {
+      it->Draw();
+    }
 	}
 
 	void Graphics::DrawDebugInfo()
@@ -254,6 +259,21 @@ namespace Framework
 		return Vec2(worldSpacePosition.x,worldSpacePosition.y);
 	}
 
+	Vec2 Graphics::WorldToScreenSpace(Vec2 worldPosition)
+	{
+		Vec4 screenSpacePosition( worldPosition.x, worldPosition.y, 0, 0 );
+    D3DXVec2Transform( &screenSpacePosition, &worldPosition, &ViewProjMatrix );
+
+		screenSpacePosition.y *= -1;
+		screenSpacePosition += Vec4(1, 1, 0, 0);
+		screenSpacePosition /= 2.0f;
+
+		screenSpacePosition.x *= SurfaceSize.x;
+		screenSpacePosition.y *= SurfaceSize.y;
+
+		return Vec2( screenSpacePosition.x, screenSpacePosition.y );
+	}
+
 	//Load all the textures we need.
 	void Graphics::LoadAssets()
 	{
@@ -269,7 +289,6 @@ namespace Framework
 		//Load the shaders
 		LoadEffect(Basic,"Shaders/Basic.fx");
 		LoadEffect(DebugShader,"Shaders/Debug.fx");
-		
 	}
 
 	//Load a specific texture file and add it to the asset texture map
