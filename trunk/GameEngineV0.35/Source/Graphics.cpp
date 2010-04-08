@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "ComponentCreator.h"
 
+
 namespace Framework
 {
 	//Our global pointer to Graphics.

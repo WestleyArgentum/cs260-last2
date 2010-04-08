@@ -1,6 +1,8 @@
 float4x4 WorldViewProj : WorldViewProjection;
 float4 color = {1,1,1,1};
 uniform extern float fTime : TIME;
+float mouse_x;
+float mouse_y;
 texture texture0;
 
 sampler Sampler0
@@ -37,17 +39,41 @@ VS_OUTPUT VertexShader0( VS_INPUT IN )
 	return OUT;
 }
 
+	// Asteroid effect!
+	/*float  cos_time = cos( fTime ) * sin( fTime ) * tan( fTime ) * 0.05;
+	float2 offset = float2( 0.0f, cos( fTime + IN.tex0.x * -IN.tex0.y * 75.0f ) * .4f );
+	float4 color  = tex2D( Sampler0, IN.tex0 + offset * cos_time);
+	color.b       += cos_time * 0.3f;
+	color.g       += cos_time * 0.03f;
+	color.r       -= cos_time * 2;
+	color         *= 0.82f;
+	return color;*/
+  
+	/*    // Water effect!
+  float  cos_time = cos( fTime ) * 0.05;
+	float2 offset = float2( cos( -fTime + IN.tex0.x * IN.tex0.y * 10475.0f ), cos( fTime + IN.tex0.x * IN.tex0.y * 10075.0f ) ) * .12f ;
+	float4 color  = tex2D( Sampler0, IN.tex0 + offset * cos_time);
+	color.b       += cos_time * 0.3f;
+	color.g       += cos_time * 0.03f;
+	color.r       -= cos_time * 2;
+	color         *= 0.82f;
+  */
 float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 {
 	//float4 true_color = tex2D( Sampler0 , IN.tex0 ) * color;
 
-	float  cos_time = cos( fTime );
-	float2 offset = float2( 0.0f, cos( fTime + IN.tex0.y * 150.0f ) * .4f );
-	float4 color  = tex2D( Sampler0, IN.tex0 + offset);
-	color.b       += cos_time * 0.2f;
-	color.g       += cos_time * 0.1f;
-	color.r       -= cos_time * 0.05f;
-	color         *= 0.85f;
+	float2 mouse  = {mouse_x / 800, mouse_y / 600};
+	
+	float  cos_time = cos( fTime ) * 0.05;
+	float2 offset = float2( cos( -fTime + IN.tex0.x * IN.tex0.y * 75.0f ), cos( fTime + IN.tex0.x * 75.0f ) ) * 0.012f ;
+	offset *= 1 / distance(IN.tex0, (mouse) );
+	
+	float4 color  = tex2D( Sampler0, IN.tex0 + offset );
+	//color.b       += cos_time * 0.3f;
+	//color.g       += cos_time * 0.03f;
+	//color.r       -= cos_time * 2;
+	//color         *= 0.82f;
+
 	return color;
 }
 
@@ -61,6 +87,5 @@ technique Technique0
 		PixelShader  = compile ps_2_0 PixelShader0();
 	}
 }
-
 
 
