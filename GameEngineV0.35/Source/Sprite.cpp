@@ -13,6 +13,9 @@
 #include "VertexTypes.h"
 #include "Graphics.h"
 
+#include "GameLogic.h"
+#include "WindowsSystem.h"
+
 namespace Framework
 {
 
@@ -72,7 +75,9 @@ namespace Framework
 
     static float totaltime = 0.0f;
     totaltime += dt;
-    shader->SetFloat("fTime", totaltime );
+    shader->SetFloat( "fTime", totaltime );
+    shader->SetFloat( "mouse_x" , WINDOWSSYSTEM->MousePosition.x );
+    shader->SetFloat( "mouse_y" , WINDOWSSYSTEM->MousePosition.y );
 
 		for(UINT pass=0;pass<numberOfPasses;++pass)
 		{

@@ -1,10 +1,10 @@
 Transform 
-0 -280 
+0 0
 0
 Sprite
 square
+800
 600
-20
 0.1 0 1 1
 Body
 0
