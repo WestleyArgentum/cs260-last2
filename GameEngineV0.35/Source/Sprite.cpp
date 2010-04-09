@@ -46,7 +46,6 @@ namespace Framework
 		StreamRead(stream,Color);
 	}
 
-
 	void Sprite::Draw(IDirect3DDevice9*	pDevice,ID3DXEffect* shader, float dt)
 	{
 

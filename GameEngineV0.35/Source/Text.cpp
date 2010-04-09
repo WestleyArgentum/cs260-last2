@@ -26,8 +26,6 @@ namespace Framework
 
   Text::~Text( void )
   {
-    font_->Release();
-
     GRAPHICS->TextList.erase( this );
   }
 
@@ -40,17 +38,26 @@ namespace Framework
 
   void Text::Serialize( ISerializer &stream )
   {
-    Vec4int tempcolor;
+    int red, green, blue, alpha;
 
     StreamRead( stream, height_ );
     StreamRead( stream, width_ );
     StreamLine( stream, fontname_ );    // Comic Sans MS
-    StreamRead( stream, tempcolor );
 
-    color_ = D3DCOLOR_ARGB( tempcolor.x, tempcolor.y, tempcolor.z, tempcolor.w );
+      // Read in the color of the texture!
+    StreamRead( stream, red );
+    StreamRead( stream, green );
+    StreamRead( stream, blue );
+    StreamRead( stream, alpha );
 
-    D3DXCreateFont( GRAPHICS->pDevice, height_, width_, FW_BOLD, 0, FALSE, DEFAULT_CHARSET,
-      OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, fontname_.c_str(), &font_ );
+    SetColor( red, green, blue, alpha );
+
+    pFont_ = GRAPHICS->GetFont( fontname_, width_, height_ );
+  }
+
+  void Text::SetColor( char red, char green, char blue, char alpha )
+  {
+    color_ = D3DCOLOR_ARGB( alpha, red, green, blue );
   }
 
   void Text::Draw( void )
@@ -61,10 +68,10 @@ namespace Framework
     rect.left = pos.x;
     rect.top  = pos.y;
 
-    font_->DrawText( NULL, "Hello Wolrd!", -1, &rect, DT_CALCRECT, color_ );
+    pFont_->DrawText( NULL, "Hello Wolrd!", -1, &rect, DT_CALCRECT, color_ );
 
     Drawer::Instance.DrawRectangle( pos, rect.right - rect.left, rect.top - rect.bottom );
-    font_->DrawText( NULL, "Hello World!", -1, &rect, 0, color_ );
+    pFont_->DrawText( NULL, "Hello World!", -1, &rect, 0, color_ );
   }
 
 }   // namespace Framework

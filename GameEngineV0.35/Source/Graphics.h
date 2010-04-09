@@ -38,10 +38,27 @@ namespace Framework
 		Graphics();
 		~Graphics();
 		//Get a texture asset. Will return null if texture is not loaded
-		IDirect3DTexture9* GetTexture(std::string);
+		IDirect3DTexture9* GetTexture( const std::string &texture );
+    ID3DXFont* GetFont( const std::string &fontname, unsigned width, unsigned height );
+
 		Vec2 ScreenToWorldSpace(Vec2);
     Vec2 WorldToScreenSpace(Vec2);
 		void SetWindwProperties(HWND hWnd,int screenWidth,int screenHeight);
+
+  private:
+    struct Font
+    {
+      Font( void ) : width_(0), height_(0) {;}
+
+        // Used to sort Fonts based off internal members.
+      bool operator< ( const Font &rhs ) const;
+      bool operator== ( const Font &rhs ) const;
+
+      std::string name_;
+      unsigned width_;
+      unsigned height_;
+    };    // Font
+
 	private:
 		void Initialize();
 		//Create a vertex buffer for our sprites.
@@ -50,6 +67,8 @@ namespace Framework
 		void LoadAssets();		
 		//Load an individual texture.
 		void LoadTexture(const std::string& filename);
+		//Load an individual font.
+	  void LoadFont( const std::string &fontname, unsigned width, unsigned height );
 		//Set up the default world, view, and projection matrices
 		void SetupMatrices();
 		//Load a effect file
@@ -80,8 +99,10 @@ namespace Framework
 		IDirect3DVertexBuffer9*	pQuadVertexBuffer;
 
 		//Stored texture assets
-		typedef std::map<std::string,IDirect3DTexture9*> TextureMap;
-		TextureMap	Textures;
+		typedef std::map<std::string, IDirect3DTexture9*> TextureMap;
+    typedef std::map<Font, ID3DXFont*>                FontMap;
+		TextureMap Textures;
+    FontMap Fonts;
 
 		//An array for our pixel shaders.
 		ID3DXEffect* Shaders[NumberOfShaders];		
