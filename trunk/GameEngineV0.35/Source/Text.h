@@ -19,10 +19,11 @@ namespace Framework
 		  virtual void Serialize( ISerializer &stream );	
 		  virtual void Initialize( void );
 
+      void SetColor( char red, char green, char blue, char alpha );
       void Draw( void );
 
     public:
-      ID3DXFont *font_;
+      ID3DXFont *pFont_;
       unsigned height_;
       unsigned width_;
       std::string fontname_;

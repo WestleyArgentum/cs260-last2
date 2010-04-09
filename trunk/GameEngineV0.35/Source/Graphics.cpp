@@ -18,9 +18,48 @@
 
 namespace Framework
 {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Fonts
+
+  bool Graphics::Font::operator< ( const Font &rhs ) const
+  {
+    if ( width_ < rhs.width_ )
+    {
+      if ( height_ < rhs.height_ )
+      {
+        if ( name_ < rhs.name_ )
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  bool Graphics::Font::operator== ( const Font &rhs ) const
+  {
+    if ( width_ == rhs.width_ )
+    {
+      if ( height_ == rhs.height_ )
+      {
+        if ( name_ == rhs.name_ )
+        {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Graphics
+
 	//Our global pointer to Graphics.
 	Graphics* GRAPHICS = NULL;
-
 
 	//Set everything to default values.
 	Graphics::Graphics()
@@ -112,7 +151,12 @@ namespace Framework
 		//Release all the texture in the texture
 		for( TextureMap::iterator it = Textures.begin();it!=Textures.end();++it)
 			it->second->Release();
-		
+
+    for ( FontMap::iterator it = Fonts.begin(); it != Fonts.end(); ++it )
+    {
+      it->second->Release();
+    }
+
 		//Release the vertex buffer.
 		SafeRelease(pQuadVertexBuffer);
 		//Release the device.
@@ -306,7 +350,7 @@ namespace Framework
 		}
 	}
 
-	IDirect3DTexture9* Graphics::GetTexture(std::string texture)
+	IDirect3DTexture9* Graphics::GetTexture( const std::string &texture )
 	{
 		TextureMap::iterator it = Textures.find(texture);
 		if( it!= Textures.end())
@@ -314,6 +358,49 @@ namespace Framework
 		else
 			return NULL;
 	}
+
+	void Graphics::LoadFont( const std::string &fontname, unsigned width, unsigned height )
+	{
+    ID3DXFont *pFont;
+
+    HRESULT hr = D3DXCreateFont( pDevice, height, width, FW_BOLD, 0, FALSE, DEFAULT_CHARSET,
+      OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, fontname.c_str(), &pFont );
+
+		if ( SUCCEEDED(hr) )
+    {
+      Font info;
+      info.name_   = fontname;
+      info.width_  = width;
+      info.height_ = height;
+
+			Fonts[ info ] = pFont;
+    }
+		else
+		{
+			ErrorIf( false, "Failed to load font %s", fontname.c_str() );
+		}
+	}
+
+  ID3DXFont* Graphics::GetFont( const std::string &fontname, unsigned width, unsigned height )
+  {
+    Font info;
+    info.name_   = fontname;
+    info.width_  = width;
+    info.height_ = height;
+
+		FontMap::iterator it = Fonts.find( info );
+
+		if ( it != Fonts.end() )
+    {
+			return it->second;
+    }
+		else
+    {
+      LoadFont( fontname, width, height );
+
+      return GetFont( fontname, width, height );
+    }
+  }
 
 	bool Graphics::LoadEffect(int index,const std::string& filename)
 	{
