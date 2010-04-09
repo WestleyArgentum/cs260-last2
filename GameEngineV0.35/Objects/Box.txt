@@ -2,11 +2,6 @@ Transform
 0 0 
 0
 
-Text
-50 50
-Comic Sans MS
-255 0 0 255
-
 Sprite
 squareoutline
 60

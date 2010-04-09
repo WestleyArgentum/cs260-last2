@@ -61,6 +61,9 @@ namespace Framework
 				//Read the component's name
 				StreamRead(stream,componentName);
 
+        if ( componentName == "" )
+          continue;
+
 				//Find the component's creator
 				ComponentMapType::iterator it =  ComponentMap.find( componentName );
 				ErrorIf( it == ComponentMap.end() , "Could not find component creator with name %s" , componentName.c_str() );
@@ -82,6 +85,8 @@ namespace Framework
 					//Add the new component to the composition
 					gameObject->AddComponent( componentName , component );
 				}
+
+        componentName.clear();
 			}
 
 			//Id and initialize the game object composition
