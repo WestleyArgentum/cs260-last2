@@ -29,11 +29,14 @@ namespace Framework
 		void AddSystem(ISystem* system);
 		///Initializes all systems in the game.
 		void Initialize();
+    double GetTime( void ) { return TotalTime; }
+
 	private:
 		//Tracks all the systems the game uses
 		std::vector<ISystem*> Systems;
 		//The last time the game was updated
-		unsigned LastTime;
+		double LastTime;
+    double TotalTime;
 		//Is the game running (true) or being shut down (false)?
 		bool GameActive;
 	};

@@ -3,6 +3,7 @@ Transform
 0
 
 Sprite
+Basic
 squareoutline
 60
 60

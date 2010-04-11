@@ -1,10 +1,13 @@
 Transform 
 0 0 
 0
+
 Sprite
+Basic
 square
 20 200
 0.1 0 1 1
+
 Body
 0
 0.3
@@ -12,3 +15,4 @@ Body
 Box
 10
 100
+

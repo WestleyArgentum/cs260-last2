@@ -13,6 +13,7 @@
 #include "VertexTypes.h"
 #include "Graphics.h"
 
+#include "Core.h"
 #include "GameLogic.h"
 #include "WindowsSystem.h"
 
@@ -41,12 +42,17 @@ namespace Framework
 
 	void Sprite::Serialize(ISerializer& stream)
 	{
-		StreamRead(stream,SpriteName);
-		StreamRead(stream,Size);
-		StreamRead(stream,Color);
+    std::string shadername;
+		StreamRead(stream, shadername);
+
+    sIndex_ = GRAPHICS->GetShaderIndex( shadername );
+
+		StreamRead(stream, SpriteName);
+		StreamRead(stream, Size);
+		StreamRead(stream, Color);
 	}
 
-	void Sprite::Draw(IDirect3DDevice9*	pDevice,ID3DXEffect* shader, float dt)
+	void Sprite::Draw( IDirect3DDevice9 *pDevice, ID3DXEffect *shader )
 	{
 
 		//Transform the sprite.
@@ -72,9 +78,7 @@ namespace Framework
 		shader->SetTexture( "texture0" , pTexture );
 		shader->SetVector( "color" , &Color );
 
-    static float totaltime = 0.0f;
-    totaltime += dt;
-    shader->SetFloat( "fTime", totaltime );
+    shader->SetFloat( "fTime",    static_cast<float>( CORE->GetTime() ) );
     shader->SetFloat( "mouse_x" , WINDOWSSYSTEM->MousePosition.x );
     shader->SetFloat( "mouse_y" , WINDOWSSYSTEM->MousePosition.y );
 
