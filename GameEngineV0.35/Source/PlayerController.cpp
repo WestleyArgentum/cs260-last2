@@ -7,9 +7,14 @@
 
 namespace Framework
 {
-	PlayerController::PlayerController() : health (3) //^! hard-coded default health
+
+	 // shouldn't be here
+	#define PI 3.14159265358979323846f
+	#define DEG_TO_RAD (PI / 180.0f)
+
+	PlayerController::PlayerController()
 	{
-		// could set default value for character speed, etc...
+		// could set default value for character speed, etc... but who would forget to set those hahaha
 	}
 
 	PlayerController::~PlayerController()
@@ -20,13 +25,13 @@ namespace Framework
 	void PlayerController::LogicalUpdate( float dt )
 	{
 		if( IsUpHeld() )
-			body->AddForce(Vec2(cos(transform->Rotation - 90) * speed, sin(transform->Rotation - 90) * speed));
+			body->AddForce(Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));  //^! <-- odd
 		if( IsDownHeld() )
-			body->AddForce(-Vec2(cos(transform->Rotation) * speed, sin(transform->Rotation) * speed));
+			body->AddForce(-Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));
 		if( IsLeftHeld() )
-			transform->Rotation += .09;  // hard coded rotate by rads
+			transform->Rotation += rot_angle * DEG_TO_RAD;
 		if( IsRightHeld() )
-			transform->Rotation -= .09; // hard coded rotate by rads
+			transform->Rotation -= rot_angle * DEG_TO_RAD;
 	}
 
 	void PlayerController::DestroyCheck()
@@ -42,6 +47,8 @@ namespace Framework
 
 	void PlayerController::Serialize(ISerializer& stream)
 	{
+		StreamRead(stream, health);
 		StreamRead(stream, speed);
+		StreamRead(stream, rot_angle);
 	}
 }
