@@ -36,7 +36,7 @@ namespace Framework
 
 	void PlayerController::DestroyCheck()
 	{
-		if(health < 0)
+		if(health <= 0)
 		{
 			FACTORY->Destroy(GetOwner());
 			//^! here we should also end the match (for this player) and maybe take them to a lose screen

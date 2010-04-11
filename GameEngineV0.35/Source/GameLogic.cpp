@@ -19,6 +19,7 @@
 #include "TextSerialization.h"
 #include "DebugDraw.h"
 #include "PlayerController.h"
+#include "PRNG.h"
 
 #include <ctime>
 
@@ -42,6 +43,9 @@ namespace Framework
 		if( UseLevelFile )
 		{
 			LoadLevelFile("Objects\\TestLevel.txt");
+
+			// for now we have no state manager so I'll do this here
+			SpawnRandomAsteroids();
 		}
 		else
 		{
@@ -269,6 +273,24 @@ namespace Framework
 		}
 	}
 
+	void GameLogic::SpawnRandomAsteroids()
+	{
+		//^! if we end up with a level object then it should contain into like a number of random asteroids to spawn and the range
+		for (unsigned i = 0; i < 15; ++i)
+		{
+			float x_pos = 0;
+			float y_pos = 0;
+
+			// loop grabbing a random position not on top of the character
+			while (-60 < x_pos && x_pos < 60 && -60 < y_pos && y_pos < 60)  // 60 is about the twise the radius of the chara
+			{
+				x_pos = static_cast<float>(Utils::Random(-500, 500));
+				y_pos = static_cast<float>(Utils::Random(-500, 500));
+			}
+
+			CreateObjectAt(Vec2(x_pos, y_pos), static_cast<float>(Utils::Random(0, 360)), "Objects\\Bomb.txt");
+		}
+	}
 	void Bomb::Initialize()
 	{
 		SpawnTime = timeGetTime();

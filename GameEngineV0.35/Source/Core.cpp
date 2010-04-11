@@ -10,6 +10,7 @@
 #include "Core.h"
 
 #include "Timer.h"
+#include "PRNG.h"
 
 namespace Framework
 {
@@ -28,6 +29,9 @@ namespace Framework
 
 	void CoreEngine::Initialize()
 	{
+		// seed the random generator
+		Utils::srand(GetTickCount(), timeGetTime());
+
 		for (unsigned i = 0; i < Systems.size(); ++i)
 			Systems[i]->Initialize();
 	}
