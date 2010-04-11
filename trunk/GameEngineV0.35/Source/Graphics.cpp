@@ -326,12 +326,12 @@ namespace Framework
 		InitGeometry();
 
 		//Load the textures
+    LoadTexture("Assets/Default.png");
 		LoadTexture("Assets/Circle.png");
 		LoadTexture("Assets/Square.png");
 		LoadTexture("Assets/CircleOutline.png");
 		LoadTexture("Assets/SquareOutline.png");
-		LoadTexture("Assets/Default.png");
-		LoadTexture("EdinburghCastle.jpg");
+		LoadTexture("Assets/Ship_template.png");
 
 		//Load the shaders
 

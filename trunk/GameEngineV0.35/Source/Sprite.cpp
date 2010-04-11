@@ -16,6 +16,7 @@
 #include "Core.h"
 #include "GameLogic.h"
 #include "WindowsSystem.h"
+#include <algorithm>
 
 namespace Framework
 {
@@ -50,6 +51,8 @@ namespace Framework
 		StreamRead(stream, SpriteName);
 		StreamRead(stream, Size);
 		StreamRead(stream, Color);
+
+    std::transform( SpriteName.begin(), SpriteName.end(), SpriteName.begin(), tolower );
 	}
 
 	void Sprite::Draw( IDirect3DDevice9 *pDevice, ID3DXEffect *shader )

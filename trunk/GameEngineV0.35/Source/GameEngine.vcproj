@@ -546,6 +546,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Objects\PlayerShip.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\Objects\Shrapnel.txt"
 				>
 			</File>
