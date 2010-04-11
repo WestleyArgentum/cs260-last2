@@ -31,7 +31,6 @@ namespace Framework
 		// if you grab these just check for null
 		Transform * transform;
 		Body* body;
-		float Speed;
 
 	protected:
 		// implement these when you derive from controller

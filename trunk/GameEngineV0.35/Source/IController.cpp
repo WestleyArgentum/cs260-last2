@@ -9,10 +9,7 @@ namespace Framework
 {
 
 	Controller::Controller()
-	{
-		//Set the default speed
-		Speed = 50.0f;
-	}
+	{}
 
 	Controller::~Controller()
 	{
@@ -33,9 +30,7 @@ namespace Framework
 	}
 
 	void Controller::Serialize(ISerializer& stream)
-	{
-		StreamRead(stream,Speed);
-	}
+	{}
 
 	void Controller::DestroyCheck()
 	{

@@ -20,13 +20,13 @@ namespace Framework
 	void PlayerController::LogicalUpdate( float dt )
 	{
 		if( IsUpHeld() )
-			body->AddForce(Vec2(0, Speed /** dt*/));
+			body->AddForce(Vec2(cos(transform->Rotation - 90) * speed, sin(transform->Rotation - 90) * speed));
 		if( IsDownHeld() )
-			body->AddForce(Vec2(0, -Speed /** dt*/));
+			body->AddForce(-Vec2(cos(transform->Rotation) * speed, sin(transform->Rotation) * speed));
 		if( IsLeftHeld() )
-			body->AddForce(Vec2(-Speed /** dt*/, 0));
+			transform->Rotation += .09;  // hard coded rotate by rads
 		if( IsRightHeld() )
-			body->AddForce(Vec2(Speed /** dt*/, 0));
+			transform->Rotation -= .09; // hard coded rotate by rads
 	}
 
 	void PlayerController::DestroyCheck()
@@ -38,5 +38,10 @@ namespace Framework
 		}
 
 		// Here we could kill the character if he flew out of bounds or something also
+	}
+
+	void PlayerController::Serialize(ISerializer& stream)
+	{
+		StreamRead(stream, speed);
 	}
 }

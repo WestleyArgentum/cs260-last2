@@ -11,12 +11,15 @@ namespace Framework
 	public:
 		PlayerController ();
 		virtual ~PlayerController ();
+		virtual void Serialize(ISerializer& stream);
 
-		int health;  // health of the character (decremented by collisions etc)
+		int health;  // health of the character (decremented by collisions, etc)
 
 	private:
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
+
+		float speed;
 
 	};
 
