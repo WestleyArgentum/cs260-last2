@@ -20,6 +20,7 @@ namespace Framework
 		virtual void DestroyCheck ();
 
 		float speed;
+		float rot_angle; // in degs
 
 	};
 
