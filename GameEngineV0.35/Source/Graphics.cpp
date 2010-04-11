@@ -330,6 +330,8 @@ namespace Framework
 		LoadTexture("Assets/Square.png");
 		LoadTexture("Assets/CircleOutline.png");
 		LoadTexture("Assets/SquareOutline.png");
+		LoadTexture("Assets/Default.png");
+		LoadTexture("EdinburghCastle.jpg");
 
 		//Load the shaders
 

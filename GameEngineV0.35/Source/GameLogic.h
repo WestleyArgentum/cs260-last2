@@ -13,27 +13,10 @@
 #include "Graphics.h"
 #include "Physics.h"
 #include "Engine.h"
+#include "IController.h"
 
 namespace Framework
 {
-
-	///Sample Demo Component Movement Controller. Used
-	///to move objects around the world not under
-	///the influence of physics.
-	class Controller : public GameComponent
-	{
-	public:
-		Controller * Next;
-		Controller * Prev;
-		Controller();
-		~Controller();
-		virtual void Initialize();
-		Transform * transform;
-		float Speed;
-		void Update(float dt);
-		virtual void Serialize(ISerializer& stream);
-	};
-
 	///Sample Demo Component Explosive Bomb. Explodes on contact after
 	///its fuse has counted down.
 	class Bomb : public GameComponent
