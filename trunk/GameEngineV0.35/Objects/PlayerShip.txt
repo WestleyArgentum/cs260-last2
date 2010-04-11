@@ -19,4 +19,4 @@ Circle
 Camera
 
 PlayerController
-50000
+10000

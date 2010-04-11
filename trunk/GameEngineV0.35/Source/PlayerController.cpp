@@ -20,13 +20,13 @@ namespace Framework
 	void PlayerController::LogicalUpdate( float dt )
 	{
 		if( IsUpHeld() )
-			body->AddForce(Vec2(0, Speed * dt));
+			body->AddForce(Vec2(0, Speed /** dt*/));
 		if( IsDownHeld() )
-			body->AddForce(Vec2(0, -Speed * dt));
+			body->AddForce(Vec2(0, -Speed /** dt*/));
 		if( IsLeftHeld() )
-			body->AddForce(Vec2(-Speed * dt, 0));
+			body->AddForce(Vec2(-Speed /** dt*/, 0));
 		if( IsRightHeld() )
-			body->AddForce(Vec2(Speed * dt, 0));
+			body->AddForce(Vec2(Speed /** dt*/, 0));
 	}
 
 	void PlayerController::DestroyCheck()
