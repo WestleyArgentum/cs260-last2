@@ -4,10 +4,10 @@ Transform
 
 Sprite
 Basic
-default
+ship_template
 60
 60
-1 0 0 1
+1 1 1 1
 
 Body
 10
