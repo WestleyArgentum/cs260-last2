@@ -369,6 +369,14 @@
 				Name="Controllers"
 				>
 				<File
+					RelativePath=".\Asteroid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Asteroid.h"
+					>
+				</File>
+				<File
 					RelativePath=".\IController.cpp"
 					>
 				</File>
@@ -538,11 +546,11 @@
 			Name="Objects"
 			>
 			<File
-				RelativePath="..\Objects\Ball.txt"
+				RelativePath="..\Objects\Asteroid.txt"
 				>
 			</File>
 			<File
-				RelativePath="..\Objects\Bomb.txt"
+				RelativePath="..\Objects\Ball.txt"
 				>
 			</File>
 			<File
