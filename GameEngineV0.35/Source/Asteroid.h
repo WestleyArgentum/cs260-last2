@@ -2,6 +2,7 @@
 // Asteroid.h : This is really the bomb.
 
 #include "Component.h"
+#include "VMath.h"
 
 namespace Framework
 {
@@ -18,6 +19,9 @@ namespace Framework
 		virtual void Initialize();
 		virtual void Serialize(ISerializer& stream);
 		virtual void SendMessage(Message* m);
+
+	private:
+		Vec2 initial_vel_range;
 	};
 
 }
