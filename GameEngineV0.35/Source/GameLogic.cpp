@@ -19,7 +19,6 @@
 #include "TextSerialization.h"
 #include "DebugDraw.h"
 #include "PlayerController.h"
-#include "CameraController.h"
 
 #include <ctime>
 
@@ -36,7 +35,6 @@ namespace Framework
 		//This macro expands into FACTORY->AddComponentCreator( "Transform" , new ComponentCreatorType<Transform>()  );
 
 		RegisterComponent(PlayerController);
-		RegisterComponent(CameraController);
 		RegisterComponent(Bomb);
 
 		const bool UseLevelFile = true;
