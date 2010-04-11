@@ -18,4 +18,4 @@ Circle
 Asteroid
 500
 4
-
+30 30
