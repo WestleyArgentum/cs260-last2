@@ -203,9 +203,10 @@ namespace Framework
 
 		//Iterate through the link list of sprite and draw them all
 		//TODO: Need Visibility to cull off screen sprites
-		ObjectLinkList<Sprite>::iterator it = SpriteList.begin();
-		for(;it!=SpriteList.end();++it)
-			it->Draw(pDevice, Shaders[Basic], dt);
+		for ( ObjectLinkList<Sprite>::iterator it = SpriteList.begin(); it != SpriteList.end(); ++it )
+    {
+      it->Draw( pDevice, Shaders[it->sIndex_] );
+    }
 
     for ( ObjectLinkList<Text>::iterator it = TextList.begin(); it != TextList.end(); ++it )
     {
@@ -331,9 +332,25 @@ namespace Framework
 		LoadTexture("Assets/SquareOutline.png");
 
 		//Load the shaders
-		LoadEffect(Basic,"Shaders/Basic.fx");
-		LoadEffect(DebugShader,"Shaders/Debug.fx");
+
+    LOAD_EFFECT( Basic );
+    LOAD_EFFECT( DebugShader );
+    LOAD_EFFECT( Water );
 	}
+
+  PixelShaders Graphics::GetShaderIndex( const std::string &shadername )
+  {
+    ShaderIndex::iterator it = shadermap_.find( shadername );
+
+    if ( it != shadermap_.end() )
+    {
+      return it->second;
+    }
+    else
+    {
+      return static_cast<PixelShaders>( -1 );
+    }
+  }
 
 	//Load a specific texture file and add it to the asset texture map
 	void Graphics::LoadTexture(const std::string& filename)
@@ -402,7 +419,7 @@ namespace Framework
     }
   }
 
-	bool Graphics::LoadEffect(int index,const std::string& filename)
+  bool Graphics::LoadEffect( PixelShaders index, const std::string &filename, const std::string &shadername )
 	{
 		HRESULT hr;
 		LPD3DXBUFFER pBufferErrors = NULL;
@@ -415,12 +432,13 @@ namespace Framework
 		#endif
 
 		//Compile the shaders at load time. 
-		hr = D3DXCreateEffectFromFile( pDevice, 
-			filename.c_str(),//The shader file to to load
-			NULL, //Optional NULL-terminated array of preprocessor macro definitions
-			NULL, //Not using include interface
-			shaderFlags, //Shader Flags
-			NULL, //No shader pool
+		hr = D3DXCreateEffectFromFile(
+      pDevice, 
+			filename.c_str(),     // The shader file to to load
+			NULL,                 // Optional NULL-terminated array of preprocessor macro definitions
+			NULL,                 // Not using include interface
+			shaderFlags,          // Shader Flags
+			NULL,                 // No shader pool
 			&Shaders[index], 
 			&pBufferErrors );
 
@@ -436,9 +454,15 @@ namespace Framework
 			{
 				ErrorIf( FAILED(hr) , "Failed to load shader: %s" , filename );
 			}
+
 			return false;
 		}
-		return true;
+    else
+    {
+      shadermap_[shadername] = index;
+
+		  return true;
+    }
 	}
 
 	//Create the vertex buffer that is used for our sprites.

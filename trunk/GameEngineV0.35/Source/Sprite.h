@@ -16,6 +16,15 @@ namespace Framework
 {
 	class Transform;
 
+	enum PixelShaders
+	{
+		 Basic = 0
+		,DebugShader
+    ,Water
+
+		,NumberOfShaders
+	};    // enum PixelShaders
+
 	/// A two-dimensional hardware accelerated sprite class using textures.
 	/// Has color, size, and a sprite texture name.
 	/// Depends on Transform.
@@ -33,14 +42,17 @@ namespace Framework
 		//which usually matches the texture size.
 		Vec2 Size;
 		//What texture to use for this sprite
-		IDirect3DTexture9*pTexture;
+		IDirect3DTexture9 *pTexture;
 		//What Transform to use for this sprite
-		Transform * transform;
+		Transform *transform;
 		//Name of the sprite asset texture
 		std::string SpriteName;
 		//Blend color of this sprite
 		Vec4 Color;
+    // Determines which pixel shader this sprite should draw, aka shader index.
+    PixelShaders sIndex_;
 		//Draw the sprite to the screen
-		void Draw(IDirect3DDevice9*pDevice,ID3DXEffect* shader, float dt);
+		void Draw( IDirect3DDevice9 *pDevice, ID3DXEffect *shader );
 	};
 }
+

@@ -9,15 +9,15 @@
 #include "Precompiled.h"
 #include "Core.h"
 
+#include "Timer.h"
+
 namespace Framework
 {
 	//A global pointer to the core
 	CoreEngine* CORE;
 
-	CoreEngine::CoreEngine()
+  CoreEngine::CoreEngine() : LastTime(0), TotalTime(0.0), GameActive(true)
 	{
-		LastTime = 0;
-		GameActive = true;
 		CORE = this; //Set the global pointer
 	}
 
@@ -36,21 +36,24 @@ namespace Framework
 	{
 		//Initialize the last time variable so our first frame
 		//is "zero" seconds (and not some huge unknown number)
-		LastTime = timeGetTime();
+    Timer frametimer;
+
+    LastTime = frametimer.TimeElapsed();
 
 		while (GameActive)
 		{
 			//Get the current time in milliseconds
-			unsigned currenttime = timeGetTime();
+			double currenttime = frametimer.TimeElapsed();
 			//Convert it to the time passed since the last frame (in seconds)
-			float dt = (currenttime - LastTime) / 1000.0f;
+			double dt = (currenttime - LastTime);
 			//Update the when the last update started
 			LastTime = currenttime;
+      TotalTime += dt;
 
 			//Update every system and tell each one how much
 			//time has passed since the last update
 			for (unsigned i = 0; i < Systems.size(); ++i)
-				Systems[i]->Update(dt);
+				Systems[i]->Update( static_cast<float>(dt) );
 		}
 
 	}

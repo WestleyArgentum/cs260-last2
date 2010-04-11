@@ -112,8 +112,8 @@ namespace Framework
     }
 
     RECT rect;
-    rect.left = pos.x;
-    rect.top  = pos.y;
+    rect.left = static_cast<long>( pos.x );
+    rect.top  = static_cast<long>( pos.y );
 
       // Calculate the RECT coords
     pFont_->DrawText( NULL, text_.c_str(), text_.size(), &rect, DT_CALCRECT, color_ );

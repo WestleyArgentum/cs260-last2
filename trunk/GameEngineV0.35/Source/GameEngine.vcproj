@@ -329,6 +329,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Timer"
+				>
+				<File
+					RelativePath=".\Timer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Timer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameLogic"
@@ -356,29 +368,53 @@
 						>
 					</File>
 					<File
-						RelativePath="..\Shaders\Debug.fx"
+						RelativePath="..\Shaders\DebugShader.fx"
+						>
+					</File>
+					<File
+						RelativePath="..\Shaders\Water.fx"
 						>
 					</File>
 				</Filter>
 				<Filter
 					Name="Components"
 					>
-					<File
-						RelativePath=".\Camera.cpp"
+					<Filter
+						Name="Text"
 						>
-					</File>
-					<File
-						RelativePath=".\Camera.h"
+						<File
+							RelativePath=".\Text.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Text.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Camera"
 						>
-					</File>
-					<File
-						RelativePath=".\Sprite.cpp"
+						<File
+							RelativePath=".\Camera.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Camera.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Sprite"
 						>
-					</File>
-					<File
-						RelativePath=".\Sprite.h"
-						>
-					</File>
+						<File
+							RelativePath=".\Sprite.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Sprite.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Utility"
@@ -401,18 +437,6 @@
 					</File>
 					<File
 						RelativePath=".\Graphics.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Text"
-					>
-					<File
-						RelativePath=".\Text.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Text.h"
 						>
 					</File>
 				</Filter>
@@ -503,6 +527,10 @@
 			</File>
 			<File
 				RelativePath="..\Objects\Shrapnel.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Objects\Wall.txt"
 				>
 			</File>
 			<File

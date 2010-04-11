@@ -18,13 +18,6 @@ namespace Framework
 	//Forward Declaration of Graphics Objects
 	class Camera;
 
-	enum PixelShaders
-	{
-		Basic = 0,
-		DebugShader,
-		NumberOfShaders
-	};
-
 	///A two-dimensional hardware accelerated non fixed function 
 	///sprite based graphics system.
 	///Provides Sprite and Camera GameComponents.
@@ -34,10 +27,13 @@ namespace Framework
 		///Update by rendering the scene
 		void Update(float dt);
 		virtual std::string GetName(){return "Graphics";}
-		//Initialize the Direct3D system.
+
+    //Initialize the Direct3D system.
 		Graphics();
 		~Graphics();
+
 		//Get a texture asset. Will return null if texture is not loaded
+    PixelShaders GetShaderIndex( const std::string &shadername );
 		IDirect3DTexture9* GetTexture( const std::string &texture );
     ID3DXFont* GetFont( const std::string &fontname, unsigned width, unsigned height );
 
@@ -72,7 +68,11 @@ namespace Framework
 		//Set up the default world, view, and projection matrices
 		void SetupMatrices();
 		//Load a effect file
-		bool LoadEffect(int index,const std::string& filename);
+		bool LoadEffect( PixelShaders index, const std::string &filename, const std::string &shadername );
+
+  // Loads the effect in a way that the PixelShader enum and the Shader.fx are named the same
+#define LOAD_EFFECT( SHADER ) LoadEffect( SHADER, "Shaders/" #SHADER ".fx", #SHADER )
+
 		//Draw Debug Data
 		void DrawDebugInfo();
 		//Draw the world
@@ -81,11 +81,9 @@ namespace Framework
 		void DeviceLost();
 		void DeviceReset();
 
-
-
 	public:
 		//The active camera
-		Camera*				CurrentCamera;
+		Camera *CurrentCamera;
 		HWND HWnd;
 		int ScreenWidth;
 		int ScreenHeight;
@@ -103,6 +101,9 @@ namespace Framework
     typedef std::map<Font, ID3DXFont*>                FontMap;
 		TextureMap Textures;
     FontMap Fonts;
+
+    typedef std::map< std::string, PixelShaders >     ShaderIndex;
+    ShaderIndex shadermap_;
 
 		//An array for our pixel shaders.
 		ID3DXEffect* Shaders[NumberOfShaders];		
@@ -122,3 +123,4 @@ namespace Framework
 	//A global pointer to the Graphics system, used to access it anywhere.
 	extern Graphics* GRAPHICS;
 }
+
