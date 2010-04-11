@@ -15,7 +15,7 @@ Body
 0.4
 Circle
 15
-Bomb
+Asteroid
 1000
 0
 

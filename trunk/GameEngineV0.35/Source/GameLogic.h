@@ -17,19 +17,6 @@
 
 namespace Framework
 {
-	///Sample Demo Component Explosive Bomb. Explodes on contact after
-	///its fuse has counted down.
-	class Bomb : public GameComponent
-	{
-	public:
-		int Fuse;
-		int SubSpawnCount;
-		int SpawnTime;
-		virtual void Initialize();
-		virtual void Serialize(ISerializer& stream);
-		virtual void SendMessage(Message* m);
-	};
-
 	///Sample Demo Game Logic
 	class GameLogic : public ISystem
 	{

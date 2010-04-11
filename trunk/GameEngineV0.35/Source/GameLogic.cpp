@@ -20,6 +20,7 @@
 #include "DebugDraw.h"
 #include "PlayerController.h"
 #include "PRNG.h"
+#include "Asteroid.h"
 
 #include <ctime>
 
@@ -36,7 +37,7 @@ namespace Framework
 		//This macro expands into FACTORY->AddComponentCreator( "Transform" , new ComponentCreatorType<Transform>()  );
 
 		RegisterComponent(PlayerController);
-		RegisterComponent(Bomb);
+		RegisterComponent(Asteroid);
 
 		const bool UseLevelFile = true;
 
@@ -141,7 +142,7 @@ namespace Framework
 					else if( key->character == '2' )
 						ObjectToCreate = "Objects\\Box.txt";
 					else if( key->character == '3' )
-						ObjectToCreate = "Objects\\Bomb.txt";
+						ObjectToCreate = "Objects\\Asteroid.txt";
 
 					if( !ObjectToCreate.empty() )
 						CreateObjectAt(WorldMousePosition,0,ObjectToCreate);
@@ -282,48 +283,16 @@ namespace Framework
 			float y_pos = 0;
 
 			// loop grabbing a random position not on top of the character
-			while (-60 < x_pos && x_pos < 60 && -60 < y_pos && y_pos < 60)  // 60 is about the twise the radius of the chara
+			int safe_zone = 80;
+			while (-safe_zone < x_pos && x_pos < safe_zone && -safe_zone < y_pos && y_pos < safe_zone)
 			{
 				x_pos = static_cast<float>(Utils::Random(-500, 500));
 				y_pos = static_cast<float>(Utils::Random(-500, 500));
 			}
 
-			CreateObjectAt(Vec2(x_pos, y_pos), static_cast<float>(Utils::Random(0, 360)), "Objects\\Bomb.txt");
+			CreateObjectAt(Vec2(x_pos, y_pos), static_cast<float>(Utils::Random(0, 360)), "Objects\\Asteroid.txt");
 		}
 	}
-	void Bomb::Initialize()
-	{
-		SpawnTime = timeGetTime();
-	}
-
-	void Bomb::Serialize(ISerializer& stream)
-	{
-		StreamRead(stream,Fuse);
-		StreamRead(stream,SubSpawnCount);
-	}
-
-	void Bomb::SendMessage(Message* m)
-	{
-		if( m->MessageId == Mid::Collide )
-		{			
-			if( (int)timeGetTime() - SpawnTime > Fuse )
-			{
-				GetOwner()->Destroy();
-				if( SubSpawnCount > 0 )
-				{			
-					Transform * transform = GetOwner()->has(Transform);
-					for(int i=-1;i<=1;++i)
-					{
-						Vec2 dir( sin( float(i)*D3DX_PI*0.3f) , cos( float(i)*D3DX_PI*0.3f) );		
-						GOC * a = FACTORY->Create("Objects\\Shrapnel.txt");
-						Body * bodyA = a->has(Body);
-						bodyA->SetVelocity(dir * 120);
-						bodyA->SetPosition(transform->Position);
-					}
-				}
-			}
-		}
-	};
 
 }
 
