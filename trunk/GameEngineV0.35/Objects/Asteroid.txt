@@ -11,11 +11,11 @@ circleoutline
 
 Body
 1
-0.3
-0.3
+0.00002
+0.00001
 Circle
 30
 Asteroid
 500
 4
-30 30
+50 50
