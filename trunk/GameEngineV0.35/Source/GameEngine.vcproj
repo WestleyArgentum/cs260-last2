@@ -353,6 +353,26 @@
 				RelativePath=".\GameLogic.h"
 				>
 			</File>
+			<Filter
+				Name="Controllers"
+				>
+				<File
+					RelativePath=".\IController.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\IController.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PlayerController.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PlayerController.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Systems"

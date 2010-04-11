@@ -18,7 +18,11 @@
 #include "Camera.h"
 #include "TextSerialization.h"
 #include "DebugDraw.h"
+#include "PlayerController.h"
+#include "CameraController.h"
+
 #include <ctime>
+
 
 namespace Framework
 {
@@ -31,7 +35,8 @@ namespace Framework
 		RegisterComponent(Transform);
 		//This macro expands into FACTORY->AddComponentCreator( "Transform" , new ComponentCreatorType<Transform>()  );
 
-		RegisterComponent(Controller);
+		RegisterComponent(PlayerController);
+		RegisterComponent(CameraController);
 		RegisterComponent(Bomb);
 
 		const bool UseLevelFile = true;
@@ -54,13 +59,13 @@ namespace Framework
 			}
 			else
 			{
-				GOC * camera = FACTORY->CreateEmptyComposition();
+				/*GOC * camera = FACTORY->CreateEmptyComposition();
 				camera->AddComponent( "Transform" , new Transform() );
 				Controller * controller = new Controller();
 				controller->Speed = 20.0f;
 				camera->AddComponent( "Controller" , controller );
 				camera->AddComponent( "CameraView" , new Camera() );
-				camera->Initialize();
+				camera->Initialize();*/
 			}
 
 			//Create the ground
@@ -299,40 +304,6 @@ namespace Framework
 			}
 		}
 	};
-
-	Controller::Controller()
-	{
-		//Set the default speed
-		Speed = 50.0f;
-	}
-
-	Controller::~Controller()
-	{
-		LOGIC->Controllers.erase( this );
-	}
-
-	void Controller::Initialize()
-	{ 
-		transform = GetOwner()->has(Transform);
-		LOGIC->Controllers.push_back( this );
-	}
-
-	void Controller::Update(float dt)
-	{
-		if( IsUpHeld() )
-			transform->Position.y -= Speed * dt;
-		if( IsDownHeld() )
-			transform->Position.y += Speed * dt;
-		if( IsLeftHeld() )
-			transform->Position.x += Speed * dt;
-		if( IsRightHeld() )
-			transform->Position.x -= Speed * dt;
-	}
-
-	void Controller::Serialize(ISerializer& stream)
-	{
-		StreamRead(stream,Speed);
-	}
 
 }
 

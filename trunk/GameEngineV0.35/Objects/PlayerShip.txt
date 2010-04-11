@@ -1,0 +1,22 @@
+Transform 
+0 0 
+0
+
+Sprite
+Basic
+default
+60
+60
+1 0 0 1
+
+Body
+10
+0.1
+0.3
+Circle
+25
+
+Camera
+
+PlayerController
+50000

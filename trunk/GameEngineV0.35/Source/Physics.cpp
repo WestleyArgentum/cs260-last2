@@ -24,7 +24,7 @@ namespace Framework
 		PHYSICS = this;
 		DebugDrawingActive = false;
 		TimeAccumulation = 0.0f;
-		Gravity = Vec2(0,-400);
+		Gravity = Vec2(0,0);  // were in space!
 		MaxVelocity = 1000;
 		MaxVelocitySq = MaxVelocity*MaxVelocity;
 		PenetrationEpsilon = 0.2f;
