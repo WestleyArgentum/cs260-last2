@@ -341,6 +341,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="RandomGenerator"
+				>
+				<File
+					RelativePath=".\PRNG.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\PRNG.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameLogic"

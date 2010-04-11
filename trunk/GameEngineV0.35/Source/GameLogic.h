@@ -46,6 +46,8 @@ namespace Framework
 		Vec2 WorldMousePosition;
 	public:
 		ObjectLinkList<Controller> Controllers;
+
+		void SpawnRandomAsteroids();
 	};
 
 	//A global pointer to our game so that it can be accessed from anywhere.
