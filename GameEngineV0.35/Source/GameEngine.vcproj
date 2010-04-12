@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="dxerr.lib d3dx9d.lib d3d9.lib winmm.lib"
+				AdditionalDependencies="dxerr.lib d3dx9d.lib d3d9.lib winmm.lib ws2_32.lib"
 				OutputFile="$(OutDir)/GameEngine.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -140,7 +140,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dx9.lib d3d9.lib winmm.lib"
+				AdditionalDependencies="d3dx9.lib d3d9.lib winmm.lib ws2_32.lib"
 				OutputFile="$(OutDir)/GameEngine.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -300,6 +300,14 @@
 			<Filter
 				Name="File"
 				>
+				<File
+					RelativePath=".\ConfigReader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ConfigReader.hpp"
+					>
+				</File>
 				<File
 					RelativePath=".\FilePath.cpp"
 					>
@@ -556,6 +564,94 @@
 					RelativePath=".\WindowsSystem.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Network"
+				>
+				<Filter
+					Name="System"
+					>
+					<File
+						RelativePath=".\NetAPI.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NetAPI.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Utility"
+					>
+					<File
+						RelativePath=".\NetUtilities.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\NetUtilities.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Messages"
+					>
+					<File
+						RelativePath=".\ChatMessages.h"
+						>
+					</File>
+					<File
+						RelativePath=".\GameMessages.h"
+						>
+					</File>
+					<File
+						RelativePath=".\INetMessage.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Sockets"
+					>
+					<File
+						RelativePath=".\SocketTypes.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SocketTypes.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Protocols"
+					>
+					<Filter
+						Name="Base"
+						>
+						<File
+							RelativePath=".\IProtocol.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\IProtocol.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Chat"
+						>
+						<File
+							RelativePath=".\ChatProtocol.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Gameplay"
+						>
+						<File
+							RelativePath=".\GameProtocol.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

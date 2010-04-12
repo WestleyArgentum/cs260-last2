@@ -9,6 +9,11 @@
 ///	Copyright 2009, Digipen Institute of Technology
 ///
 ///////////////////////////////////////////////////////////////////////////////////////
+
+  // Removing the warning
+  //  - C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+#pragma warning( disable : 4290 )
+
 #include "WindowsIncludes.h"
 #include "DirectXIncludes.h"
 #include "Containers.h"

@@ -21,7 +21,7 @@ namespace Framework
 		void Reset();
 	private:
 		friend class Physics;
-		static const int MaxContacts = 1024;
+		static const int MaxContacts = 1024*1024;
 		BodyContact contactArray[MaxContacts];
 		unsigned NumberOfContacts;
 		void ResolveVelocities(float dt);
