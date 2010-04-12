@@ -332,6 +332,7 @@ namespace Framework
 		LoadTexture("Assets/CircleOutline.png");
 		LoadTexture("Assets/SquareOutline.png");
 		LoadTexture("Assets/Ship_template.png");
+		LoadTexture("Assets/HBarrier.png");
 
 		//Load the shaders
 

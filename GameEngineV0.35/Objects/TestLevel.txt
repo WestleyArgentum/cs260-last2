@@ -1,6 +1,20 @@
 Ground.txt
-0 -280 
+0 0
 0
+
+HorizontalBarrier.txt
+0 1000
+0
+VerticalBarrier.txt
+1000 0
+0
+HorizontalBarrier.txt
+0 -1000
+0
+VerticalBarrier.txt
+-1000 0
+0
+
 PlayerShip.txt
 0 0
 0

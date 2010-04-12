@@ -5,15 +5,7 @@ Transform
 Sprite
 Water
 square
-800
-600
+3000
+3000
 0.1 0 1 1
-
-Body
-0
-0.3
-0.3
-Box
-300
-10
 

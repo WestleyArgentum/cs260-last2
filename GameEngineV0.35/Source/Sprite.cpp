@@ -57,7 +57,6 @@ namespace Framework
 
 	void Sprite::Draw( IDirect3DDevice9 *pDevice, ID3DXEffect *shader )
 	{
-
 		//Transform the sprite.
 		Mat4 matSprite, matTranslate, matRotate;
 		//First, scale it to the proper width and height.
@@ -68,7 +67,7 @@ namespace Framework
 		//Finally, move it to the proper location (note the floor functions on the positions).
 		D3DXMatrixTranslation(&matTranslate, floor(transform->Position.x), floor(transform->Position.y), 0.0f);
 		D3DXMatrixMultiply(&matSprite, &matSprite, &matTranslate);
-		
+
 		//Override the normal world transform and use the transform for this sprite.
 		shader->SetTechnique("Technique0");
 		pDevice->SetStreamSource(0, GRAPHICS->pQuadVertexBuffer, 0, sizeof(Vertex2D));
@@ -79,11 +78,33 @@ namespace Framework
 		shader->SetMatrix( "WorldViewProj", &worldViewProj );
 		shader->Begin(&numberOfPasses,0);
 		shader->SetTexture( "texture0" , pTexture );
-		shader->SetVector( "color" , &Color );
+		shader->SetVector( "color", &Color );
 
-    shader->SetFloat( "fTime",    static_cast<float>( CORE->GetTime() ) );
-    shader->SetFloat( "mouse_x" , WINDOWSSYSTEM->MousePosition.x );
-    shader->SetFloat( "mouse_y" , WINDOWSSYSTEM->MousePosition.y );
+    shader->SetFloat( "fTime", static_cast<float>( CORE->GetTime() ) );
+
+    if ( sIndex_ == Water )
+    {
+      GOC *ship = Framework::FACTORY->GetObjectWithId( LOGIC->playerShipId_ );
+
+      if ( ship )
+      {
+        Transform *sTrans = ship->has(Transform);
+
+        if ( sTrans )
+        {
+          Vec2 pos = sTrans->Position - transform->Position;
+
+          pos.x /= Size.x;
+          pos.y /= -Size.y;
+
+          pos.x += 0.5f;
+          pos.y += 0.5f;
+
+          shader->SetFloat( "mouse_x", pos.x );
+          shader->SetFloat( "mouse_y", pos.y );
+        }
+      }
+    }
 
 		for(UINT pass=0;pass<numberOfPasses;++pass)
 		{
@@ -95,3 +116,4 @@ namespace Framework
 	}
 
 }
+
