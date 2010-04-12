@@ -1,6 +1,9 @@
 
 // Asteroid.h : This is really the bomb.
 
+#ifndef ASTEROIDCONTROLLER
+#define ASTEROIDCONTROLLER
+
 #include "Component.h"
 #include "VMath.h"
 
@@ -25,3 +28,5 @@ namespace Framework
 	};
 
 }
+
+#endif

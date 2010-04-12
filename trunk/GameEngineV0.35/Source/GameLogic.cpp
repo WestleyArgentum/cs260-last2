@@ -110,9 +110,6 @@ namespace Framework
 
 	GameLogic::GameLogic()
 	{	
-		//Safe Id reference of the object the user has grabbed
-		GrabbedObjectId = 0;
-
 		//Set up the global pointer
 		ErrorIf(LOGIC!=NULL,"Logic already initialized");
 		LOGIC = this;
@@ -179,35 +176,6 @@ namespace Framework
 					WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouseMove->MousePosition);
 					break;
 				}
-			case Mid::MouseButton:
-				{
-					MouseButton * mouse = (MouseButton*)m;
-					//Update the world mouse position
-					WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouse->MousePosition);
-					
-					if(mouse->ButtonIsPressed)
-					{
-						if( mouse->MouseButtonIndex == MouseButton::LeftMouse )
-						{
-							//On left click attempt to grad a object at the mouse cursor
-							if( GOC * goc = PHYSICS->TestPoint( WorldMousePosition ) )
-								GrabbedObjectId = goc->GetId();
-						}
-						else if( mouse->MouseButtonIndex == MouseButton::RightMouse )
-						{
-							//On right click destroy the object at the mouse cursor
-							GOC * goc = PHYSICS->TestPoint( WorldMousePosition );
-							if( goc ) 
-								goc->Destroy();
-						}
-					}
-					else
-					{
-						//If the mouse has been release let go of the grabbed object
-						GrabbedObjectId = 0;
-					}
-					break;
-				}
 		}
 
 	};
@@ -217,22 +185,6 @@ namespace Framework
 		ObjectLinkList<Controller>::iterator it = Controllers.begin();
 		for(;it!=Controllers.end();++it)
 			it->Update(dt);
-
-		if( GOC * grabbedObject = FACTORY->GetObjectWithId(GrabbedObjectId))
-		{
-			Body * body = grabbedObject->has(Body);
-			if( IsShiftHeld() )
-			{
-				//Hard set or Teleport the object
-				body->SetPosition(WorldMousePosition);
-				body->SetVelocity(Vec2(0,0));
-			}
-			else
-			{
-				//Shove the object around
-				body->AddForce( (WorldMousePosition - body->Position) * 50 );
-			}
-		}
 
     Drawer::Instance.DrawCircle( Vec2(0, 0), 3 );
 	}

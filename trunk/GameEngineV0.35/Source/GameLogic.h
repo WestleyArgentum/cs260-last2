@@ -29,8 +29,9 @@ namespace Framework
 		virtual void SendMessage(Message *);
 		GOC * CreateObjectAt(Vec2& position,float rotation,const std::string& file);
 		void LoadLevelFile(const std::string& file);
-		unsigned GrabbedObjectId;
+
 		Vec2 WorldMousePosition;
+
 	public:
 		ObjectLinkList<Controller> Controllers;
 

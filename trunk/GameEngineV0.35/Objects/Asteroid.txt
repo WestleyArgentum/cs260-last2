@@ -11,8 +11,8 @@ circleoutline
 
 Body
 1
-0.00002
-0.00001
+0
+1
 Circle
 30
 Asteroid
