@@ -186,7 +186,7 @@ namespace Framework
 		for(;it!=Controllers.end();++it)
 			it->Update(dt);
 
-    Drawer::Instance.DrawCircle( Vec2(0, 0), 3 );
+    //Drawer::Instance.DrawCircle( Vec2(0, 0), 3 );
 	}
 	GOC * GameLogic::CreateObjectAt(Vec2& position,float rotation,const std::string& file)
 	{

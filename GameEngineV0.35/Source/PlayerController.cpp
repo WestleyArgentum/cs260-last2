@@ -96,20 +96,29 @@ namespace Framework
 					if( mouse->MouseButtonIndex == MouseButton::LeftMouse )
 					{
 						//On left click attempt to grad a object at the mouse cursor
-						if( GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition ) )
-							GrabbedObjectId = goc->GetId();
-					}
-					else if( mouse->MouseButtonIndex == MouseButton::RightMouse )
-					{
-						//On right click destroy the object at the mouse cursor
 						GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition );
-						if( goc ) 
-							goc->Destroy();
+						if( goc )
+							GrabbedObjectId = goc->GetId();
+						else
+							return;
+
+						// Give the asteroid a new color
+						Sprite* sprite = goc->has(Sprite);
+						if (sprite)
+							sprite->Color = GetOwner()->has(Sprite)->Color;
 					}
 				}
 				else
 				{
 					//If the mouse has been release let go of the grabbed object
+					GOC* asteroid = FACTORY->GetObjectWithId(GrabbedObjectId);
+					if (asteroid)
+					{
+						Sprite* sprite = asteroid->has(Sprite);
+						if (sprite)
+							sprite->Color = Vec4(1.0f, 1.0f, 0, 1.0f);  //^! hardcoded!
+					}
+
 					GrabbedObjectId = 0;
 				}
 				break;
