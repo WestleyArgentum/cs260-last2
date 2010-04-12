@@ -241,10 +241,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Message.h"
-					>
-				</File>
-				<File
 					RelativePath=".\System.h"
 					>
 				</File>
@@ -353,6 +349,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Messaging"
+				>
+				<File
+					RelativePath=".\Message.h"
+					>
+				</File>
+				<File
+					RelativePath=".\MessageHub.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\MessageHub.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameLogic"
@@ -369,14 +381,6 @@
 				Name="Controllers"
 				>
 				<File
-					RelativePath=".\Asteroid.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Asteroid.h"
-					>
-				</File>
-				<File
 					RelativePath=".\IController.cpp"
 					>
 				</File>
@@ -390,6 +394,18 @@
 				</File>
 				<File
 					RelativePath=".\PlayerController.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="GameLogicComponents"
+				>
+				<File
+					RelativePath=".\Asteroid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Asteroid.h"
 					>
 				</File>
 			</Filter>

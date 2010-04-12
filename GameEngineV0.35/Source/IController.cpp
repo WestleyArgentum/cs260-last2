@@ -16,13 +16,6 @@ namespace Framework
 		LOGIC->Controllers.erase( this );
 	}
 
-	void Controller::Initialize()
-	{ 
-		transform = GetOwner()->has(Transform);
-		body = GetOwner()->has(Body);
-		LOGIC->Controllers.push_back( this );
-	}
-
 	void Controller::Update(float dt)
 	{
 		LogicalUpdate(dt);
@@ -36,4 +29,5 @@ namespace Framework
 	{
 		//^! destroy things if the get too far from the player or the center or something
 	}
+
 }

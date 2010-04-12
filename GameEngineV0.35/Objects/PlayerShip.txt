@@ -11,8 +11,8 @@ ship_template
 
 Body
 10
-0.001
-0.003
+0
+1.0
 Circle
 25
 

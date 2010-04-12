@@ -23,14 +23,9 @@ namespace Framework
 
 		Controller();
 		virtual ~Controller();
-		virtual void Initialize();
 		virtual void Serialize(ISerializer& stream);
 
 		void Update(float dt);
-
-		// if you grab these just check for null
-		Transform * transform;
-		Body* body;
 
 	protected:
 		// implement these when you derive from controller

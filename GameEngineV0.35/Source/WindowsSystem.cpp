@@ -7,8 +7,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 #include "Precompiled.h"
+
+
 #include "WindowsSystem.h"
 #include "Core.h"
+#include "MessageHub.h"
 
 namespace Framework
 {
@@ -59,30 +62,35 @@ namespace Framework
 				key.character = wParam;
 				//Broadcast the message to all systems
 				CORE->BroadcastMessage(&key);
+				MessageHub->Post(key);
 				break;
 			}
 		case WM_LBUTTONDOWN:
 			{
 				MouseButton m(MouseButton::LeftMouse,true,Vec2(WINDOWSSYSTEM->MousePosition.x,WINDOWSSYSTEM->MousePosition.y));
 				CORE->BroadcastMessage(&m);
+				MessageHub->Post(m);
 				break;
 			}
 		case WM_RBUTTONDOWN:
 			{
 				MouseButton m(MouseButton::RightMouse,true,Vec2(WINDOWSSYSTEM->MousePosition.x,WINDOWSSYSTEM->MousePosition.y));
 				CORE->BroadcastMessage(&m);
+				MessageHub->Post(m);
 				break;
 			}
 		case WM_LBUTTONUP:
 			{
 				MouseButton m(MouseButton::LeftMouse,false,Vec2(WINDOWSSYSTEM->MousePosition.x,WINDOWSSYSTEM->MousePosition.y));
 				CORE->BroadcastMessage(&m);
+				MessageHub->Post(m);
 				break;
 			}
 		case WM_RBUTTONUP:
 			{
 				MouseButton m(MouseButton::RightMouse,false,Vec2(WINDOWSSYSTEM->MousePosition.x,WINDOWSSYSTEM->MousePosition.y));
 				CORE->BroadcastMessage(&m);
+				MessageHub->Post(m);
 				break;
 			}
 		case WM_MOUSEMOVE:
@@ -90,6 +98,7 @@ namespace Framework
 				WINDOWSSYSTEM->MousePosition = MAKEPOINTS( lParam );
 				MouseMove m(Vec2(WINDOWSSYSTEM->MousePosition.x,WINDOWSSYSTEM->MousePosition.y));
 				CORE->BroadcastMessage(&m);
+				MessageHub->Post(m);
 				break;
 			}
 		case WM_KEYDOWN: //A key was pressed

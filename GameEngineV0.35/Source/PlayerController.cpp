@@ -2,8 +2,11 @@
 // PlayerController.cpp : The manifestation (in code) of the brains of the character.
 
 #include "Precompiled.h"
+
 #include "PlayerController.h"
 #include "WindowsSystem.h"
+#include "GameLogic.h"
+#include "MessageHub.h"
 
 namespace Framework
 {
@@ -22,8 +25,18 @@ namespace Framework
 		// if you add something to the character destroy it here
 	}
 
+	void PlayerController::Initialize()
+	{
+		transform = GetOwner()->has(Transform);
+		body = GetOwner()->has(Body);
+		LOGIC->Controllers.push_back( this );
+
+		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
+	}
+
 	void PlayerController::LogicalUpdate( float dt )
 	{
+		// handle movement
 		if( IsUpHeld() )
 			body->AddForce(Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));  //^! <-- odd
 		if( IsDownHeld() )
@@ -32,6 +45,22 @@ namespace Framework
 			transform->Rotation += rot_angle * DEG_TO_RAD;
 		if( IsRightHeld() )
 			transform->Rotation -= rot_angle * DEG_TO_RAD;
+
+		if( GOC * grabbedObject = FACTORY->GetObjectWithId(GrabbedObjectId))
+		{
+			Body * body = grabbedObject->has(Body);
+			if( IsShiftHeld() )
+			{
+				//Hard set or Teleport the object
+				body->SetPosition(LOGIC->WorldMousePosition);
+				body->SetVelocity(Vec2(0,0));
+			}
+			else
+			{
+				//Shove the object around
+				body->AddForce( (LOGIC->WorldMousePosition - body->Position) * 50 );
+			}
+		}
 	}
 
 	void PlayerController::DestroyCheck()
@@ -51,4 +80,41 @@ namespace Framework
 		StreamRead(stream, speed);
 		StreamRead(stream, rot_angle);
 	}
+
+	void PlayerController::SendMessage( Message * message )
+	{
+		switch( message->MessageId )
+		{
+		case Mid::MouseButton:
+			{
+				MouseButton * mouse = static_cast<MouseButton*>(message);
+				//Update the world mouse position
+				LOGIC->WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouse->MousePosition);
+
+				if(mouse->ButtonIsPressed)
+				{
+					if( mouse->MouseButtonIndex == MouseButton::LeftMouse )
+					{
+						//On left click attempt to grad a object at the mouse cursor
+						if( GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition ) )
+							GrabbedObjectId = goc->GetId();
+					}
+					else if( mouse->MouseButtonIndex == MouseButton::RightMouse )
+					{
+						//On right click destroy the object at the mouse cursor
+						GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition );
+						if( goc ) 
+							goc->Destroy();
+					}
+				}
+				else
+				{
+					//If the mouse has been release let go of the grabbed object
+					GrabbedObjectId = 0;
+				}
+				break;
+			}
+		}
+	}
+
 }
