@@ -678,11 +678,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Objects\HorizontalBarrier.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\Objects\PlayerShip.txt"
 				>
 			</File>
 			<File
 				RelativePath="..\Objects\Shrapnel.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Objects\VerticalBarrier.txt"
 				>
 			</File>
 			<File

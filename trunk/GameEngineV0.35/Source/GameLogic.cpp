@@ -78,6 +78,7 @@ namespace Framework
 			}
 			else
 			{
+#if 0
 				GOC * gameObject = FACTORY->CreateEmptyComposition();
 				Transform * transform = new Transform();
 				transform->Position = Vec2(0,-300);;
@@ -98,6 +99,7 @@ namespace Framework
 				gameObject->AddComponent( "Sprite" , sprite );
 
 				gameObject->Initialize();
+#endif
 			}
 
 			//Create the two bumper walls
@@ -108,7 +110,7 @@ namespace Framework
 
 	}
 
-	GameLogic::GameLogic()
+  GameLogic::GameLogic() : playerShipId_(0)
 	{	
 		//Set up the global pointer
 		ErrorIf(LOGIC!=NULL,"Logic already initialized");

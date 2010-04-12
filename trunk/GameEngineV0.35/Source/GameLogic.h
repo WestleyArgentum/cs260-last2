@@ -36,6 +36,8 @@ namespace Framework
 		ObjectLinkList<Controller> Controllers;
 
 		void SpawnRandomAsteroids();
+
+    GOCId playerShipId_;
 	};
 
 	//A global pointer to our game so that it can be accessed from anywhere.

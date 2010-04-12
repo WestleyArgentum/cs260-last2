@@ -68,7 +68,8 @@ float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 {
 	//float4 true_color = tex2D( Sampler0 , IN.tex0 ) * color;
 
-	float2 mouse  = {mouse_x / 800, mouse_y / 600};
+	//float2 mouse  = {mouse_x / 800, mouse_y / 600};
+	float2 mouse = {mouse_x, mouse_y};
 
 	float  cos_time = cos( fTime ) * 0.05;
 	float2 offset = float2( cos( -fTime + IN.tex0.x * IN.tex0.y * 75.0f ), cos( fTime + IN.tex0.x * 75.0f ) ) * 0.012f ;

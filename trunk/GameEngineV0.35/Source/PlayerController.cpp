@@ -30,6 +30,7 @@ namespace Framework
 		transform = GetOwner()->has(Transform);
 		body = GetOwner()->has(Body);
 		LOGIC->Controllers.push_back( this );
+    LOGIC->playerShipId_ = GetOwner()->GetId();
 
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
 	}
