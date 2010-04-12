@@ -24,7 +24,8 @@ namespace Framework
 		virtual void SendMessage(Message* m);
 
 	private:
-		Vec2 initial_vel_range;
+		int vel_range_x;
+		int vel_range_y;
 	};
 
 }

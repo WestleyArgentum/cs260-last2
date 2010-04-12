@@ -16,14 +16,18 @@ namespace Framework
 
 		// go!
 		Body * bod = GetOwner()->has(Body);
-		bod->SetVelocity(Vec2(Utils::Random(-initial_vel_range.x, initial_vel_range.x), Utils::Random(-initial_vel_range.y, initial_vel_range.y)));
+
+		// give the asteroid a random velocity
+		bod->SetVelocity(Vec2(static_cast<float>(Utils::Random(-vel_range_x, vel_range_x)), 
+													static_cast<float>(Utils::Random(-vel_range_y, vel_range_y))));
 	}
 
 	void Asteroid::Serialize(ISerializer& stream)
 	{
 		StreamRead(stream,Fuse);
 		StreamRead(stream,SubSpawnCount);
-		StreamRead(stream, initial_vel_range);
+		StreamRead(stream, vel_range_x);
+		StreamRead(stream, vel_range_y);
 	}
 
 	void Asteroid::SendMessage(Message* m)
