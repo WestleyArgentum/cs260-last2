@@ -706,6 +706,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Objects\TestLevel.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\Objects\VerticalBarrier.txt"
 				>
 			</File>
