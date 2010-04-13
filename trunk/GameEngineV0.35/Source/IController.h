@@ -23,6 +23,7 @@ namespace Framework
 
 		Controller();
 		virtual ~Controller();
+		virtual void Initialize();
 		virtual void Serialize(ISerializer& stream);
 
 		void Update(float dt);

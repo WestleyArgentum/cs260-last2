@@ -15,6 +15,7 @@ Body
 1
 Circle
 30
+
 Asteroid
 500
 4

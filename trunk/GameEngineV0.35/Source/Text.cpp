@@ -60,7 +60,7 @@ namespace Framework
     StreamRead( stream, width_ );
     StreamLine( stream, fontname_ );    // (i.e. Comic Sans MS, Arial, Courier New)
 
-      // Read in the color of the texture!
+      // Read in the color of the texture! (Note, values between 0 and 255)
     StreamRead( stream, red );
     StreamRead( stream, green );
     StreamRead( stream, blue );
@@ -119,7 +119,7 @@ namespace Framework
     pFont_->DrawText( NULL, text_.c_str(), text_.size(), &rect, DT_CALCRECT, color_ );
 
       // Actually draws the text!
-    pFont_->DrawText( NULL, text_.c_str(), text_.size(), &rect, 0, color_ );
+    pFont_->DrawText( NULL, text_.c_str(), -1, &rect, 0, color_ );
   }
 
 }   // namespace Framework

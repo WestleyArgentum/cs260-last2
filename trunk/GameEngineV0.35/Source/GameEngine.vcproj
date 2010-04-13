@@ -396,14 +396,30 @@
 					RelativePath=".\IController.h"
 					>
 				</File>
-				<File
-					RelativePath=".\PlayerController.cpp"
+				<Filter
+					Name="ScoreDisplay"
 					>
-				</File>
-				<File
-					RelativePath=".\PlayerController.h"
+					<File
+						RelativePath=".\ScoreDisplay.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ScoreDisplay.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="PlayerController"
 					>
-				</File>
+					<File
+						RelativePath=".\PlayerController.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\PlayerController.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="GameLogicComponents"
@@ -695,6 +711,10 @@
 			</File>
 			<File
 				RelativePath="..\Objects\PlayerShip.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Objects\Score.txt"
 				>
 			</File>
 			<File

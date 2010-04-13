@@ -21,6 +21,7 @@
 #include "PlayerController.h"
 #include "PRNG.h"
 #include "Asteroid.h"
+#include "ScoreDisplay.h"
 
 #include <ctime>
 
@@ -36,6 +37,7 @@ namespace Framework
 		RegisterComponent(Transform);
 		//This macro expands into FACTORY->AddComponentCreator( "Transform" , new ComponentCreatorType<Transform>()  );
 
+		RegisterComponent(ScoreDisplay);
 		RegisterComponent(PlayerController);
 		RegisterComponent(Asteroid);
 
@@ -224,7 +226,11 @@ namespace Framework
 			StreamRead(stream,objectArchetype);
 			StreamRead(stream,objectPosition);
 			StreamRead(stream,objectRotation);
-			CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+
+      if ( stream.IsGood() )    // If no problems while reading in this object
+      {
+			  CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+      }
 		}
 	}
 

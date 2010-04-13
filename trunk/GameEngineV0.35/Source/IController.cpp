@@ -16,6 +16,11 @@ namespace Framework
 		LOGIC->Controllers.erase( this );
 	}
 
+  void Controller::Initialize( void )
+  {
+    LOGIC->Controllers.push_back( this );
+  }
+
 	void Controller::Update(float dt)
 	{
 		LogicalUpdate(dt);

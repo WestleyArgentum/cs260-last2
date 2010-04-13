@@ -2,6 +2,10 @@ Space.txt
 0 0
 0
 
+Score.txt
+0 0
+0
+
 HorizontalBarrier.txt
 0 1000
 0

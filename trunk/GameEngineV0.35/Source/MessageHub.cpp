@@ -15,14 +15,28 @@ namespace Framework
 	{
 		EntityIds& ids = entities_per_msgtype[msg.MessageId];
 		
-		for(EntityIds::iterator it = ids.begin(); it != ids.end(); ++it)
+    // Rob: Note...needed to restructure this slightly to properly erase entities when they weren't
+    //  found.
+
+    EntityIds::iterator it = ids.begin();
+
+		while ( it != ids.end() )
 		{
 			// resolve the id
 			GameObjectComposition* entity = FACTORY->GetObjectWithId(*it);
+
 			if (!entity)
-				ids.erase(it);
+      {
+        EntityIds::iterator prev = it;
+        ++it;   // Step ahead before invalidating (erasing) the iterator
+
+				ids.erase(prev);
+      }
 			else
+      {
 				entity->SendMessage(&msg);  // entity will send the message to the interested component
+        ++it;
+      }
 		}
 	}
 
