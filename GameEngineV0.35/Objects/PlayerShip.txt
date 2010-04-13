@@ -16,9 +16,9 @@ Body
 Circle
 25
 
-Camera
-
 PlayerController
 3
 10000
 4
+
+Camera

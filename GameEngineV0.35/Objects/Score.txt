@@ -1,0 +1,12 @@
+Transform 
+0 0 
+0
+
+Text
+Screen
+30 12
+Comic Sans MS
+255 0 255 255
+
+ScoreDisplay
+
