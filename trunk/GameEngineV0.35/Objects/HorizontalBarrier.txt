@@ -1,0 +1,17 @@
+Transform 
+0 0
+0
+
+Sprite
+Water
+HBarrier
+1950 50
+0.1 0 1 1
+
+Body
+0
+0.3
+0.3
+Box
+1000 25
+
