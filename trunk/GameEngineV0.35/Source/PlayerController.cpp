@@ -38,13 +38,13 @@ namespace Framework
 	void PlayerController::LogicalUpdate( float dt )
 	{
 		// handle movement
-		if( IsUpHeld() )
+		if( IsUpHeld() || IsWHeld() )
 			body->AddForce(Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));  //^! <-- odd
-		if( IsDownHeld() )
+		if( IsDownHeld() || IsSHeld() )
 			body->AddForce(-Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));
-		if( IsLeftHeld() )
+		if( IsLeftHeld() || IsAHeld() )
 			transform->Rotation += rot_angle * DEG_TO_RAD;
-		if( IsRightHeld() )
+		if( IsRightHeld() || IsDHeld() )
 			transform->Rotation -= rot_angle * DEG_TO_RAD;
 
 		if( GOC * grabbedObject = FACTORY->GetObjectWithId(GrabbedObjectId))
@@ -99,14 +99,17 @@ namespace Framework
 						//On left click attempt to grad a object at the mouse cursor
 						GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition );
 						if( goc )
+						{
 							GrabbedObjectId = goc->GetId();
-						else
-							return;
 
-						// Give the asteroid a new color
-						Sprite* sprite = goc->has(Sprite);
-						if (sprite)
-							sprite->Color = GetOwner()->has(Sprite)->Color;
+							// Give the asteroid a new color, save the old one
+							Sprite* sprite = goc->has(Sprite);
+							if (sprite)
+							{
+								GrabbedObjectColor = sprite->Color;
+								sprite->Color = GetOwner()->has(Sprite)->Color;
+							}
+						}
 					}
 				}
 				else
@@ -117,7 +120,7 @@ namespace Framework
 					{
 						Sprite* sprite = asteroid->has(Sprite);
 						if (sprite)
-							sprite->Color = Vec4(1.0f, 1.0f, 0, 1.0f);  //^! hardcoded!
+							sprite->Color = GrabbedObjectColor;
 					}
 
 					GrabbedObjectId = 0;

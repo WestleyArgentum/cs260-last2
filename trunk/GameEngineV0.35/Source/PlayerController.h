@@ -31,6 +31,7 @@ namespace Framework
 		float speed;
 		float rot_angle; // in degs
 		unsigned GrabbedObjectId;
+		Vec4 GrabbedObjectColor;
 
 	};
 
