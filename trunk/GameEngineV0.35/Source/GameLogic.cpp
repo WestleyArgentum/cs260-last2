@@ -74,7 +74,7 @@ namespace Framework
 			//Create the ground
 			if(DataDrivenObjects)
 			{
-				FACTORY->Create( "Objects\\Ground.txt" );
+				FACTORY->Create( "Objects\\Space.txt" );
 			}
 			else
 			{

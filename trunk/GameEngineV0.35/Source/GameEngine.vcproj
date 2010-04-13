@@ -417,6 +417,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="GameStates"
+				>
+				<File
+					RelativePath=".\IGameState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SinglePlayer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SinglePlayer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Systems"
@@ -674,10 +690,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Objects\Ground.txt"
-				>
-			</File>
-			<File
 				RelativePath="..\Objects\HorizontalBarrier.txt"
 				>
 			</File>
@@ -687,6 +699,10 @@
 			</File>
 			<File
 				RelativePath="..\Objects\Shrapnel.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Objects\Space.txt"
 				>
 			</File>
 			<File

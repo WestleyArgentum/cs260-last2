@@ -80,7 +80,7 @@ float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 	color.g       += cos_time * 0.03f;
 	color.r       -= cos_time * 2;
 	color         *= 0.82f;
-	color.a = 1.0f;
+	color.a = 0.5f;
 
 	return color;
 }
