@@ -79,6 +79,10 @@ namespace Framework
 	bool IsDownHeld();
 	bool IsLeftHeld();
 	bool IsRightHeld();
+	bool IsWHeld();
+	bool IsAHeld();
+	bool IsSHeld();
+	bool IsDHeld();
 
 	extern WindowsSystem* WINDOWSSYSTEM;
 }

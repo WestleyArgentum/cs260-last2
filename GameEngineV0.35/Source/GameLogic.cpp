@@ -152,13 +152,13 @@ namespace Framework
 					if( key->character == ' ' && IsShiftHeld() )
 						PHYSICS->StepModeActive = !PHYSICS->StepModeActive;
 
-					if( key->character == 'd' )
+					if( key->character == 'g' )
 					{
 						ToggleDebugDisplay debugMessage( true );
 						CORE->BroadcastMessage( &debugMessage );
 					}
 
-					if( key->character == 'f' )
+					if( key->character == 'h' )
 					{
 						ToggleDebugDisplay debugMessage( false );
 						CORE->BroadcastMessage( &debugMessage );
