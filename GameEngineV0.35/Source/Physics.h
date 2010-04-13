@@ -14,19 +14,26 @@
 #include "Collision.h"
 #include "Body.h"
 #include "Resolution.h"
+#include "INetMessage.h"
 
 namespace Framework
 {
 
 	///Message sent when there is a Collsion between two
 	///Body Components.
-	class MessageCollide : public Message
+	class MessageCollide : public Message//, public INetMessage
 	{
 	public:
 		MessageCollide() : Message(Mid::Collide) {};
 		Vec2 ContactNormal;
 		float Impulse;
+    //GOC * Initiator;
 		GOC * CollidedWith;
+
+    ///INetMessage interface methods.
+    //virtual unsigned Size( void ) const;
+    //virtual int SerializeData( char *buffer, unsigned size ) const;
+    //virtual void InterpretData( char *buffer, unsigned size ) const;
 	};
 
 	///	Basic 2D iterative impulse physics engine system.
