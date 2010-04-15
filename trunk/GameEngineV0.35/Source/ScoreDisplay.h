@@ -1,26 +1,21 @@
 #pragma once
 
 #include "IController.h"
+#include "Stats.h"
 
 namespace Framework
 {
+    /// Displays the ScoreList that gets sent to this object by message
   class ScoreDisplay : public Controller
   {
     public:
       ScoreDisplay( void );
 		  void LogicalUpdate ( float dt );
 
+  		void SendMessage( Message *message );
+
     private:
-      struct ScoreInfo
-      {
-        ScoreInfo( void ) : playerID_(0), score_(0) {;}
-
-        unsigned playerID_;
-        unsigned score_;
-      };    // ScoreInfo
-
-      typedef std::vector<ScoreInfo> ScoreCont;
-      ScoreCont scores_;
+      Statistics stats_;
   };    // ScoreDisplay
 
 }   // namespace Framework

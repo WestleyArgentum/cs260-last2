@@ -449,6 +449,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Stats"
+				>
+				<File
+					RelativePath=".\Stats.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Stats.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Systems"

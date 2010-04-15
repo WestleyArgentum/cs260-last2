@@ -25,7 +25,8 @@ namespace Framework
 			CharacterKey,
 			MouseButton,
 			MouseMove,
-			FileDrop
+			FileDrop,
+      StatsUpdate
 		};
 	}
 
