@@ -83,6 +83,7 @@ namespace Framework
 			iterator(pointer p) : item(p) {}
 			void operator--(){item=item->Prev;}
 			void operator++(){item=item->Next;}
+      void operator++(int) { pointer cp = item; item = item->Next; return cp; }
 			reference operator*(){return *item;}
 			pointer operator->(){return item;}
 			bool operator==(const iterator& i){return item==i.item;}

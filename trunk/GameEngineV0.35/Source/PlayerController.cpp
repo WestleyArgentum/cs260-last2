@@ -5,7 +5,7 @@
 
 #include "PlayerController.h"
 #include "WindowsSystem.h"
-#include "GameLogic.h"
+#include "GameStateManager.h"
 #include "MessageHub.h"
 
 namespace Framework
@@ -29,8 +29,8 @@ namespace Framework
 	{
 		transform = GetOwner()->has(Transform);
 		body = GetOwner()->has(Body);
-		LOGIC->Controllers.push_back( this );
-    LOGIC->playerShipId_ = GetOwner()->GetId();
+		//GSM->Controllers.push_back( this );
+    GSM->playerShipId_ = GetOwner()->GetId();
 
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
 	}
@@ -53,13 +53,13 @@ namespace Framework
 			if( IsShiftHeld() )
 			{
 				//Hard set or Teleport the object
-				body->SetPosition(LOGIC->WorldMousePosition);
+				body->SetPosition(GSM->WorldMousePosition);
 				body->SetVelocity(Vec2(0,0));
 			}
 			else
 			{
 				//Shove the object around
-				body->AddForce( (LOGIC->WorldMousePosition - body->Position) * 50 );
+				body->AddForce( (GSM->WorldMousePosition - body->Position) * 50 );
 			}
 		}
 	}
@@ -90,14 +90,14 @@ namespace Framework
 			{
 				MouseButton * mouse = static_cast<MouseButton*>(message);
 				//Update the world mouse position
-				LOGIC->WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouse->MousePosition);
+				GSM->WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouse->MousePosition);
 
 				if(mouse->ButtonIsPressed)
 				{
 					if( mouse->MouseButtonIndex == MouseButton::LeftMouse )
 					{
 						//On left click attempt to grad a object at the mouse cursor
-						GOC * goc = PHYSICS->TestPoint( LOGIC->WorldMousePosition );
+						GOC * goc = PHYSICS->TestPoint( GSM->WorldMousePosition );
 						if( goc )
 						{
 							GrabbedObjectId = goc->GetId();
