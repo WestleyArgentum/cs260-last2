@@ -378,11 +378,11 @@
 			Name="GameLogic"
 			>
 			<File
-				RelativePath=".\GameLogic.cpp"
+				RelativePath=".\GameStateManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GameLogic.h"
+				RelativePath=".\GameStateManager.h"
 				>
 			</File>
 			<Filter

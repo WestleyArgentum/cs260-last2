@@ -14,7 +14,7 @@
 #include "Graphics.h"
 
 #include "Core.h"
-#include "GameLogic.h"
+#include "GameStateManager.h"
 #include "WindowsSystem.h"
 #include <algorithm>
 
@@ -84,7 +84,7 @@ namespace Framework
 
     if ( sIndex_ == Water )
     {
-      GOC *ship = Framework::FACTORY->GetObjectWithId( LOGIC->playerShipId_ );
+      GOC *ship = Framework::FACTORY->GetObjectWithId( GSM->playerShipId_ );
 
       if ( ship )
       {

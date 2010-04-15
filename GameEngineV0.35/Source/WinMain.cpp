@@ -13,7 +13,7 @@
 #include "WindowsSystem.h"
 #include "Graphics.h"
 #include "Physics.h"
-#include "GameLogic.h"
+#include "GameStateManager.h"
 
 using namespace Framework;
 
@@ -56,7 +56,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR, INT)
 	engine->AddSystem(new GameObjectFactory());
 	engine->AddSystem(graphics);
 	engine->AddSystem(new Physics());
-	engine->AddSystem(new GameLogic());
+	engine->AddSystem(new GameStateManager());
 	//TODO: Add additional systems, such as audio, and possibly xinput, lua, etc.
 
 	engine->Initialize();

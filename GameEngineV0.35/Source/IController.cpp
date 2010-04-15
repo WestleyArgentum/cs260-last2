@@ -3,7 +3,7 @@
 
 #include "Precompiled.h"
 #include "IController.h"
-#include "GameLogic.h"
+#include "GameStateManager.h"
 
 namespace Framework
 {
@@ -13,12 +13,12 @@ namespace Framework
 
 	Controller::~Controller()
 	{
-		LOGIC->Controllers.erase( this );
+		//GSM->Controllers.erase( this );
 	}
 
   void Controller::Initialize( void )
   {
-    LOGIC->Controllers.push_back( this );
+    //LOGIC->Controllers.push_back( this );
   }
 
 	void Controller::Update(float dt)
