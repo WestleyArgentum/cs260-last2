@@ -8,7 +8,10 @@
 #include "Physics.h"
 #include "Asteroid.h"
 #include "PRNG.h"
+#include "MessageHub.h"
 #include <algorithm>
+
+#include "Stats.h"
 
 namespace Framework
 {
@@ -103,6 +106,12 @@ namespace Framework
   ///Update the game, updates all systems.
   void SinglePlayer::Update( float dt )
   {
+    UpdateStats stats;
+    static unsigned score = 0;
+    stats.stats_.push_back( PlayerStats(0, ++score ) );
+
+    MessageHub->Post( stats );
+
     ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();
     while (b != e)
     {

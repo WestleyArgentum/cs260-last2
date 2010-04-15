@@ -23,15 +23,18 @@ namespace Framework
 
 		Controller();
 		virtual ~Controller();
-		virtual void Initialize();
 		virtual void Serialize(ISerializer& stream);
 
 		void Update(float dt);
 
 	protected:
 		// implement these when you derive from controller
+    virtual void OnInitialize( void ) = 0;
 		virtual void LogicalUpdate ( float dt ) = 0;
 		virtual void DestroyCheck ();
+
+  private:
+		virtual void Initialize();
 	};
 
 }

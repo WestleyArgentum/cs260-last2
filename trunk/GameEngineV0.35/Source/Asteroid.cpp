@@ -11,7 +11,7 @@
 
 namespace Framework
 {
-	void Asteroid::Initialize()
+	void Asteroid::OnInitialize()
 	{
 		SpawnTime = timeGetTime();
 

@@ -25,11 +25,10 @@ namespace Framework
 		// if you add something to the character destroy it here
 	}
 
-	void PlayerController::Initialize()
+	void PlayerController::OnInitialize()
 	{
 		transform = GetOwner()->has(Transform);
 		body = GetOwner()->has(Body);
-		//GSM->Controllers.push_back( this );
     GSM->SetPlayerId(GetOwner()->GetId());
 
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);

@@ -10,6 +10,7 @@ namespace Framework
   {
     public:
       ScoreDisplay( void );
+		  void OnInitialize( void );
 		  void LogicalUpdate ( float dt );
 
   		void SendMessage( Message *message );
