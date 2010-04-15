@@ -9,16 +9,17 @@ namespace Framework
 {
 
 	Controller::Controller()
-	{}
+  {
+    GSM->AddController( this );
+  }
 
 	Controller::~Controller()
 	{
-		//GSM->Controllers.erase( this );
+		GSM->RemoveController( this );
 	}
 
   void Controller::Initialize( void )
   {
-    //LOGIC->Controllers.push_back( this );
   }
 
 	void Controller::Update(float dt)

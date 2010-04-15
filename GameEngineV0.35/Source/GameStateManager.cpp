@@ -31,29 +31,21 @@ namespace Framework
   const GameStateManager::GameStateID GameStateManager::GS_EXIT("EXIT");
   const GameStateManager::GameStateID GameStateManager::GS_RESTART("RESTART");
 
-  ///Registers all the component types and creates the GameStateObjects
-	void GameStateManager::Initialize()
-	{
-		//Components are explicitly registered in initialize
-		RegisterComponent(Transform);
-		RegisterComponent(PlayerController);
-		RegisterComponent(Asteroid);
-    RegisterComponent(ScoreDisplay);
-
-    //GameStates are created and registered here.
-    RegisterGameState(SinglePlayer);
-
-    ///Set the initial state and initialize it...
-    Curr = Next = "SinglePlayer";
-    GameStates[Curr]->Initialize();
-	}
-
   ///Initialize the GSM pointer and check for duplicate creations
   GameStateManager::GameStateManager() : playerShipId_(0)
 	{	
 		//Set up the global pointer
 		ErrorIf(GSM!=NULL,"Logic already initialized");
 		GSM = this;
+
+    //Components are explicitly registered in initialize
+    RegisterComponent(Transform);
+    RegisterComponent(PlayerController);
+    RegisterComponent(Asteroid);
+    RegisterComponent(ScoreDisplay);
+
+    //GameStates are created and registered here.
+    RegisterGameState(SinglePlayer);
 
 	}
 
@@ -66,18 +58,20 @@ namespace Framework
       delete b++->second;
 	}
 
-  ///Pass the message to the current state.
-	void GameStateManager::SendMessage(Message * m )
-	{
-    GameStates[Curr]->SendMessage( m );
-	}
+  ///Registers all the component types and creates the GameStateObjects
+  void GameStateManager::Initialize()
+  {
+    ///Set the initial state.
+    Curr = Next = "SinglePlayer";
+    GameStates[Curr]->Initialize();
+  }
 
-	void GameStateManager::Update(float dt)
-	{
+  void GameStateManager::Update(float dt)
+  {
     if (Next == GS_EXIT)
       2;// TODO: Do something to quit...
 
-    ///Check if we need to change the gamestate.
+    ///Check if we need to change the GameState.
     if (Next != Curr)
     {
       /// TODO: Check if Next exists!!
@@ -91,7 +85,27 @@ namespace Framework
 
     ///Update the current state!
     GameStates[Curr]->Update(dt);
+  }
+
+  ///Pass the message to the current state.
+	void GameStateManager::SendMessage(Message * m )
+	{
+    if (GameStates.count(Curr))
+      GameStates[Curr]->SendMessage( m );
 	}
+
+  ///Sets the next GameState to state, returns true for success.
+  bool GameStateManager::ChangeState( GameStateID state )
+  {
+    /// Check if state exists.
+    if (GameStates.count(state)) {
+      Next = state;
+      return true;
+    }
+
+    ///state specified doesn't exist.
+    return false;
+  }
 
   void GameStateManager::AddGameState( const std::string &name, IGameState *state )
   {
@@ -100,6 +114,18 @@ namespace Framework
 
     GameStates[name] = state;
   }
+
+
+  void GameStateManager::AddController( Controller *controller )
+  {
+    GameStates[Curr]->AddController(controller);
+  }
+
+  void GameStateManager::RemoveController( Controller *controller )
+  {
+    GameStates[Curr]->RemoveController(controller);
+  }
+
 
 }
 

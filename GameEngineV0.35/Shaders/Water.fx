@@ -64,6 +64,7 @@ VS_OUTPUT VertexShader0( VS_INPUT IN )
 	//color.r       -= cos_time * 2;
 	//color         *= 0.82f;
   */
+  
 float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 {
 	//float4 true_color = tex2D( Sampler0 , IN.tex0 ) * color;

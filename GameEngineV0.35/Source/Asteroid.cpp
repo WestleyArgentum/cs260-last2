@@ -7,6 +7,7 @@
 #include "Factory.h"
 #include "Body.h"
 #include "PRNG.h"
+#include "Physics.h"
 
 namespace Framework
 {
@@ -20,7 +21,15 @@ namespace Framework
 		// give the asteroid a random velocity
 		bod->SetVelocity(Vec2(static_cast<float>(Utils::Random(-vel_range_x, vel_range_x)), 
 													static_cast<float>(Utils::Random(-vel_range_y, vel_range_y))));
+
+    transform = GetOwner()->has(Transform);
+    body = GetOwner()->has(Body);
 	}
+
+  void Asteroid::LogicalUpdate( float dt )
+  {
+    transform->Position = body->Position;
+  }
 
 	void Asteroid::Serialize(ISerializer& stream)
 	{
@@ -32,7 +41,9 @@ namespace Framework
 
 	void Asteroid::SendMessage(Message* m)
 	{
-		if( m->MessageId == Mid::Collide )
+    MessageCollide *mc = dynamic_cast<MessageCollide*>(m);
+
+		if( m->MessageId == Mid::Collide && mc && !mc->CollidedWith->has(Asteroid))
 		{			
 			if( (int)timeGetTime() - SpawnTime > Fuse )
 			{
