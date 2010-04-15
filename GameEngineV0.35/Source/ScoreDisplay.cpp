@@ -5,7 +5,7 @@
 
 namespace Framework
 {
-  ScoreDisplay::ScoreDisplay( void ) : scores_(8)
+  ScoreDisplay::ScoreDisplay( void )
   {
   }
 
@@ -19,5 +19,20 @@ namespace Framework
       text->SetText( "Player %u\nScore: %10u", 0, 0 );
     }
   }
+
+  void ScoreDisplay::SendMessage( Message *message )
+  {
+    switch ( message->MessageId )
+    {
+      case Mid::StatsUpdate:
+        {
+          UpdateStats *updatestats = static_cast<UpdateStats*>( message );
+
+          stats_ = updatestats->stats_;
+        }
+        break;
+    }
+  }
+
 }   // namespace Framework
 
