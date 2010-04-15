@@ -10,7 +10,6 @@ namespace Framework
 
 	Controller::Controller()
   {
-    GSM->AddController( this );
   }
 
 	Controller::~Controller()
@@ -20,6 +19,9 @@ namespace Framework
 
   void Controller::Initialize( void )
   {
+    GSM->AddController( this );
+
+    OnInitialize();
   }
 
 	void Controller::Update(float dt)

@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 #include "ScoreDisplay.h"
-
+#include "MessageHub.h"
 #include "Text.h"
 
 namespace Framework
@@ -9,14 +9,26 @@ namespace Framework
   {
   }
 
+  void ScoreDisplay::OnInitialize( void )
+  {
+    MessageHub->Register( GetOwner()->GetId(), Mid::StatsUpdate );
+  }
+
   void ScoreDisplay::LogicalUpdate( float dt )
   {
     Text *text = GetOwner()->has(Text);
 
     if ( text )
     {
-        // Temporary, need a way to get player id and score.
-      text->SetText( "Player %u\nScore: %10u", 0, 0 );
+      char buffer[1024] = {0};
+      char *walker = buffer;
+
+      for ( Statistics::iterator it = stats_.begin(); it != stats_.end(); ++it )
+      {
+        walker += sprintf( walker, "Score: %d\n", it->score_ );
+      }
+
+      text->SetText( buffer );
     }
   }
 

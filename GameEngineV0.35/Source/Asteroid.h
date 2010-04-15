@@ -22,7 +22,7 @@ namespace Framework
 		int SubSpawnCount;
 		int SpawnTime;
 
-		virtual void Initialize();
+		virtual void OnInitialize();
     virtual void LogicalUpdate( float dt );
 		virtual void Serialize(ISerializer& stream);
 		virtual void SendMessage(Message* m);

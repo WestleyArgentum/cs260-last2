@@ -8,6 +8,7 @@ namespace Framework
   struct PlayerStats
   {
     PlayerStats( void ) : playerId_(0), score_(0) {;}
+    PlayerStats( unsigned playerId, unsigned score ) : playerId_(playerId), score_(score) {;}
 
     int SerializeData( char *buffer ) const;
     int InterpretData( char *buffer );

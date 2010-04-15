@@ -15,13 +15,13 @@ namespace Framework
 		PlayerController ();
 		virtual ~PlayerController ();
 		virtual void Serialize(ISerializer& stream);
-		virtual void Initialize ();
 
 		virtual void SendMessage(Message * message);
 
 		int health;  // health of the character (decremented by collisions, etc)
 
 	private:
+		virtual void OnInitialize ();
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
 
