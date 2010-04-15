@@ -84,7 +84,7 @@ namespace Framework
 
     if ( sIndex_ == Water )
     {
-      GOC *ship = Framework::FACTORY->GetObjectWithId( GSM->playerShipId_ );
+      GOC *ship = Framework::FACTORY->GetObjectWithId( GSM->GetPlayerId() );
 
       if ( ship )
       {

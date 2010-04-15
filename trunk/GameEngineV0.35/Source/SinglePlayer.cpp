@@ -21,6 +21,18 @@ namespace Framework
   }
 
 
+  ///Adds a controller to the internal list of the GameState.
+  void SinglePlayer::AddController( Controller *controller )
+  {
+    Controllers.push_back(controller);
+  }
+
+  ///Removes a controller from the internal list of the GameState.
+  void SinglePlayer::RemoveController( Controller *controller )
+  {
+    Controllers.erase(controller);
+  }
+
   void SinglePlayer::SendMessage( Message *m )
   {
     switch( m->MessageId )
@@ -123,10 +135,6 @@ namespace Framework
 		transform->Position = position;
 		transform->Rotation = rotation;
 
-    PlayerController * controller = newObject->has(PlayerController);
-    if (controller)
-      Controllers.push_back(controller);
-
 		//Initialize the composition
 		newObject->Initialize();
 
@@ -149,7 +157,8 @@ namespace Framework
 			StreamRead(stream,objectArchetype);
 			StreamRead(stream,objectPosition);
 			StreamRead(stream,objectRotation);
-			CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+      if (stream.IsGood())
+  			CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
 		}
   } //LoadLevelFile
 

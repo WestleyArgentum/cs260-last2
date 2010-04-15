@@ -15,6 +15,12 @@ namespace Framework
     SinglePlayer( GameStateManager *gsm );
     virtual ~SinglePlayer( void );
 
+    ///Adds a controller to the internal list of the GameState.
+    virtual void AddController( Controller *controller );
+
+    ///Removes a controller from the internal list of the GameState.
+    virtual void RemoveController( Controller *controller );
+
     virtual void SendMessage( Message *m );
 
     ///Make asteroids, player, and a score object.

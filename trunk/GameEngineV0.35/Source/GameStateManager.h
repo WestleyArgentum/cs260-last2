@@ -22,39 +22,63 @@ namespace Framework
 	class GameStateManager : public ISystem
 	{
 	public:
-		GameStateManager();
-		~GameStateManager();
-		void Initialize();
-		void Update(float timeslice);
-
-		virtual std::string GetName(){return "GameStateManager";}
-		virtual void SendMessage(Message *);
-		//GOC * CreateObjectAt(Vec2& position,float rotation,const std::string& file);
-		//void LoadLevelFile(const std::string& file);
-
-		Vec2 WorldMousePosition;
-
-	public:
     typedef std::string GameStateID;
     typedef std::map<GameStateID, IGameState *> GameStateMap;
 
+  private:
+    ///A map of the available gamestates.
     GameStateMap GameStates;
 
+    ///Keeps track of Current and Next GameStates.
     GameStateID Curr;
     GameStateID Next;
 
+    ///Catalyst states.
     static const GameStateID GS_EXIT;
     static const GameStateID GS_RESTART;
 
-    void AddGameState( const std::string &name, IGameState *state );
-		void SpawnRandomAsteroids();
-
+    ///The GOCId of the player...
     GOCId playerShipId_;
+
+    ///Adds a new GameState to the choices of possible states.
+    void AddGameState( const std::string &name, IGameState *state );
+    void SpawnRandomAsteroids();
+
+  public:
+    GameStateManager();
+    ~GameStateManager();
+
+    ///Initialize the first GameState.
+    void Initialize();
+    void Update(float timeslice);
+
+    ///Interface methods.
+    virtual std::string GetName(){return "GameStateManager";}
+    virtual void SendMessage(Message *);
+
+    ///Sets the next GameState to state, returns true for success.
+    bool ChangeState( GameStateID state );
+
+    ///Returns the current GameStateID.
+    GameStateID GetState( void ) const { return Curr; }
+
+    ///Returns the player's GOCId.
+    GOCId GetPlayerId( void ) { return playerShipId_; }
+
+    ///Stores the current player Id in the current gamestate.
+    void SetPlayerId( GOCId pid ) { playerShipId_ = pid; }
+
+    void AddController( Controller *controller );
+    void RemoveController( Controller *controller );
+
+    /// TODO: Super hacked... need to change this...
+    Vec2 WorldMousePosition;
 	};
 
 	//A global pointer to our game so that it can be accessed from anywhere.
 	extern GameStateManager* GSM;
 }
 
+///Registers a new GameState with the GameStateManager.
 #define RegisterGameState( state ) GSM->AddGameState( #state , new state(this) )
 

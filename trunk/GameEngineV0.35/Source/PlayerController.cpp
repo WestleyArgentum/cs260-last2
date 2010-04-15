@@ -30,7 +30,7 @@ namespace Framework
 		transform = GetOwner()->has(Transform);
 		body = GetOwner()->has(Body);
 		//GSM->Controllers.push_back( this );
-    GSM->playerShipId_ = GetOwner()->GetId();
+    GSM->SetPlayerId(GetOwner()->GetId());
 
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
 	}
@@ -46,6 +46,8 @@ namespace Framework
 			transform->Rotation += rot_angle * DEG_TO_RAD;
 		if( IsRightHeld() || IsDHeld() )
 			transform->Rotation -= rot_angle * DEG_TO_RAD;
+
+    transform->Position = body->Position;
 
 		if( GOC * grabbedObject = FACTORY->GetObjectWithId(GrabbedObjectId))
 		{
@@ -86,6 +88,11 @@ namespace Framework
 	{
 		switch( message->MessageId )
 		{
+    case Mid::Collide:
+      {
+        transform->Position = body->Position;
+        break;
+      }
 		case Mid::MouseButton:
 			{
 				MouseButton * mouse = static_cast<MouseButton*>(message);
