@@ -11,8 +11,8 @@ namespace Framework
 {
   namespace
   {
-      /// Passes the mouse position to the shader (in screen coordinates) as to integers, mouse_x
-      ///  and mouse_y
+    /// Passes the mouse position to the shader (in screen coordinates) as to integers, mouse_x
+    ///  and mouse_y
 /**************************************************************************************************/
 /**************************************************************************************************/
     void AddMousePosition( ID3DXEffect *shader, Sprite *sprite )
@@ -21,8 +21,8 @@ namespace Framework
       shader->SetInt( "mouse_y", WINDOWSSYSTEM->MousePosition.y );
     }
 
-      /// Gets the main player's position and passes it to the shader as two floats, ship_x and
-      ///  ship_y.
+    /// Gets the main player's position and passes it to the shader as two floats, ship_x and
+    ///  ship_y.
 /**************************************************************************************************/
 /**************************************************************************************************/
     void AddPlayerPosition( ID3DXEffect *shader, Sprite *sprite )

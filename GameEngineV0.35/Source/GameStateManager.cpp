@@ -17,9 +17,11 @@
 #include "ComponentCreator.h"
 #include "PlayerController.h"
 #include "Asteroid.h"
-#include "SinglePlayer.h"
 #include "ScoreDisplay.h"
 #include "BulletController.h"
+
+#include "SinglePlayer.h"
+#include "MainMenu.h"
 
 #include <ctime>
 
@@ -48,6 +50,7 @@ namespace Framework
 
     //GameStates are created and registered here.
     RegisterGameState(SinglePlayer);
+    RegisterGameState(MainMenu);
 
 	}
 
@@ -65,6 +68,7 @@ namespace Framework
   {
     ///Set the initial state.
     Curr = Next = "SinglePlayer";
+    //Curr = Next = "MainMenu";
     GameStates[Curr]->Initialize();
   }
 
