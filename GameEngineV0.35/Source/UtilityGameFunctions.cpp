@@ -15,7 +15,7 @@ namespace Framework
 		//is initialized.
 
 		//Build and serialize the object with data from the file
-		GOC * newObject = FACTORY->BuildAndSerialize(file);
+		GOC * newObject = FACTORY->BuildAndSerialize("Objects\\" + file + ".txt");
 		//Get the transform and adjust the position
 		Transform * transform = newObject->has(Transform);
 		transform->Position = position;

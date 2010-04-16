@@ -20,13 +20,10 @@
 namespace Framework
 {
   SinglePlayer::SinglePlayer( GameStateManager *gsm ) : IGameState(gsm)
-  {
-  }
+  {}
 
   SinglePlayer::~SinglePlayer( void )
-  {
-  }
-
+  {}
 
   ///Adds a controller to the internal list of the GameState.
   void SinglePlayer::AddController( Controller *controller )
@@ -55,11 +52,11 @@ namespace Framework
         std::string ObjectToCreate;
 
         if( key->character == '1' )					
-          ObjectToCreate = "Objects\\Ball.txt";
+          ObjectToCreate = "Ball";
         else if( key->character == '2' )
-          ObjectToCreate = "Objects\\Box.txt";
+          ObjectToCreate = "Box";
         else if( key->character == '3' )
-          ObjectToCreate = "Objects\\Asteroid.txt";
+          ObjectToCreate = "Asteroid";
 
         //if( !ObjectToCreate.empty() )
         //	CreateObjectAt(WorldMousePosition,0,ObjectToCreate);
@@ -151,7 +148,7 @@ namespace Framework
 			StreamRead(stream,objectPosition);
 			StreamRead(stream,objectRotation);
 			if (stream.IsGood())
-				CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+				CreateObjectAt(objectPosition, objectRotation, objectArchetype);
 		}
 	}
 
@@ -173,7 +170,7 @@ namespace Framework
 			  y_pos = static_cast<float>(Utils::Random(-range, range));
 		  }
 
-		  CreateObjectAt(Vec2(x_pos, y_pos), static_cast<float>(Utils::Random(0, 360)), "Objects\\Asteroid.txt");
+		  CreateObjectAt(Vec2(x_pos, y_pos), static_cast<float>(Utils::Random(0, 360)), "Asteroid");
 	  }
   } //SpawnRandomAsteroids
 
