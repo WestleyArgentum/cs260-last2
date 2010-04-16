@@ -1,8 +1,8 @@
 float4x4 WorldViewProj : WorldViewProjection;
 float4 color = {1,1,1,1};
 uniform extern float fTime : TIME;
-float mouse_x;
-float mouse_y;
+float ship_x;
+float ship_y;
 texture texture0;
 
 sampler Sampler0
@@ -70,11 +70,11 @@ float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 	//float4 true_color = tex2D( Sampler0 , IN.tex0 ) * color;
 
 	//float2 mouse  = {mouse_x / 800, mouse_y / 600};
-	float2 mouse = {mouse_x, mouse_y};
+	float2 ship = {ship_x, ship_y};
 
 	float  cos_time = cos( fTime ) * 0.05;
 	float2 offset = float2( cos( -fTime + IN.tex0.x * IN.tex0.y * 75.0f ), cos( fTime + IN.tex0.x * 75.0f ) ) * 0.012f ;
-	offset *= 1 / distance(IN.tex0, (mouse) );
+	offset *= 1 / distance(IN.tex0, (ship) );
 
 	float4 color  = tex2D( Sampler0, IN.tex0 + offset );
 	color.b       += cos_time * 0.3f;

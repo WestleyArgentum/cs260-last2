@@ -11,20 +11,11 @@
 #pragma once
 #include "Composition.h"
 #include "VMath.h"
+#include "IShaders.h"
 
 namespace Framework
 {
 	class Transform;
-
-	enum PixelShaders
-	{
-		 Basic = 0
-		,DebugShader
-    ,Water
-    ,Bullet
-
-		,NumberOfShaders
-	};    // enum PixelShaders
 
 	/// A two-dimensional hardware accelerated sprite class using textures.
 	/// Has color, size, and a sprite texture name.

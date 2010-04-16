@@ -68,6 +68,8 @@ namespace Framework
 		D3DXMatrixTranslation(&matTranslate, floor(transform->Position.x), floor(transform->Position.y), 0.0f);
 		D3DXMatrixMultiply(&matSprite, &matSprite, &matTranslate);
 
+    Graphics::ShaderInfo *shaderInfo = GRAPHICS->GetShaderInfo( sIndex_ );
+
 		//Override the normal world transform and use the transform for this sprite.
 		shader->SetTechnique("Technique0");
 		pDevice->SetStreamSource(0, GRAPHICS->pQuadVertexBuffer, 0, sizeof(Vertex2D));
@@ -82,36 +84,20 @@ namespace Framework
 
     shader->SetFloat( "fTime", static_cast<float>( CORE->GetTime() ) );
 
-    if ( sIndex_ == Water )
+      // Initialize any extra information about this particular shader for the sprite that we are
+      //  going to draw.
+    if ( shaderInfo->data_ )
     {
-      GOC *ship = Framework::FACTORY->GetObjectWithId( GSM->GetPlayerId() );
-
-      if ( ship )
-      {
-        Transform *sTrans = ship->has(Transform);
-
-        if ( sTrans )
-        {
-          Vec2 pos = sTrans->Position - transform->Position;
-
-          pos.x /= Size.x;
-          pos.y /= -Size.y;
-
-          pos.x += 0.5f;
-          pos.y += 0.5f;
-
-          shader->SetFloat( "mouse_x", pos.x );
-          shader->SetFloat( "mouse_y", pos.y );
-        }
-      }
+      shaderInfo->data_->InitPhase( shader, this );
     }
 
-		for(UINT pass=0;pass<numberOfPasses;++pass)
+		for ( UINT pass = 0; pass < numberOfPasses; ++pass )
 		{
 			shader->BeginPass(pass);
 			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 			shader->EndPass();
 		}
+
 		shader->End();
 	}
 

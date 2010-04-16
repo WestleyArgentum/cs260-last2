@@ -10,8 +10,10 @@
 #pragma once //Makes sure this header is only included once
 
 #include "Engine.h"
+#include "IShaders.h"
 #include "Sprite.h"
 #include "Text.h"
+
 
 namespace Framework
 {	
@@ -23,6 +25,14 @@ namespace Framework
 	///Provides Sprite and Camera GameComponents.
 	class Graphics : public ISystem
 	{
+  public:
+    struct ShaderInfo
+    {
+      ID3DXEffect *effect_;
+      PixelShaders type_;
+      ISpriteShader *data_;
+    };    // ShaderInfo
+
 	public:
 		///Update by rendering the scene
 		void Update(float dt);
@@ -34,6 +44,8 @@ namespace Framework
 
 		//Get a texture asset. Will return null if texture is not loaded
     PixelShaders GetShaderIndex( const std::string &shadername );
+    ShaderInfo *GetShaderInfo( PixelShaders index );
+
 		IDirect3DTexture9* GetTexture( const std::string &texture );
     ID3DXFont* GetFont( const std::string &fontname, unsigned width, unsigned height );
 
@@ -68,10 +80,12 @@ namespace Framework
 		//Set up the default world, view, and projection matrices
 		void SetupMatrices();
 		//Load a effect file
-		bool LoadEffect( PixelShaders index, const std::string &filename, const std::string &shadername );
+		bool LoadEffect( PixelShaders index, const std::string &filename, const std::string &shadername,
+      ISpriteShader *iShader );
 
   // Loads the effect in a way that the PixelShader enum and the Shader.fx are named the same
-#define LOAD_EFFECT( SHADER ) LoadEffect( SHADER, "Shaders/" #SHADER ".fx", #SHADER )
+#define LOAD_EFFECT( SHADER, ISHADER ) \
+  LoadEffect( SHADER, "Shaders/" #SHADER ".fx", #SHADER, ISHADER )
 
 		//Draw Debug Data
 		void DrawDebugInfo();
@@ -106,8 +120,8 @@ namespace Framework
     ShaderIndex shadermap_;
 
 		//An array for our pixel shaders.
-		ID3DXEffect* Shaders[NumberOfShaders];		
-		
+		ShaderInfo shaders_[NumberOfShaders];		
+
 		//World Projection and view matrices
 		Mat4 ProjMatrix;
 		Mat4 ViewMatrix;
@@ -118,7 +132,7 @@ namespace Framework
 		Vec2 SurfaceSize;
 		ObjectLinkList<Sprite> SpriteList;
     ObjectLinkList<Text> TextList;
-	};
+	};    // Graphics
 
 	//A global pointer to the Graphics system, used to access it anywhere.
 	extern Graphics* GRAPHICS;
