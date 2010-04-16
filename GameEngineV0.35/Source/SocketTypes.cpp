@@ -7,6 +7,8 @@ namespace Framework
   
   ///The base for generating id's for all sockets
   unsigned ASocket::id_base = 0;
+  ///The store of protocols to be used when interpreting messages.
+  ASocket::ProtocolMap ASocket::Protocols;
 
   /// Only allow derived classes and NetAPI to construct this.
   ASocket::ASocket( void ) : id(id_base++), rbuffer(0), sbuffer(0), blocking(true)
@@ -175,10 +177,11 @@ namespace Framework
   }
 
   ///Send data to the address specified. Returns the number of bytes sent.
-  int UDPSocket::SendTo( const NetAddress &remote, const INetMessage &msg ) const throw ( Error )
+  int UDPSocket::SendTo( const NetAddress &remote, const IProtocol *protocol ) const throw ( Error )
   {
-    msg.SerializeData(sbuffer, MAX_MSG_SIZE);
-    int ret = sendto(socket, sbuffer, msg.Size(), 0, remote, remote.Size());
+    //Use the protocol to format the pack about to be sent.
+    int size = protocol->FormatPacket(sbuffer,MAX_MSG_SIZE);
+    int ret = sendto(socket, sbuffer, size, 0, remote, remote.Size());
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
         return ret; // would have blocked
@@ -191,20 +194,33 @@ namespace Framework
   }
 
   ///Receive Data on the socket. Stores the address of the sender in address.
-  int UDPSocket::RecvFrom( NetAddress &remote ) throw ( Error )
+  ///Returns a list of the messages extracted from the buffer. Users must delete list.
+  NetMessageList * UDPSocket::RecvFrom( NetAddress &remote ) throw ( Error )
   {
     int size = remote.Size();
     int ret = recvfrom(socket, rbuffer, MAX_MSG_SIZE, 0, remote, &size);
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
-        return ret; // would have blocked
+        return 0; // would have blocked
 
       ///Something really went wrong.
       ThrowError(Error::E_SocketError);
     }
 
+    ///Check if the data size isn't large enough even for the type of protocol.
+    if (ret < sizeof(ProtocolType))
+      return 0;
+
+    ///Determine the type of protocol to use.
+    IProtocol *protocol = 0;
+    ProtocolType ptype = *reinterpret_cast<ProtocolType*>(rbuffer);
+    if (Protocols.count(ptype))
+      protocol = Protocols[ptype];
+    else
+      return 0;
+
     ///Return the number of bytes read.
-    return ret;
+    return protocol->ExtractMessages( rbuffer, ret );
   }
 
 } ///namespace Framework

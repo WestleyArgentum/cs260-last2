@@ -374,6 +374,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="DataStream"
+				>
+				<File
+					RelativePath=".\DataStream.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\DataStream.h"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameLogic"
@@ -486,6 +514,10 @@
 					>
 					<File
 						RelativePath="..\Shaders\Basic.fx"
+						>
+					</File>
+					<File
+						RelativePath="..\Shaders\Bullet.fx"
 						>
 					</File>
 					<File
@@ -629,17 +661,35 @@
 					Name="System"
 					>
 					<File
-						RelativePath=".\NetAPI.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\NetAPI.h"
+						RelativePath=".\Network.h"
 						>
 					</File>
 				</Filter>
 				<Filter
 					Name="Utility"
 					>
+					<File
+						RelativePath=".\NetAPI.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\NetAPI.h"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+					</File>
 					<File
 						RelativePath=".\NetUtilities.cpp"
 						>
@@ -655,10 +705,24 @@
 					<File
 						RelativePath=".\ChatMessages.h"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameMessages.h"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\INetMessage.h"
@@ -671,10 +735,24 @@
 					<File
 						RelativePath=".\SocketTypes.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\SocketTypes.h"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 				<Filter
@@ -686,10 +764,24 @@
 						<File
 							RelativePath=".\IProtocol.cpp"
 							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+								/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\IProtocol.h"
 							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCustomBuildTool"
+								/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 					<Filter

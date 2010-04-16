@@ -21,6 +21,7 @@ namespace Framework
 		 Basic = 0
 		,DebugShader
     ,Water
+    ,Bullet
 
 		,NumberOfShaders
 	};    // enum PixelShaders

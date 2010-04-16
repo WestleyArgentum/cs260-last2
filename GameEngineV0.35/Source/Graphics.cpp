@@ -327,6 +327,7 @@ namespace Framework
 
 		//Load the textures
     LoadTexture("Assets/Default.png");
+    LoadTexture("Assets/Bullet.png");
 		LoadTexture("Assets/Circle.png");
 		LoadTexture("Assets/Square.png");
 		LoadTexture("Assets/CircleOutline.png");
@@ -339,6 +340,7 @@ namespace Framework
     LOAD_EFFECT( Basic );
     LOAD_EFFECT( DebugShader );
     LOAD_EFFECT( Water );
+    LOAD_EFFECT( Bullet );
 	}
 
   PixelShaders Graphics::GetShaderIndex( const std::string &shadername )
