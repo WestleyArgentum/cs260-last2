@@ -5,9 +5,9 @@ Transform
 Sprite
 Bullet
 Bullet
-80
-80
-0 0 1 1
+60
+60
+1 1 1 1
 
 Body
 .00001

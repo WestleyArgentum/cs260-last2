@@ -328,6 +328,7 @@ namespace Framework
 		//Load the textures
     LoadTexture("Assets/Default.png");
     LoadTexture("Assets/Bullet.png");
+    //LoadTexture("Assets/Bomb.png");
 		LoadTexture("Assets/Circle.png");
 		LoadTexture("Assets/Square.png");
 		LoadTexture("Assets/CircleOutline.png");
