@@ -490,22 +490,42 @@
 					RelativePath=".\IGameState.h"
 					>
 				</File>
-				<File
-					RelativePath=".\ServerState.cpp"
+				<Filter
+					Name="SinglePlayer"
 					>
-				</File>
-				<File
-					RelativePath=".\ServerState.h"
+					<File
+						RelativePath=".\SinglePlayer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SinglePlayer.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="ServerState"
 					>
-				</File>
-				<File
-					RelativePath=".\SinglePlayer.cpp"
+					<File
+						RelativePath=".\ServerState.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ServerState.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="MainMenu"
 					>
-				</File>
-				<File
-					RelativePath=".\SinglePlayer.h"
-					>
-				</File>
+					<File
+						RelativePath=".\MainMenu.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\MainMenu.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Stats"
@@ -824,70 +844,6 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Objects"
-			>
-			<File
-				RelativePath="..\Objects\Asteroid.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Ball.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Box.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Bullet.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Camera.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\HorizontalBarrier.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\PlayerShip.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Score.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Shrapnel.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Space.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\TestLevel.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\VerticalBarrier.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\Wall.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\WallLeft.txt"
-				>
-			</File>
-			<File
-				RelativePath="..\Objects\WallRight.txt"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Precompiled"
 			>
 			<File
@@ -914,6 +870,82 @@
 				RelativePath=".\Precompiled.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="Resources"
+			>
+			<Filter
+				Name="Levels"
+				>
+				<File
+					RelativePath="..\Levels\MainMenu.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Levels\SinglePlayer.txt"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Objects"
+				>
+				<File
+					RelativePath="..\Objects\Asteroid.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Ball.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Box.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Bullet.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Camera.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\HorizontalBarrier.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\PlayerShip.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Score.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Shrapnel.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Space.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\VerticalBarrier.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\Wall.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\WallLeft.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\WallRight.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

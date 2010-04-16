@@ -103,7 +103,7 @@ namespace Framework
   void SinglePlayer::Initialize( void )
   {
     ///Load the assets of the level.
-	  LoadFromFile("Objects\\TestLevel.txt");
+	  LoadFromFile("Levels\\SinglePlayer.txt");
 	  SpawnRandomAsteroids();
   } //Initialize
 
@@ -133,7 +133,7 @@ namespace Framework
   void SinglePlayer::Restart( void )
   {
   } //Restart
-  
+
   ///Loads a level from a file. Doesn't unload current level.
 	void SinglePlayer::LoadFromFile( const std::string &filename )
 	{
