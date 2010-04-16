@@ -29,9 +29,12 @@ namespace Framework
 		Body* body;
 
 		float speed;
-		float rot_angle; // in degs
+		float rot_angle; // in degrees
+		float recharge_time;
+
 		unsigned GrabbedObjectId;
 		Vec4 GrabbedObjectColor;
+		float time_last_fire;
 
 	};
 

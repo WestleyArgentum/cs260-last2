@@ -40,5 +40,7 @@ namespace Framework
     void LoadLevelFile( const std::string &filename );
     
 	  void SpawnRandomAsteroids( void );
+
+		GOCId player_ship_id;
   };
 }

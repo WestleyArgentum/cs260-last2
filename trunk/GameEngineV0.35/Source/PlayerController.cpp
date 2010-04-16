@@ -7,6 +7,7 @@
 #include "WindowsSystem.h"
 #include "GameStateManager.h"
 #include "MessageHub.h"
+#include "SinglePlayer.h"
 
 namespace Framework
 {
@@ -32,6 +33,13 @@ namespace Framework
     GSM->SetPlayerId(GetOwner()->GetId());
 
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
+
+		//^! this is a hack
+		SinglePlayer* state = GetGameState(SinglePlayer);
+		if (state)
+			state->player_ship_id = GetOwner()->GetId();
+		//else
+			//issue some sort of error
 	}
 
 	void PlayerController::LogicalUpdate( float dt )
@@ -46,7 +54,19 @@ namespace Framework
 		if( IsRightHeld() || IsDHeld() )
 			transform->Rotation -= rot_angle * DEG_TO_RAD;
 
-    transform->Position = body->Position;
+		// check for fire
+		if( IsSpaceHeld() )
+		{
+			SinglePlayer* state = GetGameState(SinglePlayer);
+			if(state && time_last_fire <= 0)
+			{
+				time_last_fire = recharge_time;
+				state->CreateObjectAt(transform->Position, transform->Rotation, "Objects\\Bullet.txt");
+			}
+		}
+
+		// dec the time until we can fire again
+		time_last_fire -= dt;
 
 		if( GOC * grabbedObject = FACTORY->GetObjectWithId(GrabbedObjectId))
 		{
@@ -81,6 +101,7 @@ namespace Framework
 		StreamRead(stream, health);
 		StreamRead(stream, speed);
 		StreamRead(stream, rot_angle);
+		StreamRead(stream, recharge_time);
 	}
 
 	void PlayerController::SendMessage( Message * message )

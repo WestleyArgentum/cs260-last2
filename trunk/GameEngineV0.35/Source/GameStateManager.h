@@ -10,6 +10,8 @@
 
 #pragma once //Makes sure this header is only included once
 
+#include <string>
+
 #include "Graphics.h"
 #include "Physics.h"
 #include "Engine.h"
@@ -62,6 +64,12 @@ namespace Framework
     ///Returns the current GameStateID.
     GameStateID GetState( void ) const { return Curr; }
 
+		template <typename GameState>
+		GameState* GetCurrState ()
+		{
+			return dynamic_cast<GameState*>(GameStates[Curr]);
+		}
+
     ///Returns the player's GOCId.
     GOCId GetPlayerId( void ) { return playerShipId_; }
 
@@ -77,8 +85,10 @@ namespace Framework
 
 	//A global pointer to our game so that it can be accessed from anywhere.
 	extern GameStateManager* GSM;
-}
+
 
 ///Registers a new GameState with the GameStateManager.
 #define RegisterGameState( state ) GSM->AddGameState( #state , new state(this) )
+#define GetGameState( state )  GSM->GetCurrState<state>()
 
+}

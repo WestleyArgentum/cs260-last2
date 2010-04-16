@@ -12,7 +12,7 @@ ship_template
 Body
 10
 0
-1.0
+1
 Circle
 25
 
@@ -20,5 +20,6 @@ PlayerController
 3
 10000
 4
+0.25
 
 Camera
