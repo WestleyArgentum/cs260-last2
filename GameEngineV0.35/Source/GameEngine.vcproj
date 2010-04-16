@@ -415,6 +415,14 @@
 				RelativePath=".\GameStateManager.h"
 				>
 			</File>
+			<File
+				RelativePath=".\UtilityGameFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UtilityGameFunctions.h"
+				>
+			</File>
 			<Filter
 				Name="Controllers"
 				>
@@ -480,6 +488,14 @@
 				>
 				<File
 					RelativePath=".\IGameState.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ServerState.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ServerState.h"
 					>
 				</File>
 				<File

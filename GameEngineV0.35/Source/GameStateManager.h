@@ -79,6 +79,8 @@ namespace Framework
     void AddController( Controller *controller );
     void RemoveController( Controller *controller );
 
+		void RegisterComposition(GOCId id);
+
     /// TODO: Super hacked... need to change this...
     Vec2 WorldMousePosition;
 	};

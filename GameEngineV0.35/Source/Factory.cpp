@@ -175,4 +175,9 @@ namespace Framework
 		GameObjectIdMap.clear();
 	}
 
+	void GameObjectFactory::DestroyById( GOCId gameObject )
+	{
+		if (GameObjectComposition* obj = GetObjectWithId(gameObject))
+			ObjectsToBeDeleted.insert(obj);
+	}
 }
