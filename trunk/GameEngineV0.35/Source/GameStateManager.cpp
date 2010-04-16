@@ -127,8 +127,11 @@ namespace Framework
   {
     GameStates[Curr]->RemoveController(controller);
   }
-	
 
+	void GameStateManager::RegisterComposition( GOCId id )
+	{
+		GameStates[Curr]->RegisterComposition(id);
+	}
 
 }
 

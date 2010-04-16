@@ -31,6 +31,7 @@ namespace Framework
 
 		///Add a GOC to the destroy list for delayed destruction.
 		void Destroy(GOC * gameObject);
+		void DestroyById(GOCId gameObject);
 
 		///Update the factory, destroying dead objects.
 		virtual void Update(float dt);

@@ -30,17 +30,16 @@ namespace Framework
     virtual void Update( float dt );
 
     ///Cleanup assets and cleanup and ties to other states.
-    virtual void Cleanup( void );
+    void OnCleanup( void );
 
     ///Reset all the positions, objects, scores, ect...
     virtual void Restart( void );
-
-    GOC * CreateObjectAt( Vec2& position, float rotation, const std::string& file) ;
-
-    void LoadLevelFile( const std::string &filename );
     
 	  void SpawnRandomAsteroids( void );
 
 		GOCId player_ship_id;
+
+	private:
+		virtual void LoadFromFile ( const std::string &filename );
   };
 }

@@ -1,4 +1,7 @@
 #include "Precompiled.h"
+
+#include <algorithm>
+
 #include "SinglePlayer.h"
 #include "PlayerController.h"
 #include "Core.h"
@@ -9,7 +12,8 @@
 #include "Asteroid.h"
 #include "PRNG.h"
 #include "MessageHub.h"
-#include <algorithm>
+#include "UtilityGameFunctions.h"
+
 
 #include "Stats.h"
 
@@ -99,7 +103,7 @@ namespace Framework
   void SinglePlayer::Initialize( void )
   {
     ///Load the assets of the level.
-	  LoadLevelFile("Objects\\TestLevel.txt");
+	  LoadFromFile("Objects\\TestLevel.txt");
 	  SpawnRandomAsteroids();
   } //Initialize
 
@@ -121,7 +125,7 @@ namespace Framework
   } //Update
 
   ///Cleanup assets and cleanup and ties to other states.
-  void SinglePlayer::Cleanup( void )
+  void SinglePlayer::OnCleanup( void )
   {
   } //Cleanup
 
@@ -129,29 +133,9 @@ namespace Framework
   void SinglePlayer::Restart( void )
   {
   } //Restart
-
-  ///Creates an Object at the specified location. If a player, it'll save the ID. Controllers too.
-  GOC * SinglePlayer::CreateObjectAt(Vec2& position,float rotation,const std::string& file)
-	{
-		//This is an example of using some data out of data file using
-		//serialization and then override fields before the object
-		//is initialized.
-
-		//Build and serialize the object with data from the file
-		GOC * newObject = FACTORY->BuildAndSerialize(file);
-		//Get the transform and adjust the position
-		Transform * transform = newObject->has(Transform);
-		transform->Position = position;
-		transform->Rotation = rotation;
-
-		//Initialize the composition
-		newObject->Initialize();
-
-		return newObject;
-	}
   
   ///Loads a level from a file. Doesn't unload current level.
-	void SinglePlayer::LoadLevelFile(const std::string &filename)
+	void SinglePlayer::LoadFromFile( const std::string &filename )
 	{
 		TextSerializer stream;
 		bool fileOpened = stream.Open(filename);
@@ -166,10 +150,10 @@ namespace Framework
 			StreamRead(stream,objectArchetype);
 			StreamRead(stream,objectPosition);
 			StreamRead(stream,objectRotation);
-      if (stream.IsGood())
-  			CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+			if (stream.IsGood())
+				CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
 		}
-  } //LoadLevelFile
+	}
 
   ///Self explanatory... add a specific seed later...
 	void SinglePlayer::SpawnRandomAsteroids()
