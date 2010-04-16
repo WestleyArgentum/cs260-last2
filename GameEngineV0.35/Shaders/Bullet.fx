@@ -56,12 +56,12 @@ float4 PixelShader0( VS_OUTPUT IN ) : COLOR
 {	
 	float cos_time = cos( fTime );
 	float4 result = tex2D( Sampler0 , IN.tex0 ) * tex2D( Sampler0 , IN.tex1 );
-	result *= color;;
+	result; // *= color;
 	
-	result.b       += cos_time * 0.3f;
-	result.g       += cos_time * 0.03f;
-	result.r       -= cos_time * 2;
-	result         *= 0.82f;
+	//result.b       += cos_time * 0.3f;
+	//result.g       += cos_time * 0.03f;
+	//result.r       -= cos_time * 2;
+	//result         *= 0.82f;
 	
 	
 	return result;

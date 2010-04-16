@@ -9,7 +9,7 @@ namespace Framework
   const unsigned MAX_MSG_SIZE = 1024;
 
   ///Typedefs to make life easier...
-  typedef std::string     Message;
+  typedef std::string     EMessage;
   typedef std::string     IPAddress;
   typedef unsigned short  Port;
 
@@ -60,13 +60,13 @@ namespace Framework
       E_SocketError     ///< Socket error while performing some operation.
     };    // enum ERROR
 
-    Error( ErrorCode code, const Message &what ) throw() : code_(code), error_(0), what_(what) {;}
+    Error( ErrorCode code, const EMessage &what ) throw() : code_(code), error_(0), what_(what) {;}
 
     virtual const char* what( void ) const throw() { return what_.c_str(); }
 
     ErrorCode code_;  ///< Error code given to this exception object by the user stating why it was thrown.
     int error_;       ///< Error number received from GetLastError()
-    Message what_;    ///< String discribing what happened at the time this object was thrown.
+    EMessage what_;    ///< String discribing what happened at the time this object was thrown.
   };    // struct Error
 
   /// Creates and Error exception from a code.

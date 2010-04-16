@@ -661,6 +661,10 @@
 					Name="System"
 					>
 					<File
+						RelativePath=".\Network.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\Network.h"
 						>
 					</File>
