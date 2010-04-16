@@ -106,6 +106,15 @@ namespace Framework
 			//Use virtual key codes (VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN, VK_SPACE, etc.)
 			//to detect specific keys (the wParam is the key pressed) and then
 			//broadcast whatever message you need
+			switch ( wParam )
+			{
+			case VK_ESCAPE:
+				{
+					MessageQuit q;
+					CORE->BroadcastMessage(&q);
+					break;
+				}
+			}
 			break;
 		case WM_KEYUP: //A key was released
 			//TODO: Handle any key logic you might need for game controls
@@ -232,14 +241,18 @@ namespace Framework
 		return GetKeyState(VK_LMENU) < 0 || GetKeyState( VK_RMENU ) < 0;
 	}
 
+	bool IsEscHeld() { return GetKeyState( VK_ESCAPE ) < 0; }
+
 	bool IsUpHeld(){ return GetKeyState( VK_UP ) < 0; }
 	bool IsDownHeld(){ return GetKeyState( VK_DOWN ) < 0; }
 	bool IsLeftHeld(){ return GetKeyState( VK_LEFT ) < 0; }
 	bool IsRightHeld(){ return GetKeyState( VK_RIGHT ) < 0; }
+
 	bool IsWHeld(){ return GetKeyState( 'W' ) < 0; }
 	bool IsAHeld(){ return GetKeyState( 'A' ) < 0; }
 	bool IsSHeld(){ return GetKeyState( 'S' ) < 0; }
 	bool IsDHeld(){ return GetKeyState( 'D' ) < 0; }
+
 	bool IsSpaceHeld() { return GetKeyState( VK_SPACE ) < 0; }
 
 }

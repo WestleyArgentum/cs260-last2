@@ -60,8 +60,12 @@ namespace Framework
 			SinglePlayer* state = GetGameState(SinglePlayer);
 			if(state && time_last_fire <= 0)
 			{
-				time_last_fire = recharge_time;
-				state->CreateObjectAt(transform->Position, transform->Rotation, "Objects\\Bullet.txt");
+				time_last_fire = recharge_time;  // reset recharge time
+
+				// set up the offset for the bullet (so it is in front of the ship)
+				Vec2 laser_offset(cos(transform->Rotation - 89.5f) * 30, sin(transform->Rotation - 89.5f) * 30);
+
+				state->CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Objects\\Bullet.txt");
 			}
 		}
 

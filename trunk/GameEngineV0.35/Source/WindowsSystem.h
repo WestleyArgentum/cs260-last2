@@ -75,6 +75,7 @@ namespace Framework
 	bool IsShiftHeld();
 	bool IsCtrlHeld();
 	bool IsAltHeld();
+	bool IsEscHeld();
 	bool IsUpHeld();
 	bool IsDownHeld();
 	bool IsLeftHeld();

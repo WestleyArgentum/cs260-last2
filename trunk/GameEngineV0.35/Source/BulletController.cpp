@@ -29,6 +29,8 @@ namespace Framework
 		{
 			Transform* transform = player->has(Transform);
 			my_vel = Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed);
+			my_vel.x += D3DXVec2Length(&player->has(Body)->Velocity);
+			my_vel.y += D3DXVec2Length(&player->has(Body)->Velocity);
 		}
 
 		Body* body = GetOwner()->has(Body);
