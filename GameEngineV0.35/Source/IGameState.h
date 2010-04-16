@@ -1,9 +1,12 @@
 #pragma once
 
+#include <algorithm>
+
 #include "Message.h"
 #include "IController.h"
 #include "Factory.h"
-#include <algorithm>
+#include "UtilityGameFunctions.h"
+#include "TextSerialization.h"
 
 namespace Framework
 {
@@ -17,7 +20,26 @@ namespace Framework
     GameStateManager *gsm_;
 
 		///Load from a file
-		virtual void LoadFromFile( const std::string &filename ) {;}
+		virtual void LoadFromFile( const std::string &filename )
+		{
+			TextSerializer stream;
+			bool fileOpened = stream.Open(filename);
+			ErrorIf( !fileOpened , "Could not open file %s. File does not exist or is protected." , filename.c_str() );
+
+			std::string objectArchetype;
+			Vec2 objectPosition;
+			float objectRotation;
+
+			while(stream.IsGood())
+			{
+				StreamRead(stream,objectArchetype);
+				StreamRead(stream,objectPosition);
+				StreamRead(stream,objectRotation);
+				if (stream.IsGood())
+					CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+			}
+		}
+
 		virtual void OnCleanup( void ) = 0;
 
 		///Vec of Game object Id's that belong to this state
