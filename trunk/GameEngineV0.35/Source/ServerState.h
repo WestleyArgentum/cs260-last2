@@ -15,7 +15,7 @@ namespace Framework
 		virtual ~ServerState( void );
 
 		virtual void Initialize( void );
-		virtual void Cleanup( void );
+		virtual void OnCleanup( void );
 		// --------
 
 		// Add / Remove controllers -----
