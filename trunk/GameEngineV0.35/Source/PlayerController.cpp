@@ -66,7 +66,7 @@ namespace Framework
 				// set up the offset for the bullet (so it is in front of the ship)
 				Vec2 laser_offset(cos(transform->Rotation - 89.5f) * 30, sin(transform->Rotation - 89.5f) * 30);
 
-				CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Objects\\Bullet.txt");
+				CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Bullet");
 			}
 		}
 

@@ -22,6 +22,7 @@
 
 #include "SinglePlayer.h"
 #include "MainMenu.h"
+#include "ServerState.h"
 
 #include <ctime>
 
@@ -51,6 +52,7 @@ namespace Framework
     //GameStates are created and registered here.
     RegisterGameState(SinglePlayer);
     RegisterGameState(MainMenu);
+		RegisterGameState(ServerState);
 
 	}
 

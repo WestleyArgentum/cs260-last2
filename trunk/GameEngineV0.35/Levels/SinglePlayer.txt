@@ -1,24 +1,24 @@
-Space.txt
+Space
 0 0
 0
 
-Score.txt
+Score
 0 0
 0
 
-HorizontalBarrier.txt
+HorizontalBarrier
 0 1000
 0
-VerticalBarrier.txt
+VerticalBarrier
 1000 0
 0
-HorizontalBarrier.txt
+HorizontalBarrier
 0 -1000
 0
-VerticalBarrier.txt
+VerticalBarrier
 -1000 0
 0
 
-PlayerShip.txt
+PlayerShip
 0 0
 0

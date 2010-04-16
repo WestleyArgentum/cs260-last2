@@ -1,8 +1,8 @@
-Space.txt
+Space
 0 0
 0
 
-Camera.txt
+Camera
 0 0
 0
 
