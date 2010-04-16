@@ -2,6 +2,7 @@
 
 #include "NetUtilities.h"
 #include "INetMessage.h"
+#include "IProtocol.h"
 
 namespace Framework
 {
@@ -26,6 +27,10 @@ namespace Framework
     char *sbuffer;      ///< Buffer to hold data being sent.
     bool blocking;      ///< Whether or not the socket blocks.
 
+    ///A map for holding the different types of protocols.
+    typedef std::map<ProtocolType, IProtocol *> ProtocolMap;
+    static ProtocolMap Protocols; ///<The protocol map itself.
+
   protected:
     /// Only allow derived classes and NetAPI to construct this.
     ASocket( void );
@@ -38,11 +43,6 @@ namespace Framework
 
     ///Returns the NetAddress struct containing all the socket info.
     const NetAddress & GetAddress( void ) const { return address; }
-
-    ///Converts the buffered data to a pointer to a Type pointer.
-    template <typename Type>
-    const Type * GetData( void ) const
-    { return reinterpret_cast<Type*>( buffer ); }
 
     ///Comparison operator. only compares the id and type.
     bool operator==( const ASocket &rhs ) const { return id == rhs.id; }
@@ -80,7 +80,7 @@ namespace Framework
 	  int Recv( void ) throw ( Error );
 	  int Close( void );
 
-    ///Accepts incomming connections, creating and
+    ///Accepts incoming connections, creating and
     ///returning a socket to speak to the other side with.
 	  TCPSOCKET Accept( void );
   };
@@ -99,9 +99,9 @@ namespace Framework
 
   public:
     ///Send data to the address specified.
-    int SendTo( const NetAddress &remote, const INetMessage &msg ) const throw ( Error );
+    int SendTo( const NetAddress &remote, const IProtocol *protocol ) const throw ( Error );
 
     ///Receive Data on the socket. Stores the address of the sender in address.
-    int RecvFrom( NetAddress &remote ) throw ( Error );
+    NetMessageList * RecvFrom( NetAddress &remote ) throw ( Error );
   };
 }

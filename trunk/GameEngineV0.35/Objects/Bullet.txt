@@ -3,11 +3,11 @@ Transform
 0
 
 Sprite
-Basic
-Default
-60
-60
-1 0 0 1
+Bullet
+Bullet
+80
+80
+0 0 1 1
 
 Body
 .00001
