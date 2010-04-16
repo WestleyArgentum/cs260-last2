@@ -21,7 +21,7 @@ namespace Framework
 		Velocity = Vec2(0,0);
 		Mass = 0.0f;
 		InvMass = 0.0f;
-		Damping = 0.9f;
+		Damping = 1;//0.9f;  // for effect
 		Acceleration = Vec2(0,0);
 		BodyShape = NULL;
 		Friction = 0.0f;

@@ -17,4 +17,4 @@ Circle
 5
 
 BulletController
-3000
+1500

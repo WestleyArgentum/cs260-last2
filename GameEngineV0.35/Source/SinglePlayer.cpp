@@ -61,9 +61,9 @@ namespace Framework
         //	CreateObjectAt(WorldMousePosition,0,ObjectToCreate);
 
         //Enable Physics Debugging
-        if( key->character == ' ' )
+        if( key->character == 'z' )
           PHYSICS->AdvanceStep = true;
-        if( key->character == ' ' && IsShiftHeld() )
+        if( key->character == 'z' && IsShiftHeld() )
           PHYSICS->StepModeActive = !PHYSICS->StepModeActive;
 
         if( key->character == 'g' )
@@ -72,7 +72,7 @@ namespace Framework
           CORE->BroadcastMessage( &debugMessage );
         }
 
-        if( key->character == 'h' )
+				else if( key->character == 'h' )
         {
           ToggleDebugDisplay debugMessage( false );
           CORE->BroadcastMessage( &debugMessage );
