@@ -83,6 +83,7 @@ namespace Framework
 	bool IsAHeld();
 	bool IsSHeld();
 	bool IsDHeld();
+	bool IsSpaceHeld();
 
 	extern WindowsSystem* WINDOWSSYSTEM;
 }

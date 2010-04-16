@@ -27,9 +27,7 @@ namespace Framework
 	}
 
   void Asteroid::LogicalUpdate( float dt )
-  {
-    transform->Position = body->Position;
-  }
+  {}
 
 	void Asteroid::Serialize(ISerializer& stream)
 	{
@@ -44,7 +42,12 @@ namespace Framework
     MessageCollide *mc = dynamic_cast<MessageCollide*>(m);
 
 		if( m->MessageId == Mid::Collide && mc && !mc->CollidedWith->has(Asteroid))
-		{			
+		{	
+			//^! for now we will check what we collided with and behave accordingly...
+			MessageCollide* collide_msg = static_cast<MessageCollide*>(m);
+			if (collide_msg->CollidedWith->has(Asteroid))
+				return;
+
 			if( (int)timeGetTime() - SpawnTime > Fuse )
 			{
 				GetOwner()->Destroy();

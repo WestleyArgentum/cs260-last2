@@ -41,3 +41,4 @@ namespace Framework
     virtual void Restart( void ) = 0;
   };
 }
+

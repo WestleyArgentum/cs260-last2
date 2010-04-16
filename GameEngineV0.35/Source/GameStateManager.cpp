@@ -19,6 +19,7 @@
 #include "Asteroid.h"
 #include "SinglePlayer.h"
 #include "ScoreDisplay.h"
+#include "BulletController.h"
 
 #include <ctime>
 
@@ -43,6 +44,7 @@ namespace Framework
     RegisterComponent(PlayerController);
     RegisterComponent(Asteroid);
     RegisterComponent(ScoreDisplay);
+		RegisterComponent(BulletController);
 
     //GameStates are created and registered here.
     RegisterGameState(SinglePlayer);
@@ -125,6 +127,7 @@ namespace Framework
   {
     GameStates[Curr]->RemoveController(controller);
   }
+	
 
 
 }

@@ -240,4 +240,6 @@ namespace Framework
 	bool IsAHeld(){ return GetKeyState( 'A' ) < 0; }
 	bool IsSHeld(){ return GetKeyState( 'S' ) < 0; }
 	bool IsDHeld(){ return GetKeyState( 'D' ) < 0; }
+	bool IsSpaceHeld() { return GetKeyState( VK_SPACE ) < 0; }
+
 }

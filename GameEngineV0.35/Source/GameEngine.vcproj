@@ -421,18 +421,30 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="GameLogicComponents"
-				>
-				<File
-					RelativePath=".\Asteroid.cpp"
+				<Filter
+					Name="AsteroidController"
 					>
-				</File>
-				<File
-					RelativePath=".\Asteroid.h"
+					<File
+						RelativePath=".\Asteroid.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Asteroid.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="BulletController"
 					>
-				</File>
+					<File
+						RelativePath=".\BulletController.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\BulletController.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="GameStates"
@@ -712,6 +724,10 @@
 			</File>
 			<File
 				RelativePath="..\Objects\Box.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\Objects\Bullet.txt"
 				>
 			</File>
 			<File

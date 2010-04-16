@@ -72,10 +72,10 @@ namespace Framework
 	void Physics::PublishResults()
 	{
 		//Commit all physics updates
-		//for(BodyIterator it=Bodies.begin();it!=Bodies.end();++it)
-		//{
-		//	(it)->PublishResults();
-		//}
+		for(BodyIterator it=Bodies.begin();it!=Bodies.end();++it)
+		{
+			(it)->PublishResults();
+		}
 
 		//Broadcast physics collision messages AFTER physics
 		//has update the bodies
