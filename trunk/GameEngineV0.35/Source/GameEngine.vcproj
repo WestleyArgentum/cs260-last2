@@ -121,6 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D_CRT_SECURE_NO_WARNINGS"
 				Optimization="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
@@ -512,22 +513,42 @@
 				<Filter
 					Name="Shaders"
 					>
-					<File
-						RelativePath="..\Shaders\Basic.fx"
+					<Filter
+						Name="ShaderObjects"
 						>
-					</File>
-					<File
-						RelativePath="..\Shaders\Bullet.fx"
+						<File
+							RelativePath=".\IShaders.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Shaders.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Shaders.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="EffectFiles"
 						>
-					</File>
-					<File
-						RelativePath="..\Shaders\DebugShader.fx"
-						>
-					</File>
-					<File
-						RelativePath="..\Shaders\Water.fx"
-						>
-					</File>
+						<File
+							RelativePath="..\Shaders\Basic.fx"
+							>
+						</File>
+						<File
+							RelativePath="..\Shaders\Bullet.fx"
+							>
+						</File>
+						<File
+							RelativePath="..\Shaders\DebugShader.fx"
+							>
+						</File>
+						<File
+							RelativePath="..\Shaders\Water.fx"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Components"
@@ -675,13 +696,6 @@
 					<File
 						RelativePath=".\NetAPI.cpp"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\NetAPI.h"
@@ -739,13 +753,6 @@
 					<File
 						RelativePath=".\SocketTypes.cpp"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\SocketTypes.h"
@@ -768,13 +775,6 @@
 						<File
 							RelativePath=".\IProtocol.cpp"
 							>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-								/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\IProtocol.h"

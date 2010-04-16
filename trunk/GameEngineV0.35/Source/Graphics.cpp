@@ -14,6 +14,7 @@
 #include "FilePath.h"
 #include "Camera.h"
 #include "ComponentCreator.h"
+#include "Shaders.h"
 
 
 namespace Framework
@@ -67,7 +68,7 @@ namespace Framework
 		pD3D = NULL;
 		pDevice = NULL;
 		pQuadVertexBuffer = NULL;
-		ZeroMemory(Shaders, sizeof(Shaders));
+		SecureZeroMemory(shaders_, sizeof(shaders_));
 
 		ErrorIf(GRAPHICS!=NULL,"Graphics already initialized.");
 		GRAPHICS = this;
@@ -141,16 +142,23 @@ namespace Framework
 	//Release Direct3D and do any needed cleanup.
 	Graphics::~Graphics()
 	{
-		//Release all the shaders.
-		for (int i = 0; i < NumberOfShaders; i++)
+		//Release all the shaders information.
+		for ( unsigned i = 0; i < NumberOfShaders; ++i )
 		{
-			if (Shaders[i] != NULL) Shaders[i]->Release();
-			Shaders[i] = NULL;
+      if ( shaders_[i].effect_ != NULL )
+      {
+        shaders_[i].effect_->Release();
+      }
+
+      shaders_[i].effect_ = NULL;
+      delete shaders_[i].data_;
 		}
 
 		//Release all the texture in the texture
-		for( TextureMap::iterator it = Textures.begin();it!=Textures.end();++it)
+		for ( TextureMap::iterator it = Textures.begin(); it != Textures.end(); ++it )
+    {
 			it->second->Release();
+    }
 
     for ( FontMap::iterator it = Fonts.begin(); it != Fonts.end(); ++it )
     {
@@ -205,7 +213,7 @@ namespace Framework
 		//TODO: Need Visibility to cull off screen sprites
 		for ( ObjectLinkList<Sprite>::iterator it = SpriteList.begin(); it != SpriteList.end(); ++it )
     {
-      it->Draw( pDevice, Shaders[it->sIndex_] );
+      it->Draw( pDevice, shaders_[it->sIndex_].effect_ );
     }
 
     for ( ObjectLinkList<Text>::iterator it = TextList.begin(); it != TextList.end(); ++it )
@@ -233,19 +241,24 @@ namespace Framework
 			
 			Mat4 worldViewProj = ViewMatrix * ProjMatrix;
 
-			Shaders[DebugShader]->SetMatrix("WorldViewProj", &worldViewProj);
-			Shaders[DebugShader]->SetVector("color", &lineColor);
-			
+			shaders_[DebugShader].effect_->SetMatrix("WorldViewProj", &worldViewProj);
+			shaders_[DebugShader].effect_->SetVector("color", &lineColor);
+
+      if ( shaders_[DebugShader].data_ )
+      {
+        shaders_[DebugShader].data_->InitPhase( shaders_[DebugShader].effect_, NULL );
+      }
+
 			UINT numberOfPasses = 0;
-			Shaders[DebugShader]->Begin(&numberOfPasses, 0);
+			shaders_[DebugShader].effect_->Begin(&numberOfPasses, 0);
 			for(UINT pass=0;pass<numberOfPasses;++pass)
 			{
-				Shaders[DebugShader]->BeginPass(pass);
+				shaders_[DebugShader].effect_->BeginPass(pass);
 				pDevice->DrawPrimitiveUP(D3DPT_LINELIST, numberOfSegments , &Lines[index] , sizeof(Drawer::LineSegment) / 2);
-				index+=numberOfSegments;
-				Shaders[DebugShader]->EndPass();
+				index += numberOfSegments;
+				shaders_[DebugShader].effect_->EndPass();
 			}
-			Shaders[DebugShader]->End();
+			shaders_[DebugShader].effect_->End();
 		}
 
 		//Clear all the lines they must be submitted again each frame
@@ -338,10 +351,10 @@ namespace Framework
 
 		//Load the shaders
 
-    LOAD_EFFECT( Basic );
-    LOAD_EFFECT( DebugShader );
-    LOAD_EFFECT( Water );
-    LOAD_EFFECT( Bullet );
+    LOAD_EFFECT( Basic,       NULL );
+    LOAD_EFFECT( DebugShader, NULL );
+    LOAD_EFFECT( Water,       new WaterShader() );
+    LOAD_EFFECT( Bullet,      NULL );
 	}
 
   PixelShaders Graphics::GetShaderIndex( const std::string &shadername )
@@ -356,6 +369,11 @@ namespace Framework
     {
       return static_cast<PixelShaders>( -1 );
     }
+  }
+
+  Graphics::ShaderInfo* Graphics::GetShaderInfo( PixelShaders index )
+  {
+    return &shaders_[index];
   }
 
 	//Load a specific texture file and add it to the asset texture map
@@ -425,7 +443,8 @@ namespace Framework
     }
   }
 
-  bool Graphics::LoadEffect( PixelShaders index, const std::string &filename, const std::string &shadername )
+  bool Graphics::LoadEffect( PixelShaders index, const std::string &filename,
+    const std::string &shadername, ISpriteShader *iShader )
 	{
 		HRESULT hr;
 		LPD3DXBUFFER pBufferErrors = NULL;
@@ -445,7 +464,7 @@ namespace Framework
 			NULL,                 // Not using include interface
 			shaderFlags,          // Shader Flags
 			NULL,                 // No shader pool
-			&Shaders[index], 
+      &shaders_[index].effect_, 
 			&pBufferErrors );
 
 		if( FAILED(hr) )
@@ -461,11 +480,15 @@ namespace Framework
 				ErrorIf( FAILED(hr) , "Failed to load shader: %s" , filename );
 			}
 
+      delete iShader;
+
 			return false;
 		}
     else
     {
       shadermap_[shadername] = index;
+      shaders_[index].data_ = iShader;
+      shaders_[index].type_ = index;
 
 		  return true;
     }

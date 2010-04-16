@@ -1,7 +1,7 @@
 #include "Precompiled.h"
 #include "DataStream.h"
 
-
+#if 0
 namespace Framework
 {
   DataStream::DataStream( unsigned size ) 
@@ -24,7 +24,7 @@ namespace Framework
       offset_ += sizeof(int);
     }
     else
-      throw "Not enough space in buffer to read from."
+      throw "Not enough space in buffer to read from.";
   }
 
   void DataStream::ReadUInt( unsigned &u )
@@ -34,7 +34,7 @@ namespace Framework
       offset_ += sizeof(int);
     }
     else
-      throw "Not enough space in buffer to read from."
+      throw "Not enough space in buffer to read from.";
   }
   void DataStream::ReadBool( bool &b );
   void DataStream::ReadFloat( float &f );
@@ -50,3 +50,4 @@ namespace Framework
   void DataStream::WriteDouble( const double &d );
   void DataStream::WriteString( const std::string &str );
 }
+#endif
