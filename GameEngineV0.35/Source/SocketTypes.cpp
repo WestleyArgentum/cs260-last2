@@ -7,23 +7,16 @@ namespace Framework
   
   ///The base for generating id's for all sockets
   unsigned ASocket::id_base = 0;
-  ///The store of protocols to be used when interpreting messages.
-  ASocket::ProtocolMap ASocket::Protocols;
 
   /// Only allow derived classes and NetAPI to construct this.
-  ASocket::ASocket( void ) : id(id_base++), rbuffer(0), sbuffer(0), blocking(true)
+  ASocket::ASocket( void )
+    : id(id_base++), rstream(MAX_MSG_SIZE), sstream(MAX_MSG_SIZE), blocking(true)
   {
-    ///Keep send and recv buffers separate. Also allocate due to size.
-    rbuffer = new char[MAX_MSG_SIZE];
-    sbuffer = new char[MAX_MSG_SIZE];
   }
 
   /// Only allow destruction by the same two parties.
   ASocket::~ASocket( void ) throw( )
   {
-    ///Cleanup
-    delete [] rbuffer;
-    delete [] sbuffer;
   }
 
   ///False means non-blocking, true means blocking.
@@ -109,15 +102,16 @@ namespace Framework
   }
 
   ///Sends a message to the connected address, returns the number of bytes sent.
-  int TCPSocket::Send( const INetMessage &msg ) const throw ( Error )
+  int TCPSocket::Send( const INetMessage &msg ) throw ( Error )
   {
     ///Don't send empty messages.
     if (msg.Size() == 0)
       return 0;
 
+    sstream.Clear();
     ///Have the message serialize its data into the buffer
-    msg.SerializeData(sbuffer, MAX_MSG_SIZE);
-    int ret = send(socket, sbuffer, msg.Size(), 0);
+    msg.SerializeData(sstream);
+    int ret = send(socket, sstream.GetBuffer(), msg.Size(), 0);
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
 			  return ret; // would have blocked
@@ -133,8 +127,10 @@ namespace Framework
   ///Attempts to read data from its connection, returns number of bytes read.
   int TCPSocket::Recv( void ) throw ( Error )
   {
-    ///Attempt to recieve data from the remote address.
-	  int ret = recv(socket, rbuffer, MAX_MSG_SIZE, 0);
+    ///Clear the receive buffer for data...
+    rstream.Clear();
+    ///Attempt to receive data from the remote address.
+	  int ret = recv(socket, rstream.GetBuffer(), rstream.Capacity(), 0);
 	  if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
 			  return ret; // would have blocked
@@ -177,11 +173,13 @@ namespace Framework
   }
 
   ///Send data to the address specified. Returns the number of bytes sent.
-  int UDPSocket::SendTo( const NetAddress &remote, const IProtocol *protocol ) const throw ( Error )
+  int UDPSocket::SendTo( const NetAddress &remote, const IProtocol *protocol ) throw ( Error )
   {
+    ///Clear out the stream for data to be sent.
+    sstream.Clear();
     //Use the protocol to format the pack about to be sent.
-    int size = protocol->FormatPacket(sbuffer,MAX_MSG_SIZE);
-    int ret = sendto(socket, sbuffer, size, 0, remote, remote.Size());
+    int size = protocol->FormatPacket(sstream);
+    int ret = sendto(socket, sstream.GetBuffer(), size, 0, remote, remote.Size());
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
         return ret; // would have blocked
@@ -195,10 +193,12 @@ namespace Framework
 
   ///Receive Data on the socket. Stores the address of the sender in address.
   ///Returns a list of the messages extracted from the buffer. Users must delete list.
-  NetMessageList * UDPSocket::RecvFrom( NetAddress &remote ) throw ( Error )
+  int UDPSocket::RecvFrom( NetAddress &remote ) throw ( Error )
   {
+    ///Clear out the stream for data to be sent.
+    rstream.Clear();
     int size = remote.Size();
-    int ret = recvfrom(socket, rbuffer, MAX_MSG_SIZE, 0, remote, &size);
+    int ret = recvfrom(socket, rstream.GetBuffer(), rstream.Capacity(), 0, remote, &size);
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
         return 0; // would have blocked
@@ -207,20 +207,29 @@ namespace Framework
       ThrowError(Error::E_SocketError);
     }
 
-    ///Check if the data size isn't large enough even for the type of protocol.
-    if (ret < sizeof(ProtocolType))
-      return 0;
+    rstream.SetReadIndex(ret);
+
+    ///Return the number of bytes received.
+    return ret;
+  }
+
+
+  ///Retrieves the messages from the buffer. Returns the number of messages retrieved.
+  int UDPSocket::RetieveData( MessageList &messages )
+  {
+    ProtocolType ptype;
+    IProtocol *protocol = 0;
 
     ///Determine the type of protocol to use.
-    IProtocol *protocol = 0;
-    ProtocolType ptype = *reinterpret_cast<ProtocolType*>(rbuffer);
-    if (Protocols.count(ptype))
-      protocol = Protocols[ptype];
-    else
+    rstream.ReadString(ptype);
+    protocol = NetAPI->GetProtocol(ptype);
+
+    ///Protocol doesn't exist!!
+    if (!protocol)
       return 0;
 
-    ///Return the number of bytes read.
-    return protocol->ExtractMessages( rbuffer, ret );
+    ///Return the number of messages added.
+    return protocol->ExtractMessages( rstream, messages );
   }
 
 } ///namespace Framework

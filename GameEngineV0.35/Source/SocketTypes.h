@@ -3,6 +3,7 @@
 #include "NetUtilities.h"
 #include "INetMessage.h"
 #include "IProtocol.h"
+#include "DataStream.h"
 
 namespace Framework
 {
@@ -23,13 +24,10 @@ namespace Framework
 	  SocketID id;        ///< ID of the socket as it's stored in the NetAPI
 	  SOCKET socket;      ///< Actual socket
 	  NetAddress address; ///< Sock info
-    char *rbuffer;      ///< Buffer to hold data recieved in.
-    char *sbuffer;      ///< Buffer to hold data being sent.
+    int bytesread_;     ///< Stores the number of bytes read from receiving data.
+    DataStream rstream; ///< Stream to hold data received in.
+    DataStream sstream; ///< Stream to hold data being sent.
     bool blocking;      ///< Whether or not the socket blocks.
-
-    ///A map for holding the different types of protocols.
-    typedef std::map<ProtocolType, IProtocol *> ProtocolMap;
-    static ProtocolMap Protocols; ///<The protocol map itself.
 
   protected:
     /// Only allow derived classes and NetAPI to construct this.
@@ -76,7 +74,7 @@ namespace Framework
 	  int Bind( unsigned port = 0 ) throw ( Error );
 	  int Listen( unsigned num = 10 ) throw ( Error );
 	  int Connect( const char *ip, unsigned port ) throw ( Error );
-	  int Send( const INetMessage &msg ) const throw ( Error );
+	  int Send( const INetMessage &msg ) throw ( Error );
 	  int Recv( void ) throw ( Error );
 	  int Close( void );
 
@@ -99,9 +97,12 @@ namespace Framework
 
   public:
     ///Send data to the address specified.
-    int SendTo( const NetAddress &remote, const IProtocol *protocol ) const throw ( Error );
+    int SendTo( const NetAddress &remote, const IProtocol *protocol ) throw ( Error );
 
-    ///Receive Data on the socket. Stores the address of the sender in address.
-    NetMessageList * RecvFrom( NetAddress &remote ) throw ( Error );
+    ///Receive data on the socket. Stores the address of the sender in address.
+    int RecvFrom( NetAddress &remote ) throw ( Error );
+
+    ///Retrieves the messages from the buffer.
+    int RetieveData( MessageList &messages );
   };
 }

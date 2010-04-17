@@ -1,6 +1,6 @@
 #pragma once // Make sure this header is only included once.
 
-//#include "Message.h"
+#include "DataStream.h"
 
 namespace Framework
 {
@@ -18,9 +18,9 @@ namespace Framework
     virtual unsigned Size( void ) const = 0;
 
     ///Writes the contents of the message to the buffer of size size provided.
-    virtual int SerializeData( char *buffer, unsigned size ) const = 0;
+    virtual int SerializeData( DataStream &stream ) const = 0;
 
     ///Interprets the data in a buffer as the contents of its own message type.
-    virtual void InterpretData( char *buffer, unsigned size ) = 0;
+    virtual void InterpretData( DataStream &stream ) = 0;
   };
 };

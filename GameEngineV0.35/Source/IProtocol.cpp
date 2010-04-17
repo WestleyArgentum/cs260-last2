@@ -1,5 +1,6 @@
 #include "Precompiled.h"
 #include "IProtocol.h"
+#include "DataStream.h"
 #include "INetMessage.h"
 
 namespace Framework
@@ -21,52 +22,47 @@ namespace Framework
   }
 
   ///Formats the buffer into a packet with the correct protocol.
-  int IProtocol::FormatPacket( char *buffer, unsigned size ) const
+  int IProtocol::FormatPacket( DataStream &stream ) const
   {
-    ///Start at 0 for now, maybe add a special header later.
-    unsigned offset = 0;
 
     ///Write the type of protocol in the beginning of the buffer.
-    memcpy(buffer, &pType, sizeof(pType));
+    //memcpy(buffer, &pType, sizeof(pType));
 
 
     ///Each format call returns the number of bytes it wrote.
-    offset += FormatHeader(buffer+offset,size-offset);
+    FormatHeader(stream);
 
     ///Serializes the messages into the buffer.
-    NetMessageList::const_iterator begin = messages.begin(), end = messages.end();
+    MessageList::const_iterator begin = messages.begin(), end = messages.end();
     while (begin != end)
-      offset += (*begin++)->SerializeData(buffer+offset,size-offset);
+      (*begin++)->SerializeData(stream);
     
     ///Applies a hashing method or encryption method.
-    offset += PepperMessage(buffer,offset);
+    PepperMessage(stream);
 
     ///Return the number of bytes written.
-    return offset;
+    return stream.Size();
   }
 
   ///Attempts to extract a message from the data in the buffer.
-  NetMessageList * IProtocol::ExtractMessages(char *buffer, unsigned int size)
+  int IProtocol::ExtractMessages( DataStream &stream, MessageList &messages)
   {
     ///If the message isn't a valid message, discard it.
-    if (!ValidateMessage(buffer,size))
+    if (!ValidateMessage(stream))
       return 0;
 
-    ///The container that will hold all of the messages retrieved from the packet.
-    NetMessageList *retrieved = new NetMessageList();
-
     ///Strips the header and stores any data needed for message interpretation.
-    unsigned offset = StripHeader(buffer,size);
+    StripHeader(stream);
 
     ///Builds a message from the data and info from the header. Keeps adding
     ///the size of each message to the offset until we've eaten all messages.
-    while ((size - offset) > 0)
+    while (stream.IsReadGood())
     {
-      retrieved->push_back(BuildMessage(buffer+offset,size-offset));
-      offset += retrieved->back()->Size();
+      messages.push_back(BuildMessage(stream));
+      messages.back()->Size();
     }
 
-    return retrieved;
+    return messages.size();
   }
 
 } // Framework namespace

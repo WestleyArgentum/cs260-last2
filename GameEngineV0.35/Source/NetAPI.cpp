@@ -27,6 +27,24 @@ namespace Framework
 	  return &inst;
   }
 
+  ///Registers a new Protocol with the system.
+  void NetAPI_::AddProtocol( const ProtocolType &type, IProtocol *protocol )
+  {
+    if (!Protocols.count(type))
+      Protocols[type] = protocol;
+    else
+      throw "ERROR: Protocol already registered with system.";
+  }
+
+  ///Retrieve a specific protocol from the available protocols.
+  IProtocol * NetAPI_::GetProtocol( const ProtocolType &type )
+  {
+    if (Protocols.count(type))
+      return Protocols[type];
+
+    return 0;
+  }
+
   ///Constructor
   NetAPI_::NetAPI_() : init(false) {;}
 
