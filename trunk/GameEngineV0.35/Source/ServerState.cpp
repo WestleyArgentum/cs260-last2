@@ -7,6 +7,7 @@
 #include "GameStateManager.h"
 #include "Stats.h"
 #include "MessageHub.h"
+#include "Network.h"
 
 namespace Framework
 {
@@ -25,6 +26,12 @@ namespace Framework
 	{
 		LoadFromFile("Levels\\Server.txt");
 		SpawnRandomAsteroids();
+
+		if (NETWORK)
+		{
+			NETWORK->HostServer();
+		}
+		
 	}
 
 	void Framework::ServerState::OnCleanup( void )

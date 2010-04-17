@@ -3,6 +3,8 @@
 
 namespace Framework
 {
+	Network* NETWORK = NULL;
+
   ///30 second timeout phase.
   const double Network::CONNECTION_TIMEOUT = 30.0;
 
@@ -71,6 +73,9 @@ namespace Framework
   Network::Network( void ) : socket(0) 
   {
     NetAPI->Init();
+
+		ErrorIf(NETWORK != NULL, "Network already initialized!");
+		NETWORK = this;
   }
 
   Network::~Network( void )
