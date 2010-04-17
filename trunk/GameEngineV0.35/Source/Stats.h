@@ -25,6 +25,13 @@ namespace Framework
       UpdateStats( void ) : Message(Mid::StatsUpdate) {;}
       explicit UpdateStats( const Statistics &stats ) : Message(Mid::StatsUpdate), stats_(stats) {;}
 
+
+      ///Returns the type of message this is.
+      virtual Mid::MessageIdType Type( void ) const { return MessageId; }
+
+      ///Creates a carbon copy of the message.
+      virtual UpdateStats * Clone( void ) const { return new UpdateStats(*this); }
+
         /// Return the size of the information that we need to write to the given buffer.
       virtual unsigned Size( void ) const;
 

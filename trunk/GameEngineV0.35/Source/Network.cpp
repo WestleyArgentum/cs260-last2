@@ -3,7 +3,8 @@
 
 namespace Framework
 {
-	Network* NETWORK = NULL;
+  ///Global pointer to the Network system.
+  Network *NETWORK = NULL;
 
   ///30 second timeout phase.
   const double Network::CONNECTION_TIMEOUT = 30.0;
@@ -26,18 +27,28 @@ namespace Framework
         ///If this isn't a new connection.
         if (connections.count(remote))
         {
-          ///Make sure we aren't corrupting data while adding messages.
-          mutex.Acquire();
-          ///Add messages from users/server to queue.
-          mutex.Release();
-        }
-        else
-        {
-          ///This is a new connection, or extraneous data.
+          Lock lock(mutex);
 
+          ///Save all the messages into the queue.
+          socket->RetieveData(connections[remote].second);
+
+          ///Reset the timeout timer.
+          connections[remote].first.Start();
+        }
+        else ///Net connection.
+        {
+          Lock lock(mutex);
+
+          ///Get the data from the socket.
+          int num = socket->RetieveData(connections[remote].second);
+
+          ///If we couldn't extract any messages it was random data/connection
+          if (num == 0)
+            connections.erase(remote);
+          else ///Otherwise start the timer.
+            connections[remote].first.Start();
         }
       }
-
     }
   }
   void Network::ExitThread( void ) throw()
@@ -70,12 +81,17 @@ namespace Framework
     socket->ToggleBlocking(false);
   }
 
+  void Network::CheckForTimeouts( void )
+  {
+    ///Check to see if any users have timed out...
+  }
+
   Network::Network( void ) : socket(0) 
   {
-    NetAPI->Init();
+    ErrorIf(NETWORK!=NULL,"Graphics already initialized.");
+    NETWORK = this;
 
-		ErrorIf(NETWORK != NULL, "Network already initialized!");
-		NETWORK = this;
+    NetAPI->Init();
   }
 
   Network::~Network( void )
@@ -92,17 +108,58 @@ namespace Framework
   ///Sends all messages out to all connected parties.
   void Network::Update( float dt )
   {
+    Lock lock(mutex);
+    ///Check timers on all connections.
+    CheckForTimeouts();
 
+    ///Send all messages out to users.
+    ConnectionOutBox::iterator begin = outboxes.begin(), end = outboxes.end();
+    while (begin != end)
+    {
+      MessageBoxMap::iterator mb = begin->second.begin(), me = begin->second.begin();
+      while (mb != me)
+      {
+        ///Get the protocol to send the messages with.
+        IProtocol *protocol = NetAPI->GetProtocol(mb->first);
+        if (protocol)
+        {
+          ///Set the MessageList for the protocol to use.
+          protocol->SetMessageList(&mb->second);
+          socket->SendTo(idmap[begin->first], protocol);
+          protocol->ClearMessages();
+
+          ///Delete all the messages when we're done sending them so we don't send them twice.
+          MessageList::iterator lb = mb->second.begin(), le = mb->second.end();
+          while (lb != le)
+            delete *le++;
+
+          //Empty the list.
+          mb->second.clear();
+        }
+        ++mb; // Next!
+      }
+    }
   }
 
   void Network::Initialize( void )
   {
   }
 
-  ///Builds up a buffer of messages and sends then in the update phase.
-  void Network::SendNetMessage( const INetMessage *m )
+  ///Builds up a buffer of messages to send to all connections.
+  void Network::SendNetMessage( const ProtocolType &ptype, const INetMessage &m )
   {
+    ///Add the message to all of the message queues.
+    ConnectionOutBox::iterator begin = outboxes.begin(), end = outboxes.end();
+    while (begin != end)
+      begin++->second[ptype].push_back(m.Clone());
+  }
 
+  ///Builds up a buffer of messages to send to a specific connection.
+  void Network::SendNetMessage( const std::string &user, const ProtocolType &ptype, const INetMessage &m )
+  {
+    ///Add the message to the requested connection.
+    if (outboxes.count(user))
+      outboxes[user][ptype].push_back(m.Clone());
   }
 
   ///Creates a socket and waits for connections.

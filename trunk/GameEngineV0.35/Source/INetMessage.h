@@ -1,6 +1,7 @@
 #pragma once // Make sure this header is only included once.
 
 #include "DataStream.h"
+#include "Message.h"
 
 namespace Framework
 {
@@ -12,7 +13,10 @@ namespace Framework
     virtual ~INetMessage( void ) {;}
 
     ///Returns the type of message. Used when extracting messages from the list.
-    //virtual int Type( void ) const = 0;
+    virtual Mid::MessageIdType Type( void ) const = 0;
+
+    ///Creates a carbon copy of the message.
+    virtual INetMessage * Clone( void ) const = 0;
 
     ///Returns the size of the entire message, including the header.
     virtual unsigned Size( void ) const = 0;

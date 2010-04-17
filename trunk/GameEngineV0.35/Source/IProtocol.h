@@ -17,7 +17,7 @@ namespace Framework
   class IProtocol
   {
   protected:
-    MessageList messages; ///< The messages to send in the packet.
+    MessageList *messages; ///< The messages to send in the packet.
 
   public:
     ///Save a pointer to the message that will write itself into the packet.
@@ -29,7 +29,7 @@ namespace Framework
     void ClearMessages( void );
 
     ///Add a message to send. Doesn't delete messages when done with them.
-    int AddMessage( const INetMessage *msg );
+    int SetMessageList( MessageList *msgs );
 
     ///Formats the buffer with all the packet info it needs.
     int FormatPacket( DataStream &stream ) const;
