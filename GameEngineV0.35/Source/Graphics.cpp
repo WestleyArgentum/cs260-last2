@@ -63,7 +63,7 @@ namespace Framework
 	Graphics* GRAPHICS = NULL;
 
 	//Set everything to default values.
-	Graphics::Graphics()
+	Graphics::Graphics() : CurrentCamera(NULL)
 	{
 		pD3D = NULL;
 		pDevice = NULL;
@@ -268,6 +268,11 @@ namespace Framework
 	//Set up the world, view, and projection transform matrices.
 	void Graphics::SetupMatrices()
 	{
+		if(!CurrentCamera)
+			return;  //^? I'm putting this here to stop the game from crashing when there is no camera...
+							 // it's not that we shouldn't crash when there is no camera... obviously thats a hint that
+							 // something is horrendously wrong. It's just annoying.
+
 		//Set the position of the camera.
 		float cameraX = CurrentCamera->transform->Position.x;
 		float cameraY = CurrentCamera->transform->Position.y;

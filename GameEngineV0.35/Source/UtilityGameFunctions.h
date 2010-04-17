@@ -8,5 +8,6 @@ namespace Framework
 {
 
 	GOC * CreateObjectAt( Vec2& position, float rotation, const std::string& file );
+	void SpawnRandomAsteroids( void );
 
 }
