@@ -17,7 +17,7 @@ namespace Framework
 
 	void Framework::ServerState::Initialize( void )
 	{
-
+		LoadFromFile("Levels\\Server.txt");
 	}
 
 	void Framework::ServerState::OnCleanup( void )
