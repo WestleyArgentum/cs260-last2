@@ -54,7 +54,7 @@ namespace Framework
     virtual unsigned StripHeader( DataStream &stream ) = 0;
   
     ///Builds a message with the remaining data after the message has been decrypted/validated.
-    virtual INetMessage * BuildMessage( DataStream &stream ) = 0;
+    virtual unsigned BuildMessages( DataStream &stream, MessageList &messages ) = 0;
   };
 
 }
