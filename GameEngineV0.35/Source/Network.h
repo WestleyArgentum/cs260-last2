@@ -60,4 +60,6 @@ namespace Framework
     void CloseConnection( void );
 
   };
+
+	extern Network* NETWORK;
 }
