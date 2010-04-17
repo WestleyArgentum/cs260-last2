@@ -102,7 +102,7 @@ namespace Framework
     ///Receive data on the socket. Stores the address of the sender in address.
     int RecvFrom( NetAddress &remote ) throw ( Error );
 
-    ///Retrieves the messages from the buffer.
+    ///Retrieves the messages from the buffer. Returns the number of messages received.
     int RetieveData( MessageList &messages );
   };
 }

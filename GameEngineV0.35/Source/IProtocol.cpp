@@ -9,16 +9,17 @@ namespace Framework
 
   ///Add a message to send. Doesn't delete messages when done with them.
   ///Returns the number of messages stored so far.
-  int IProtocol::AddMessage( const INetMessage *msg )
+  int IProtocol::SetMessageList( MessageList *msgs )
   {
-    messages.push_back(msg);
-    return messages.size();
+    messages = msgs;
+    return messages->size();
   }
 
   ///Clears messages from internal message list.
   void IProtocol::ClearMessages( void )
   {
-    messages.clear();
+    ///Set pointer to null.
+    messages = 0;
   }
 
   ///Formats the buffer into a packet with the correct protocol.
@@ -33,7 +34,7 @@ namespace Framework
     FormatHeader(stream);
 
     ///Serializes the messages into the buffer.
-    MessageList::const_iterator begin = messages.begin(), end = messages.end();
+    MessageList::const_iterator begin = messages->begin(), end = messages->end();
     while (stream.IsWriteGood() && begin != end)
       (*begin++)->SerializeData(stream);
     
