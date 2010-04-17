@@ -36,7 +36,7 @@ namespace Framework
 				StreamRead(stream,objectPosition);
 				StreamRead(stream,objectRotation);
 				if (stream.IsGood())
-					CreateObjectAt(objectPosition,objectRotation,"Objects\\" + objectArchetype);
+					CreateObjectAt(objectPosition, objectRotation, objectArchetype);
 			}
 		}
 

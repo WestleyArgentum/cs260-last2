@@ -506,6 +506,10 @@
 					Name="ServerState"
 					>
 					<File
+						RelativePath="..\Levels\Server.txt"
+						>
+					</File>
+					<File
 						RelativePath=".\ServerState.cpp"
 						>
 					</File>

@@ -134,6 +134,8 @@ namespace Framework
   ///Loads a level from a file. Doesn't unload current level.
 	void SinglePlayer::LoadFromFile( const std::string &filename )
 	{
+		//^! add data about asteroids to spawn, etc
+
 		TextSerializer stream;
 		bool fileOpened = stream.Open(filename);
 		ErrorIf( !fileOpened , "Could not open file %s. File does not exist or is protected." , filename.c_str() );
