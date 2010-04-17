@@ -9,14 +9,14 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  int PlayerStats::SerializeData( char *buffer ) const
+  int PlayerStats::SerializeData( DataStream &stream ) const
   {
     return sizeof(PlayerStats);
   }
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  int PlayerStats::InterpretData( char *buffer )
+  int PlayerStats::InterpretData( DataStream &stream )
   {
     return sizeof(PlayerStats);
   }
@@ -36,16 +36,15 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  int UpdateStats::SerializeData( char *buffer, unsigned /*size*/ ) const
+  int UpdateStats::SerializeData( DataStream &stream ) const
   {
       // Store the number of elements within our array into the given buffer.
-    *reinterpret_cast<unsigned*>(buffer) = stats_.size();
-    buffer += sizeof(unsigned);
+    stream.WriteUInt(stats_.size());
 
       // Store all the PlayerStats within the given buffer too!
     for ( Statistics::const_iterator it = stats_.begin(); it != stats_.end(); ++it )
     {
-      buffer += it->SerializeData( buffer );
+      it->SerializeData( stream );
     }
 
     return Size();
@@ -53,11 +52,11 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  void UpdateStats::InterpretData( char *buffer, unsigned /*size */ )
+  void UpdateStats::InterpretData( DataStream &stream )
   {
       // Pull out the size of the array stored in the buffer 
-    unsigned size = *reinterpret_cast<unsigned*>(buffer);
-    buffer += sizeof(unsigned);
+    unsigned size = 0;
+    stream.ReadUInt(size);
 
     stats_.reserve( size );
 
@@ -65,7 +64,7 @@ namespace Framework
 
     for ( unsigned i = 0; i < size; ++i )
     {
-      buffer += playerStats.InterpretData( buffer );
+      playerStats.InterpretData( stream );
 
       stats_.push_back( playerStats );
     }

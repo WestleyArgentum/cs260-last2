@@ -10,8 +10,8 @@ namespace Framework
     PlayerStats( void ) : playerId_(0), score_(0) {;}
     PlayerStats( unsigned playerId, unsigned score ) : playerId_(playerId), score_(score) {;}
 
-    int SerializeData( char *buffer ) const;
-    int InterpretData( char *buffer );
+    int SerializeData( DataStream &stream ) const;
+    int InterpretData( DataStream &stream );
 
     unsigned playerId_;
     unsigned score_;
@@ -29,10 +29,10 @@ namespace Framework
       virtual unsigned Size( void ) const;
 
         /// Write the statistics of this structure to the the buffer given.
-      virtual int SerializeData( char *buffer, unsigned ) const;
+      virtual int SerializeData( DataStream &stream ) const;
 
         /// Build the statistics structure getting the data from the buffer given!
-      virtual void InterpretData( char *buffer, unsigned size );
+      virtual void InterpretData( DataStream &stream );
 
     public:
       Statistics stats_;    ///< Copy of the current statistics of our game.

@@ -32,6 +32,10 @@ namespace Framework ///< Networking API namespace
     typedef std::pair<unsigned, bool> PortState;
     typedef std::vector<PortState> PortBank;
 
+    ///A map for holding the different types of protocols.
+    typedef std::map<ProtocolType, IProtocol *> ProtocolMap;
+
+
 	  //Mutex mutex;        ///< Keeps data structures safe.
     PortBank ports;     ///< The set of ports allowed for UDP sockets.
 	  SocketBank sockets; ///< All the sockets that have been created.
@@ -39,12 +43,20 @@ namespace Framework ///< Networking API namespace
 	  WSADATA wsData;     ///< The winsock context data.
 	  bool init;          ///< Whether or not the system has been initialized.
 
+    ProtocolMap Protocols; ///<The protocol map itself.
+
     ///Singleton class
 	  NetAPI_( void );
 	  ~NetAPI_( void );
   public:
     ///Singleton getter method.
 	  static NetAPI_ *GetInstance( void );
+
+    ///Registers a new Protocol with the system.
+    void AddProtocol( const ProtocolType &type, IProtocol *protocol );
+
+    ///Retrieve a specific protocol from the available protocols.
+    IProtocol * GetProtocol( const ProtocolType &type );
 
 	  ///Initializes WinSock
 	  int Init( void );
@@ -71,5 +83,8 @@ namespace Framework ///< Networking API namespace
   #define NetAPI NetAPI_::GetInstance()
 
 } // Framework namespace
+
+///Registers a new protocol with the system to be used by the sockets.
+#define RegisterProtocol( PROTOCOL ) NetAPI->AddProtocol( #PROTOCOL, new PROTOCOL() )
 
 #endif
