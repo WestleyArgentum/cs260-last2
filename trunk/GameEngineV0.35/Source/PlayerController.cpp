@@ -9,6 +9,7 @@
 #include "MessageHub.h"
 #include "SinglePlayer.h"
 #include "UtilityGameFunctions.h"
+#include "BulletController.h"
 
 namespace Framework
 {
@@ -66,7 +67,19 @@ namespace Framework
 				// set up the offset for the bullet (so it is in front of the ship)
 				Vec2 laser_offset(cos(transform->Rotation - 89.5f) * 30, sin(transform->Rotation - 89.5f) * 30);
 
-				CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Bullet");
+				GOC* bullet = CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Bullet");
+
+				// set up bullets velocity (a little crude)
+				Body* bulletbody = bullet->has(Body);
+				BulletController* bulletbrain = bullet->has(BulletController);
+
+				Vec2 vel(cos(transform->Rotation - 89.5f) * bulletbrain->speed,
+								 sin(transform->Rotation - 89.5f) * bulletbrain->speed);
+
+				vel.x += D3DXVec2Length(&body->Velocity);
+				vel.y += D3DXVec2Length(&body->Velocity);
+
+				bulletbody->Velocity = vel;
 			}
 		}
 

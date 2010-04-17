@@ -9,6 +9,7 @@ namespace Framework
 {
   class SinglePlayer : public IGameState
   {
+	private:
     ObjectLinkList<Controller> Controllers;
 
   public:
@@ -34,8 +35,6 @@ namespace Framework
 
     ///Reset all the positions, objects, scores, ect...
     virtual void Restart( void );
-    
-	  void SpawnRandomAsteroids( void );
 
 		GOCId player_ship_id;
 

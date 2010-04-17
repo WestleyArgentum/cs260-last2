@@ -69,7 +69,7 @@ namespace Framework
   void GameStateManager::Initialize()
   {
     ///Set the initial state.
-    Curr = Next = "SinglePlayer";
+    Curr = Next = "ServerState";
     //Curr = Next = "MainMenu";
     GameStates[Curr]->Initialize();
   }

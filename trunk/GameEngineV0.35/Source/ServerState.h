@@ -30,5 +30,8 @@ namespace Framework
 		virtual void Update( float dt );
 
 		virtual void Restart( void );
+
+	private:
+		ObjectLinkList<Controller> Controllers;
 	};
 }
