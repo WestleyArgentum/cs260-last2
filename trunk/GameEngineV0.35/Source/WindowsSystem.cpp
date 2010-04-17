@@ -108,12 +108,18 @@ namespace Framework
 			//broadcast whatever message you need
 			switch ( wParam )
 			{
-			case VK_ESCAPE:
-				{
-					MessageQuit q;
-					CORE->BroadcastMessage(&q);
-					break;
-				}
+			  case VK_ESCAPE:
+				  {
+					  MessageQuit q;
+					  CORE->BroadcastMessage(&q);
+					  break;
+				  }
+        default:
+          {
+            MessageWindowKey m( wParam );
+            CORE->BroadcastMessage( &m );
+            break;
+          }
 			}
 			break;
 		case WM_KEYUP: //A key was released
@@ -254,5 +260,7 @@ namespace Framework
 	bool IsDHeld(){ return GetKeyState( 'D' ) < 0; }
 
 	bool IsSpaceHeld() { return GetKeyState( VK_SPACE ) < 0; }
+
+	bool IsEnterHeld() { return GetKeyState( VK_RETURN ) < 0; }
 
 }

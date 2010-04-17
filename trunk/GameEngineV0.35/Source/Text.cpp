@@ -74,7 +74,8 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  void Text::SetColor( char red, char green, char blue, char alpha )
+  void Text::SetColor( unsigned char red, unsigned char green, unsigned char blue,
+    unsigned char alpha )
   {
     color_ = D3DCOLOR_ARGB( alpha, red, green, blue );
   }

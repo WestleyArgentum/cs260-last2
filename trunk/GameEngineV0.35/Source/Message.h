@@ -23,6 +23,7 @@ namespace Framework
 			Collide,
 			ToggleDebugInfo,
 			CharacterKey,
+      WindowKey,
 			MouseButton,
 			MouseMove,
 			FileDrop,

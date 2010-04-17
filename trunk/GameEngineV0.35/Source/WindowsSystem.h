@@ -39,6 +39,14 @@ namespace Framework
 		int character;
 	};
 
+  struct MessageWindowKey : public Message
+  {
+  public:
+    MessageWindowKey( WPARAM key ) : Message(Mid::WindowKey), key_(key) {;}
+
+    WPARAM key_;
+  };
+
 	///Message signaling that a mouse button state has changed.
 	class MouseButton: public Message
 	{

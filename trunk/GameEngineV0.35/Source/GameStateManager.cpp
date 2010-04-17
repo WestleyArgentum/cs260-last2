@@ -69,8 +69,7 @@ namespace Framework
   void GameStateManager::Initialize()
   {
     ///Set the initial state.
-    Curr = Next = "ServerState";
-    //Curr = Next = "MainMenu";
+    Curr = Next = "MainMenu";
     GameStates[Curr]->Initialize();
   }
 
@@ -84,8 +83,8 @@ namespace Framework
     {
       /// TODO: Check if Next exists!!
       GameStates[Curr]->Cleanup();
-      GameStates[Next]->Initialize();
       Curr = Next;
+      GameStates[Next]->Initialize();
     }
     ///Or if we are to restart the state.
     else if (Next == GS_RESTART)
