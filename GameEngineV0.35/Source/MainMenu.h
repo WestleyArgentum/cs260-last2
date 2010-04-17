@@ -9,6 +9,17 @@ namespace Framework
   class MainMenu : public IGameState
   {
     public:
+      enum LevelIndex
+      {
+         LI_SinglePlayer = 0
+        ,LI_HostGame
+        ,LI_JoinGame
+        ,LI_Quit
+
+        ,LI_NumberOfIndexes
+      };    // LevelIndex
+
+    public:
       MainMenu( GameStateManager *gsm );
       virtual ~MainMenu( void );
 
@@ -35,6 +46,9 @@ namespace Framework
     private:
       typedef ObjectLinkList<Controller> ControllerList;
       ControllerList Controllers;
+
+      LevelIndex index_;
+      GOCId indexes_[LI_NumberOfIndexes];
   };    // MainMenu
 
 }   // namespace Framework

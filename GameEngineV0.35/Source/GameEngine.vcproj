@@ -928,6 +928,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Objects\MenuText.txt"
+					>
+				</File>
+				<File
 					RelativePath="..\Objects\PlayerShip.txt"
 					>
 				</File>

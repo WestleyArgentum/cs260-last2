@@ -21,7 +21,8 @@ namespace Framework
 
         /// Sets the color of the text on the screen. Maybe be helpful to have specific function for
         ///  fading colors if desired.
-      void SetColor( char red, char green, char blue, char alpha );
+      void SetColor( unsigned char red, unsigned char green, unsigned char blue,
+        unsigned char alpha );
 
         /// Sets the text displayed to the string given. (printf style, note, newlines may not work) 
       void SetText( const char *msg, ... );

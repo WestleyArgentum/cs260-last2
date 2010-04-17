@@ -25,18 +25,18 @@ namespace Framework
 
   bool Graphics::Font::operator< ( const Font &rhs ) const
   {
-    if ( width_ < rhs.width_ )
+    if ( width_ != rhs.width_ )
     {
-      if ( height_ < rhs.height_ )
-      {
-        if ( name_ < rhs.name_ )
-        {
-          return true;
-        }
-      }
+      return width_ < rhs.width_;
     }
-
-    return false;
+    else if ( height_ != rhs.height_ )
+    {
+      return height_ < rhs.height_ ;
+    }
+    else
+    {
+      return name_ < rhs.name_;
+    }
   }
 
   bool Graphics::Font::operator== ( const Font &rhs ) const
