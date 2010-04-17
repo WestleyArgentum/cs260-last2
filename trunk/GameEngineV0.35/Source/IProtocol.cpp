@@ -34,7 +34,7 @@ namespace Framework
 
     ///Serializes the messages into the buffer.
     MessageList::const_iterator begin = messages.begin(), end = messages.end();
-    while (begin != end)
+    while (stream.IsWriteGood() && begin != end)
       (*begin++)->SerializeData(stream);
     
     ///Applies a hashing method or encryption method.
@@ -56,13 +56,7 @@ namespace Framework
 
     ///Builds a message from the data and info from the header. Keeps adding
     ///the size of each message to the offset until we've eaten all messages.
-    while (stream.IsReadGood())
-    {
-      messages.push_back(BuildMessage(stream));
-      messages.back()->Size();
-    }
-
-    return messages.size();
+    return BuildMessages(stream,messages);
   }
 
 } // Framework namespace
