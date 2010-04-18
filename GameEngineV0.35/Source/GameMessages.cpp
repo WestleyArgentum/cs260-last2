@@ -1,6 +1,8 @@
 
 #include "Precompiled.h"
 #include "GameMessages.h"
+#include "GameStateManager.h"
+#include "MessageHub.h"
 
 namespace Framework
 {
@@ -40,7 +42,13 @@ namespace Framework
 			StreamRead(stream, id);
 		if (stream.IsReadGood())
 			StreamRead(stream, pos);
-	}
+  }
+
+  ///Sends itself out into the system.
+  void CreateMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
+  }
  
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +75,12 @@ namespace Framework
   {
     //Read the object id.
     StreamRead(stream,id);
+  }
+
+  ///Sends itself out into the system.
+  void DestroyMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +112,12 @@ namespace Framework
     StreamRead(stream, pos);
   }
 
+  ///Sends itself out into the system.
+  void UpdateMessage::SendThis( void )
+  {
+    MessageHub->Direct(*this,id);
+  }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // ConnectionMessage
@@ -127,43 +147,11 @@ namespace Framework
     StreamRead(stream,address);
   }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// InputMessage
-	InputMessage::~InputMessage( void )
-	{}
-
-	NMid::NetMessageIdType InputMessage::Type( void ) const
-	{
-		return NMid::Input;
-	}
-
-	INetMessage * InputMessage::Clone( void ) const
-	{
-		return new InputMessage(*this);
-	}
-
-	int InputMessage::SerializeData( DataStream &stream ) const
-	{
-		StreamWrite(stream, character);
-		StreamWrite(stream, key);
-
-		StreamWrite(stream, MouseButtonIndex);
-		StreamWrite(stream, ButtonIsPressed);
-		StreamWrite(stream, MousePosition);
-
-		return 0;
-	}
-
-	void InputMessage::InterpretData( DataStream &stream )
-	{
-		StreamRead(stream, character);
-		StreamRead(stream, key);
-
-		StreamRead(stream, MouseButtonIndex);
-		StreamRead(stream, ButtonIsPressed);
-		StreamRead(stream, MousePosition);
-	}
+  ///Sends itself out into the system.
+  void ConnectionMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
+  }
 
 }   // namespace Framework
 

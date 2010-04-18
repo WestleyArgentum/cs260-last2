@@ -27,11 +27,11 @@ namespace Framework
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// UpdateStats Methods
+// StatsMessage Methods
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  unsigned UpdateStats::Size( void ) const
+  unsigned StatsMessage::Size( void ) const
   {
       // Size of the vector that we are passing across the network, then the size of the array that
       //  we need to send.
@@ -40,7 +40,7 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  int UpdateStats::SerializeData( DataStream &stream ) const
+  int StatsMessage::SerializeData( DataStream &stream ) const
   {
       // Store the number of elements within our array into the given buffer.
     stream.WriteData(stats_.size());
@@ -56,7 +56,7 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  void UpdateStats::InterpretData( DataStream &stream )
+  void StatsMessage::InterpretData( DataStream &stream )
   {
       // Pull out the size of the array stored in the buffer 
     unsigned size = 0;

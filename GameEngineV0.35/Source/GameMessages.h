@@ -30,7 +30,7 @@ namespace Framework
 		virtual void InterpretData( DataStream &stream );
 
     ///Sends itself out into the system.
-    //virtual void SendThis( void );
+    virtual void SendThis( void );
 
 		std::string obj_type;
 		GOCId id;
@@ -55,7 +55,7 @@ namespace Framework
     virtual void InterpretData( DataStream &stream );
 
     ///Sends itself out into the system.
-    //virtual void SendThis( void );
+    virtual void SendThis( void );
 
     GOCId id;
   };    // DestoryMessage
@@ -63,7 +63,7 @@ namespace Framework
   class UpdateMessage : public INetMessage
   {
   public:
-    UpdateMessage( GOCId id_, const Vec2 &pos_ ) : id(id_), pos(pos_) {;}
+    UpdateMessage( GOCId id_ = 0, const Vec2 &pos_ = Vec2() ) : id(id_), pos(pos_) {;}
 
     // Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
@@ -76,6 +76,9 @@ namespace Framework
 
     // Interprets the data in a buffer as the contents of its own message type.
     virtual void InterpretData( DataStream &stream );
+
+    ///Sends itself out into the system.
+    virtual void SendThis( void );
 
     GOCId id;   ///< Id of the object to update
     Vec2 pos;   ///< Position of the object now!
@@ -97,7 +100,7 @@ namespace Framework
     virtual void InterpretData( DataStream &stream );
 
     ///Sends itself out into the system.
-    //virtual void SendThis( void );
+    virtual void SendThis( void );
 
     std::string name;
     NetAddress address;
@@ -120,11 +123,16 @@ namespace Framework
 		// Interprets the data in a buffer as the contents of its own message type.
 		virtual void InterpretData( DataStream &stream );
 
+    virtual void SendThis( void );
+
 		enum MouseButtonIndexId
 		{
 			LeftMouse,
 			RightMouse
 		};
+
+    // Object sending
+    GOCId id;
 
 		// keys -----
 		int character;

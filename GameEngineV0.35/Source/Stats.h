@@ -22,17 +22,17 @@ namespace Framework
 
   typedef std::vector<PlayerStats> Statistics;
 
-  class UpdateStats : public INetMessage
+  class StatsMessage : public INetMessage
   {
     public:
-      UpdateStats( void ) : INetMessage(Mid::StatsUpdate) {;}
-      explicit UpdateStats( const Statistics &stats ) : INetMessage(Mid::StatsUpdate), stats_(stats) {;}
+      StatsMessage( void ) : INetMessage(Mid::StatsUpdate) {;}
+      explicit StatsMessage( const Statistics &stats ) : INetMessage(Mid::StatsUpdate), stats_(stats) {;}
 
       ///Returns the type of message this is.
       virtual NMid::NetMessageIdType Type( void ) const { return NMid::Stats; }
 
       ///Creates a carbon copy of the message.
-      virtual UpdateStats * Clone( void ) const { return new UpdateStats(*this); }
+      virtual StatsMessage * Clone( void ) const { return new StatsMessage(*this); }
 
         /// Return the size of the information that we need to write to the given buffer.
       virtual unsigned Size( void ) const;
@@ -45,7 +45,7 @@ namespace Framework
 
     public:
       Statistics stats_;    ///< Copy of the current statistics of our game.
-  };    // UpdateStats
+  };    // StatsMessage
 
 }   // namespace Framework
 

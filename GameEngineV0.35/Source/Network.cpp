@@ -35,6 +35,17 @@ namespace Framework
 
   void Network::Connection::DistributeMessages( void )
   {
+    for (unsigned i = 0; i < NMid::NumIds; ++i)
+    {
+      MessageList::iterator begin = inbasket[i].begin(), end = inbasket[i].end();
+      while (begin != end)
+      {
+        const_cast<INetMessage*>(*begin)->SendThis();
+        delete *begin++;
+      }
+
+      inbasket[i].clear();
+    }
   }
 
   void Network::InitializeThread( void )
