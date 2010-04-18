@@ -107,8 +107,12 @@ namespace Framework
 	{
 		gameObject->ObjectId = id;
 
+    GOC* &object = GameObjectIdMap[id];
+
+    ErrorIf( object, "Error: Object already exists with the id specified!" );
+
 		//Store the game object in the global object id map
-		GameObjectIdMap[LastGameObjectId] = gameObject;
+		object = gameObject;
 	}
 
 	GOC * GameObjectFactory::GetObjectWithId(GOCId id)
