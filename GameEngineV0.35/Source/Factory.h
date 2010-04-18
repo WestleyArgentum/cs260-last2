@@ -22,6 +22,8 @@ namespace Framework
 	///referencing of game objects through integer Id Handles.
 	class GameObjectFactory : public ISystem
 	{
+  public:
+		typedef std::map<unsigned,GOC*> GameObjectIdMapType;
 	public:
 		GameObjectFactory();
 		~GameObjectFactory();
@@ -67,6 +69,9 @@ namespace Framework
 		///the object has been destroyed.
 		GOC * GetObjectWithId(GOCId id);
 
+    GameObjectIdMapType::iterator begin( void ) { return GameObjectIdMap.begin(); }
+    GameObjectIdMapType::const_iterator end( void ) const { return GameObjectIdMap.end(); }
+
 	private:
 		///Used to incrementally generate unique id's.
 		unsigned LastGameObjectId;
@@ -76,7 +81,6 @@ namespace Framework
 		ComponentMapType ComponentMap;
 
 		///Map of GOC to their Ids used for safe referencing of game objects
-		typedef std::map<unsigned,GOC*> GameObjectIdMapType;
 		GameObjectIdMapType GameObjectIdMap;
 
 		///Objects to be deleted
