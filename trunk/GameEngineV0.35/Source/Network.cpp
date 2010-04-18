@@ -211,7 +211,7 @@ namespace Framework
     ///Add the message to all of the message queues.
     ConnectionMap::iterator begin = connections.begin(), end = connections.end();
     while (begin != end)
-      begin->second.outbasket[m.Type()].push_back(m.Clone());
+      begin++->second.outbasket[m.Type()].push_back(m.Clone());
   }
 
   ///Builds up a buffer of messages to send to a specific connection.
