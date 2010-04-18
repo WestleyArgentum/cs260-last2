@@ -23,6 +23,9 @@ namespace Framework
       void EmptyInBasket( void );
       void EmptyOutBasket( void );
 
+      bool IsOutBasketEmpty( void );
+      bool IsInBasketEmpty( void );
+
       void DistributeMessages( void );
     };
 

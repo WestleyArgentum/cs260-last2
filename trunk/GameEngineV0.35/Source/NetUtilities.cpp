@@ -27,8 +27,8 @@ namespace Framework
   }
 
   bool NetAddress::operator!=( const NetAddress &rhs ) const {
-      return address.sin_family == rhs.address.sin_family && address.sin_port == rhs.address.sin_port &&
-          address.sin_addr.s_addr == rhs.address.sin_addr.s_addr;
+      return address.sin_family != rhs.address.sin_family || address.sin_port != rhs.address.sin_port ||
+          address.sin_addr.s_addr != rhs.address.sin_addr.s_addr;
   }
 
   ///Creates an Error from the code and formats it into a human readable string.
