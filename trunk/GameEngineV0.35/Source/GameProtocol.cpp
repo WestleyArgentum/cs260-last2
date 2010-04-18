@@ -21,12 +21,7 @@ namespace Framework
   ///Decides whether the packet is a valid message, takes care of decryption and unsalting.
   bool GameProtocol::ValidateMessage( DataStream &stream )
   {
-    std::string type;
-    StreamRead(stream,type);
-    if (type == ptype)
-      return true;
-
-    return false;
+    return true;
   }
 
   ///Strips the header off the message and stores any data relevant to message creation.

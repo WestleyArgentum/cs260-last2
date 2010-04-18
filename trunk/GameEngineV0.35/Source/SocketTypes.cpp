@@ -203,7 +203,7 @@ namespace Framework
       ThrowError(Error::E_SocketError);
     }
 
-    rstream.SetReadIndex(ret);
+    //rstream.SetWriteIndex(ret);
 
     ///Return the number of bytes received.
     return ret;
