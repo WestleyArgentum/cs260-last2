@@ -13,6 +13,7 @@
 #include "BulletController.h"
 #include "PlayerController.h"
 #include "ScoreDisplay.h"
+#include "GameMessages.h"
 
 namespace Framework
 {
@@ -107,7 +108,17 @@ namespace Framework
             }
           }
 		    }
+        break;
       }   // case Mid::Collide
+
+    case Mid::NetMessage:
+      {
+        // set my position to the position of the update message
+        UpdateMessage* mess = dynamic_cast<UpdateMessage*>(m);
+        if(mess)
+          GetOwner()->has(Transform)->Position = mess->pos;
+        break;
+      }
 
     }
 
