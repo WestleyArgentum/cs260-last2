@@ -4,6 +4,8 @@
 #include "Factory.h"
 #include "UtilityGameFunctions.h"
 #include "GameMessages.h"
+#include "Core.h"
+#include "Physics.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
 {}
@@ -16,6 +18,7 @@ void Framework::ClientState::Initialize( void )
 	// connect to a server
 	ErrorIf(!NETWORK);
 	NETWORK->FindServer();
+  CORE->SleepSystem(PHYSICS);
 }
 
 void Framework::ClientState::OnCleanup( void )

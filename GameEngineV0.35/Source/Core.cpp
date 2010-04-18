@@ -82,6 +82,20 @@ namespace Framework
 		Systems.push_back(system);
 	}
 
+  ///Adds a system currently on the systems vec to the inactive systems vec
+  void CoreEngine::SleepSystem(ISystem* system)
+  {
+    // find the system
+    std::vector<ISystem*>::iterator sys = std::find(Systems.begin(), Systems.end(), system);
+
+    // add the system to the new vec (provided we found it)
+    if(sys != Systems.end())
+    {
+      InactiveSystems.push_back(*sys);
+      Systems.erase(sys);
+    }
+  }
+
 	void CoreEngine::DestroySystems()
 	{			
 		//Delete all the systems in reverse order
@@ -90,6 +104,14 @@ namespace Framework
 		for (unsigned i = 0; i < Systems.size(); ++i)
 		{
 			delete Systems[Systems.size()-i-1];
+		}
+
+    //Well, at least in the relative order they were added.
+    //Hopefully if they are sleeping there wont be any
+    //issues anyway.
+    for (unsigned i = 0; i < InactiveSystems.size(); ++i)
+		{
+			delete InactiveSystems[Systems.size()-i-1];
 		}
 	}
 }

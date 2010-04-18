@@ -18,7 +18,7 @@ namespace Framework
 {
 	Physics * PHYSICS = NULL;
 
-	Physics::Physics()
+  Physics::Physics()
 	{
 		ErrorIf(PHYSICS!=NULL,"Physics already initialized");
 		PHYSICS = this;
