@@ -201,7 +201,8 @@ namespace Framework
   void Network::Initialize( void )
   {
     //Hard coded for now.
-    protocol = new GameProtocol();
+    RegisterProtocol(GameProtocol);
+    protocol = NetAPI->GetProtocol("GameProtocol");
   }
 
   ///Builds up a buffer of messages to send to all connections.
@@ -227,6 +228,7 @@ namespace Framework
     InitializeSocket();
 
     ///Spawn new thread.
+    thread_.Resume();
 
     return true;
   }
@@ -253,6 +255,8 @@ namespace Framework
 
     ///Clear the outbasket.
     connection.outbasket[NMid::Connection].clear();
+
+    thread_.Resume();
 
     return true;
   }

@@ -19,11 +19,12 @@ namespace Framework
   class IProtocol
   {
   protected:
+    ProtocolType ptype;
     MessageList *messages; ///< The messages to send in the packet.
 
   public:
     ///Save a pointer to the message that will write itself into the packet.
-    IProtocol( void ) {;}
+    IProtocol( const ProtocolType &type ) : ptype(type) {;}
     ///Keep all destructors virtual.
     virtual ~IProtocol( void ) {;}
 
