@@ -17,6 +17,7 @@ Circle
 30
 
 Asteroid
+500
 4
 50
 50
