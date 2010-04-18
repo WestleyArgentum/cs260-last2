@@ -23,7 +23,7 @@ namespace Framework
   {
     std::string type;
     StreamRead(stream,type);
-    if (type == "GameProtocol")
+    if (type == ptype)
       return true;
 
     return false;

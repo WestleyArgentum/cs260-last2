@@ -50,7 +50,7 @@ namespace Framework
 		void ReadData( T &data )
 		{
 			if (ReadSpace() >= sizeof(T)) {
-				memcpy(&data,buffer_,sizeof(T));
+				memcpy(&data,buffer_ + read_,sizeof(T));
 				read_ += sizeof(T);
 			}
 			else ///If we can't read that much data, set the read failbit.
@@ -61,7 +61,7 @@ namespace Framework
 		void WriteData( const T &data )
 		{
 			if (WriteSpace() > sizeof(T)) {
-				memcpy(buffer_,&data,sizeof(T));
+				memcpy(buffer_ + write_,&data,sizeof(T));
 				write_ += sizeof(T);
 			}
 			else ///If we can't write that much, set the write failbit.
