@@ -1,6 +1,7 @@
 #include "Precompiled.h"
 #include "GameProtocol.h"
 #include "GameMessages.h"
+#include "Stats.h"
 
 namespace Framework
 {
@@ -37,45 +38,45 @@ namespace Framework
     unsigned num = 0;
     ///Hard coded for now...
 
-    //for (unsigned i = 0; i < NumMessages[NMid::Connection] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new ConnectionMessage();
-    //  msg->SerializeData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::Connection] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new ConnectionMessage();
+      msg->SerializeData(stream);
+      messages[NMid::Connection].push_back(msg);
+      ++num;
+    }
 
-    //for (unsigned i = 0; i < NumMessages[NMid::Update] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new UpdateMessage();
-    //  msg->SerializeData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::Update] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new UpdateMessage();
+      msg->SerializeData(stream);
+      messages[NMid::Connection].push_back(msg);
+      ++num;
+    }
 
-    //for (unsigned i = 0; i < NumMessages[NMid::Create] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new CreateMessage();
-    //  msg->SerializeData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::Create] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new CreateMessage();
+      msg->SerializeData(stream);
+      messages[NMid::Connection].push_back(msg);
+      ++num;
+    }
 
-    //for (unsigned i = 0; i < NumMessages[NMid::Destroy] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new DestroyMessage();
-    //  msg->SerializeData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::Destroy] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new DestroyMessage();
+      msg->SerializeData(stream);
+      messages[NMid::Connection].push_back(msg);
+      ++num;
+    }
 
-    //for (unsigned i = 0; i < NumMessages[NMid::Stats] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new StatsMessage();
-    //  msg->SerializeData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::Stats] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new StatsMessage();
+      msg->SerializeData(stream);
+      messages[NMid::Connection].push_back(msg);
+      ++num;
+    }
 
     //for (unsigned i = 0; i < NumMessages[NMid::KeepAlive] && stream.IsReadGood(); ++i)
     //{

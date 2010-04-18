@@ -109,7 +109,7 @@ namespace Framework
   ///Update the game, updates all systems.
   void SinglePlayer::Update( float dt )
   {
-    UpdateStats stats( singlePlayerStats_ );
+    StatsMessage stats( singlePlayerStats_ );
     MessageHub->Post( stats );
 
     ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();

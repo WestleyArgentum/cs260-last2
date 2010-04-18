@@ -106,7 +106,7 @@ namespace Framework
     {
       case Mid::StatsUpdate:
         {
-          UpdateStats *updatestats = static_cast<UpdateStats*>( message );
+          StatsMessage *updatestats = static_cast<StatsMessage*>( message );
 
           stats_ = updatestats->stats_;
         }

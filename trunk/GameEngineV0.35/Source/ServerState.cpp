@@ -108,7 +108,7 @@ namespace Framework
 
 	void Framework::ServerState::Update( float dt )
 	{
-		UpdateStats stats;
+		StatsMessage stats;
 		static unsigned score = 0;
 		stats.stats_.push_back( PlayerStats(0, ++score ) );
 
