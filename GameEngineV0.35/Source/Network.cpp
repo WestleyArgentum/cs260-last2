@@ -33,6 +33,24 @@ namespace Framework
       outbasket[i].clear();
     }
   }
+  
+  bool Network::Connection::IsOutBasketEmpty( void )
+  {
+    for (unsigned type = 0; type < NMid::NumIds; ++type)
+      if (outbasket[type].size())
+        return false;
+
+    return true;
+  }
+
+  bool Network::Connection::IsInBasketEmpty( void )
+  {
+    for (unsigned type = 0; type < NMid::NumIds; ++type)
+      if (inbasket[type].size())
+        return false;
+
+    return true;
+  }
 
   void Network::Connection::DistributeMessages( void )
   {
@@ -132,13 +150,21 @@ namespace Framework
     while (begin != end)
     {
       /// Tell the protocol which message basket to send from.
-      protocol->SetMessageList(begin->second.outbasket);
-      socket->SendTo(begin->first, protocol);
-      begin->second.EmptyOutBasket();
+      if (!begin->second.IsOutBasketEmpty())
+      {
+        protocol->SetMessageList(begin->second.outbasket);
+        socket->SendTo(begin->first, protocol);
+        begin->second.EmptyOutBasket();
+      }
 
-      ///Send the messages we received out to the system.
-      begin->second.DistributeMessages();
-      begin->second.EmptyInBasket();
+      if (!begin->second.IsInBasketEmpty())
+      {
+        ///Send the messages we received out to the system.
+        begin->second.DistributeMessages();
+        begin->second.EmptyInBasket();
+      }
+
+      ++begin;
     }
   }
 
@@ -214,16 +240,19 @@ namespace Framework
     ConnectionMessage msg;
     msg.name = NetAPI->Username();
     msg.address = socket->GetAddress();
+    const NetAddress server = NetAPI->GetServerAddress();
+
+    Connection &connection = connections[server];
 
     // add the broadcast connection to the connection list.
-    connections[msg.address].outbasket[NMid::Connection].push_back(&msg);
-    protocol->SetMessageList(connections[msg.address].outbasket);
+    connection.outbasket[NMid::Connection].push_back(&msg);
+    protocol->SetMessageList(connection.outbasket);
 
     ///Send out the request for the server...
     socket->SendTo(NetAPI->GetServerAddress(), protocol);
 
     ///Clear the outbasket.
-    connections[msg.address].outbasket[NMid::Connection].clear();
+    connection.outbasket[NMid::Connection].clear();
 
     return true;
   }

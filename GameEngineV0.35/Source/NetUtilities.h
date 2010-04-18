@@ -20,6 +20,11 @@ namespace Framework
     sockaddr_in address;
   public:
     NetAddress( void );
+    NetAddress( const NetAddress &rhs )
+    {
+      memcpy(&address, &rhs.address, sizeof(address));
+    }
+
     NetAddress( const IPAddress &ip, Port port = 0 );
 
     ///Implicit conversion for cleanlyness.
@@ -35,6 +40,13 @@ namespace Framework
     ///Comparison operators because there aren't any for sockaddr_in or sockaddr.
     bool operator==( const NetAddress &rhs ) const;
     bool operator!=( const NetAddress &rhs ) const;
+
+    NetAddress & operator=( const NetAddress &rhs )
+    {
+      memcpy(&address, &rhs.address, sizeof(address));
+
+      return *this;
+    }
 
     ///Sets the sin_family of the socket.
     void SetFamily( unsigned family ) { address.sin_family = family; }

@@ -33,9 +33,12 @@ namespace Framework
     FormatHeader(stream);
 
     ///Serializes the messages into the buffer.
-    MessageList::const_iterator begin = messages->begin(), end = messages->end();
-    while (stream.IsWriteGood() && begin != end)
-      (*begin++)->SerializeData(stream);
+    for (unsigned type = 0; type < NMid::NumIds; ++type)
+    {
+      MessageList::const_iterator begin = messages[type].begin(), end = messages[type].end();
+      while (stream.IsWriteGood() && begin != end)
+        (*begin++)->SerializeData(stream);
+    }
     
     ///Applies a hashing method or encryption method.
     PepperMessage(stream);
