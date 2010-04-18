@@ -1,8 +1,5 @@
 #pragma once // Make sure this header is only included once.
 
-#include <string>
-#include <sstream>
-
 namespace Framework
 {
   ///Maximum message size per packet.
@@ -18,10 +15,13 @@ namespace Framework
   {
     ///Underlying data. Has no methods itself...
     sockaddr_in address;
+    std::string ip_;
+    unsigned port_;
   public:
     NetAddress( void );
     NetAddress( const NetAddress &rhs )
     {
+      ip_ = rhs.ip_; port_ = rhs.port_;
       memcpy(&address, &rhs.address, sizeof(address));
     }
 
@@ -43,16 +43,15 @@ namespace Framework
 
     bool operator<( const NetAddress &rhs ) const
     {
-      if (address.sin_family != rhs.address.sin_family)
-        return address.sin_family < rhs.address.sin_family;
-      else if (address.sin_addr.s_addr != rhs.address.sin_addr.s_addr)
-        return address.sin_addr.s_addr < rhs.address.sin_addr.s_addr;
+      if (ip_ != rhs.ip_)
+        return ip_ < rhs.ip_;
       else
-        return address.sin_port < rhs.address.sin_port;
+        return port_ < rhs.port_;
     }
 
     NetAddress & operator=( const NetAddress &rhs )
     {
+      ip_ = rhs.ip_; port_ = rhs.port_;
       memcpy(&address, &rhs.address, sizeof(address));
 
       return *this;
@@ -63,11 +62,11 @@ namespace Framework
 
     ///Sets the port on the address. Can break if in mid use...
     void SetPort( Port port )
-    { address.sin_port = htons( port ); }
+    { port_ = port; address.sin_port = htons( port ); }
 
     ///Sets the IP address. Can break if in mid use...
     void SetIP( const IPAddress &ip )
-    { address.sin_addr.s_addr = inet_addr( ip.c_str() ); }
+    { ip_ = ip; address.sin_addr.s_addr = inet_addr( ip.c_str() ); }
 
   };
 

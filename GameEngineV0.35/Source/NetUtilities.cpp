@@ -1,12 +1,13 @@
 
 #include "Precompiled.h"
 #include "NetUtilities.h"
+#include <sstream>
 
 namespace Framework
 {
 
   ///Default constructor simply zeros out the struct and sets the family.
-  NetAddress::NetAddress( void )
+  NetAddress::NetAddress( void ) : port_(0)
   {
     SecureZeroMemory( &address, sizeof(address) );
     address.sin_family = AF_INET;
@@ -14,6 +15,7 @@ namespace Framework
 
   NetAddress::NetAddress( const IPAddress &ip, Port port )
   {
+    ip_ = ip; port_ = port;
     SecureZeroMemory( &address, sizeof(address) );
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
