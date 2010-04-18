@@ -11,6 +11,7 @@
 #include "UtilityGameFunctions.h"
 #include "BulletController.h"
 #include "GameMessages.h"
+#include "Network.h"
 
 namespace Framework
 {
@@ -158,6 +159,12 @@ namespace Framework
 				vel += body->Velocity;
 
 				bulletbody->Velocity = vel;
+
+        CreateMessage create;
+        create.id = bullet->GetId();
+        create.obj_type = "Bullet";
+        create.pos = bullet->has(Transform)->Position;
+        NETWORK->SendNetMessage(create);
 			}
     }
   }
