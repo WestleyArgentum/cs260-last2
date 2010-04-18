@@ -8,7 +8,12 @@ namespace Framework
 	// The Server will be running the simulation, receiving input from clients,
 	// and posting messages about created, destroyed, and updated objects.
 	class ServerState : public IGameState
-	{
+  {
+    void HandleConnection(INetMessage *msg);
+    void HandleCreate(INetMessage *msg);
+    void HandleDestroy(INetMessage *msg);
+    void HandleInput(INetMessage *msg);
+
 	public:
 		// Create, init,  and destroy methods -----
 		ServerState( GameStateManager *gsm );
