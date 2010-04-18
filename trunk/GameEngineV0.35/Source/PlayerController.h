@@ -25,6 +25,9 @@ namespace Framework
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
 
+    
+    void UpdateInput(INetMessage *msg);
+
 		Transform * transform;
 		Body* body;
 
