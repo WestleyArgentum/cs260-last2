@@ -10,6 +10,33 @@ namespace Framework
   ///30 second timeout phase.
   const double Network::CONNECTION_TIMEOUT = 30.0;
 
+  void Network::Connection::EmptyInBasket( void )
+  {
+    for (unsigned i = 0; i < NMid::NumIds; ++i)
+    {
+      MessageList::iterator begin = inbasket[i].begin(), end = inbasket[i].end();
+      while (begin != end)
+        delete *begin++;
+
+      inbasket[i].clear();
+    }
+  }
+  void Network::Connection::EmptyOutBasket( void )
+  {
+    for (unsigned i = 0; i < NMid::NumIds; ++i)
+    {
+      MessageList::iterator begin = outbasket[i].begin(), end = outbasket[i].end();
+      while (begin != end)
+        delete *begin++;
+
+      outbasket[i].clear();
+    }
+  }
+
+  void Network::Connection::DistributeMessages( void )
+  {
+  }
+
   void Network::InitializeThread( void )
   {
 
@@ -89,16 +116,17 @@ namespace Framework
   void Network::UpdateConnections( void )
   {
     ///Go through and send all messages to each connection.
-
     ConnectionMap::iterator begin = connections.begin(), end = connections.end();
     while (begin != end)
     {
       /// Tell the protocol which message basket to send from.
       protocol->SetMessageList(begin->second.outbasket);
       socket->SendTo(begin->first, protocol);
-      //begin->second.EmptyOutBasket();
+      begin->second.EmptyOutBasket();
 
-
+      ///Send the messages we received out to the system.
+      begin->second.DistributeMessages();
+      begin->second.EmptyInBasket();
     }
   }
 

@@ -27,6 +27,9 @@ namespace Framework
 		// Interprets the data in a buffer as the contents of its own message type.
 		virtual void InterpretData( DataStream &stream );
 
+    ///Sends itself out into the system.
+    //virtual void SendThis( void );
+
 		GOCType obj_type;
 		GOCId id;
 		Vec2 pos;
@@ -48,6 +51,9 @@ namespace Framework
 
     // Interprets the data in a buffer as the contents of its own message type.
     virtual void InterpretData( DataStream &stream );
+
+    ///Sends itself out into the system.
+    //virtual void SendThis( void );
 
     GOCId id;
   };    // DestoryMessage
@@ -87,6 +93,9 @@ namespace Framework
 
     // Interprets the data in a buffer as the contents of its own message type.
     virtual void InterpretData( DataStream &stream );
+
+    ///Sends itself out into the system.
+    //virtual void SendThis( void );
 
     std::string name;
     NetAddress address;

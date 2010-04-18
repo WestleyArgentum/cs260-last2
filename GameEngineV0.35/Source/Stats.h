@@ -22,11 +22,11 @@ namespace Framework
 
   typedef std::vector<PlayerStats> Statistics;
 
-  class UpdateStats : public Message, public INetMessage
+  class UpdateStats : public INetMessage
   {
     public:
-      UpdateStats( void ) : Message(Mid::StatsUpdate) {;}
-      explicit UpdateStats( const Statistics &stats ) : Message(Mid::StatsUpdate), stats_(stats) {;}
+      UpdateStats( void ) : INetMessage(Mid::StatsUpdate) {;}
+      explicit UpdateStats( const Statistics &stats ) : INetMessage(Mid::StatsUpdate), stats_(stats) {;}
 
       ///Returns the type of message this is.
       virtual NMid::NetMessageIdType Type( void ) const { return NMid::Stats; }
