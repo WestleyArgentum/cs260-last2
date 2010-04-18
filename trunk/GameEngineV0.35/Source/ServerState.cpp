@@ -68,7 +68,7 @@ namespace Framework
 		NETWORK->HostServer();
 
     CreateConsole();
-    std::cout << "Server IP:"   << NetAPI->LocalIP() << std::endl;
+    std::cout << "Server IP: " << NetAPI->LocalIP() << std::endl;
 	}
 
 	void Framework::ServerState::OnCleanup( void )
