@@ -3,9 +3,8 @@ Transform
 0
 
 Sprite
-Water
+Menu
 square
-12000
-12000
-0.1 0 1 1
+800 600
+1 1 1 1
 

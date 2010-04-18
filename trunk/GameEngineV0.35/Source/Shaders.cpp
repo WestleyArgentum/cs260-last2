@@ -71,5 +71,12 @@ namespace Framework
     AddPlayerPosition( shader, sprite );
   }
 
+/**************************************************************************************************/
+/**************************************************************************************************/
+  void MainMenuShader::InitPhase( ID3DXEffect *shader, Sprite *sprite )
+  {
+    AddMousePosition( shader, sprite );
+  }
+
 }   // namespace Framework
 

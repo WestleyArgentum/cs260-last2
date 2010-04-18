@@ -8,6 +8,7 @@ namespace Framework
 	  ,DebugShader
     ,Water
     ,Bullet
+    ,Menu
 
 	  ,NumberOfShaders
   };    // enum PixelShaders

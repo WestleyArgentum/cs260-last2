@@ -68,7 +68,13 @@ namespace Framework
     {
       if ( it->playerId_ == GSM->GetPlayerId() )    // If we are draw the current player's score
       {
+  // 'argument' : conversion from 'FLOAT' to 'unsigned char', possible loss of data
+  // Value of the float should be 0 and 255 so the cast will not lose any data.
+#pragma warning( push )
+#pragma warning( disable : 4244 )
         playerText_.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+#pragma warning( pop )
+
         playerText_.SetText( "Score: %u", it->score_ );
 
         playerTransform_.Position = start;
@@ -78,7 +84,12 @@ namespace Framework
       {
         Text &current = text_[i];
 
+  // 'argument' : conversion from 'FLOAT' to 'unsigned char', possible loss of data
+  // Value of the float should be 0 and 255 so the cast will not lose any data.
+#pragma warning( push )
+#pragma warning( disable : 4244 )
         current.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+#pragma warning( pop )
         current.SetText( "Score: %u", it->score_ );
  
         current.transform->Position = start;

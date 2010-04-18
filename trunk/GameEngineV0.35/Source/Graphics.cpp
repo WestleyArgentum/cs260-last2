@@ -360,6 +360,7 @@ namespace Framework
     LOAD_EFFECT( DebugShader, NULL );
     LOAD_EFFECT( Water,       new WaterShader() );
     LOAD_EFFECT( Bullet,      NULL );
+    LOAD_EFFECT( Menu,        new MainMenuShader() );
 	}
 
   PixelShaders Graphics::GetShaderIndex( const std::string &shadername )
