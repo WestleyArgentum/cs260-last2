@@ -28,6 +28,7 @@ namespace Framework
 
 		///Create initialize and Id a GOC from the data file.
 		GOC * Create(const std::string& filename);
+	  GOC * Create( const std::string& filename, GOCId id );
 
 		///Add a GOC to the destroy list for delayed destruction.
 		void Destroy(GOC * gameObject);
@@ -48,14 +49,17 @@ namespace Framework
 		///Create and Id a GOC at runtime. Used to dynamically build GOC.
 		///After components have been added call GOC->Initialize().
 		GOC * CreateEmptyComposition();
+    GOC * CreateEmptyComposition( GOCId id );
 
 		///Build a composition and serialize from the data file but do not initialize the GOC.
 		///Used to create a composition and then adjust its data before initialization
 		///see GameObjectComposition::Initialize for details.
 		GOC * BuildAndSerialize(const std::string& filename);
+    GOC * BuildAndSerialize(const std::string& filename, GOCId id );
 
 		///Id object and store it in the object map.
 		void IdGameObject(GOC* gameObject);
+    void IdGameObject(GOC* gameObject, GOCId id);
 
 		///Add a component creator enabling data driven composition
 		void AddComponentCreator(const std::string& name,IComponentCreator* creator);
