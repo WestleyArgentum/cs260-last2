@@ -27,6 +27,8 @@ namespace Framework
 		void BroadcastMessage(Message* m);
 		///Adds a new system to the game.
 		void AddSystem(ISystem* system);
+    ///Adds a system currently on the systems vec to the inactive systems vec
+    void SleepSystem(ISystem* system);
 		///Initializes all systems in the game.
 		void Initialize();
     double GetTime( void ) { return TotalTime; }
@@ -34,6 +36,7 @@ namespace Framework
 	private:
 		//Tracks all the systems the game uses
 		std::vector<ISystem*> Systems;
+    std::vector<ISystem*> InactiveSystems;
 		//The last time the game was updated
 		double LastTime;
     double TotalTime;
