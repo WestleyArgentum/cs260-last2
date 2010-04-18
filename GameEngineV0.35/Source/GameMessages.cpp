@@ -127,5 +127,43 @@ namespace Framework
     StreamRead(stream,address);
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// InputMessage
+	InputMessage::~InputMessage( void )
+	{}
+
+	NMid::NetMessageIdType InputMessage::Type( void ) const
+	{
+		return NMid::Input;
+	}
+
+	INetMessage * InputMessage::Clone( void ) const
+	{
+		return new InputMessage(*this);
+	}
+
+	int InputMessage::SerializeData( DataStream &stream ) const
+	{
+		StreamWrite(stream, character);
+		StreamWrite(stream, key);
+
+		StreamWrite(stream, MouseButtonIndex);
+		StreamWrite(stream, ButtonIsPressed);
+		StreamWrite(stream, MousePosition);
+
+		return 0;
+	}
+
+	void InputMessage::InterpretData( DataStream &stream )
+	{
+		StreamRead(stream, character);
+		StreamRead(stream, key);
+
+		StreamRead(stream, MouseButtonIndex);
+		StreamRead(stream, ButtonIsPressed);
+		StreamRead(stream, MousePosition);
+	}
+
 }   // namespace Framework
 
