@@ -509,10 +509,6 @@
 					Name="ServerState"
 					>
 					<File
-						RelativePath="..\Levels\Server.txt"
-						>
-					</File>
-					<File
 						RelativePath=".\ServerState.cpp"
 						>
 					</File>
@@ -875,6 +871,10 @@
 				>
 				<File
 					RelativePath="..\Levels\MainMenu.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Levels\Server.txt"
 					>
 				</File>
 				<File
