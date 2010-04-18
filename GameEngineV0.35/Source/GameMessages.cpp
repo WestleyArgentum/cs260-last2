@@ -55,6 +55,7 @@ namespace Framework
 		StreamWrite(stream, obj_type);
 		StreamWrite(stream, id);
 		StreamWrite(stream, pos);
+    StreamWrite(stream, rot);
 
 		return 0;
 	}
@@ -64,6 +65,7 @@ namespace Framework
 		StreamRead(stream, obj_type);
 		StreamRead(stream, id);
 		StreamRead(stream, pos);
+    StreamRead(stream, rot);
   }
 
   ///Sends itself out into the system.

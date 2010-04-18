@@ -164,6 +164,7 @@ namespace Framework
         create.id = bullet->GetId();
         create.obj_type = "Bullet";
         create.pos = bullet->has(Transform)->Position;
+        create.rot = 0;
         NETWORK->SendNetMessage(create);
 			}
     }

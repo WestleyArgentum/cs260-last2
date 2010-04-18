@@ -48,6 +48,7 @@ namespace Framework
       create.id = begin->first;
       create.obj_type = begin->second->GetType();
       create.pos = begin->second->has(Transform)->Position;
+      create.rot = begin->second->has(Transform)->Rotation;
       NETWORK->SendNetMessage(connect->address, create);
       ++begin;
     }
