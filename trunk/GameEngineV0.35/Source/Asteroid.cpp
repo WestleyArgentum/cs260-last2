@@ -8,6 +8,7 @@
 #include "Body.h"
 #include "PRNG.h"
 #include "Physics.h"
+#include "Network.h"
 
 #include "GameStateManager.h"
 #include "BulletController.h"
@@ -67,7 +68,12 @@ namespace Framework
           // If we collided with a player or a bullet, explode this asteroid.
           if ( bullet || collidedObject->has(PlayerController) )
           {
+            DestroyMessage destroy;
+            destroy.id = GetOwner()->GetId();
+            NETWORK->SendNetMessage(destroy);
+
 			      GetOwner()->Destroy();
+
 
               // If we should spawn more asteroids after this collision.
 			      if ( SubSpawnCount > 0 )
@@ -84,6 +90,13 @@ namespace Framework
                 {
 					        shrapnelBody->SetVelocity( dir * 120 );
                 }
+
+                CreateMessage create;
+                create.id = shrapnel->GetId();
+                create.obj_type = "Shrapnel";
+                create.pos = shrapnel->has(Transform)->Position;
+                create.rot = shrapnel->has(Transform)->Rotation;
+                NETWORK->SendNetMessage(create);
 				      }
 			      }
           }
