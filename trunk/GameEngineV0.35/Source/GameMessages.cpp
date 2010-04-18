@@ -8,9 +8,9 @@ namespace Framework
 	CreateMessage::~CreateMessage( void )
 	{}
 
-	Mid::MessageIdType CreateMessage::Type( void ) const
+  NMid::NetMessageIdType CreateMessage::Type( void ) const
 	{
-		return Mid::Create;
+    return NMid::Create;
 	}
 
 	INetMessage * CreateMessage::Clone( void ) const

@@ -215,7 +215,7 @@ namespace Framework
 
 
   ///Retrieves the messages from the buffer. Returns the number of messages retrieved.
-  int UDPSocket::RetieveData( MessageList &messages )
+  int UDPSocket::RetieveData( MessageList *messages )
   {
     ProtocolType ptype;
     IProtocol *protocol = 0;

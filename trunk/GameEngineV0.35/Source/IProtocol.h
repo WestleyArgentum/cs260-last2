@@ -35,15 +35,15 @@ namespace Framework
     int FormatPacket( DataStream &stream ) const;
 
     ///Takes the buffer of data received and extracts the message data and builds messages.
-    int ExtractMessages( DataStream &stream, MessageList &messages );
+    int ExtractMessages( DataStream &stream, MessageList *messages );
 
   protected:
     ///Writes the header into the buffer. Header explains the type of message.
     ///Returns the number of bytes written to the buffer so as to get an offset.
-    virtual int FormatHeader( DataStream &stream ) const = 0;
+    virtual void FormatHeader( DataStream &stream ) const = 0;
 
     ///Because Pepper > Salt : Salted hash added here if needed.
-    virtual int PepperMessage( DataStream &stream ) const { return 0; }
+    virtual void PepperMessage( DataStream &stream ) const {;}
 
 
     ///Decides whether the packet is a valid message, takes care of decryption and unsalting.
@@ -51,10 +51,10 @@ namespace Framework
 
     ///Strips the header off the message and stores any data relevant to message creation.
     ///Returns the number of bytes stripped off, so that only the message data is left.
-    virtual unsigned StripHeader( DataStream &stream ) = 0;
+    virtual void StripHeader( DataStream &stream ) = 0;
   
     ///Builds a message with the remaining data after the message has been decrypted/validated.
-    virtual unsigned BuildMessages( DataStream &stream, MessageList &messages ) = 0;
+    virtual int BuildMessages( DataStream &stream, MessageList *messages ) = 0;
   };
 
 }

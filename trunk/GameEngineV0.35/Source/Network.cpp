@@ -1,5 +1,6 @@
 #include "Precompiled.h"
 #include "Network.h"
+#include "GameProtocol.h"
 
 namespace Framework
 {
@@ -30,23 +31,22 @@ namespace Framework
           Lock lock(mutex);
 
           ///Save all the messages into the queue.
-          socket->RetieveData(connections[remote].second);
+          socket->RetieveData(connections[remote].inbasket);
 
           ///Reset the timeout timer.
-          connections[remote].first.Start();
+          connections[remote].timer.Start();
         }
         else ///Net connection.
         {
           Lock lock(mutex);
 
           ///Get the data from the socket.
-          int num = socket->RetieveData(connections[remote].second);
+          int num = socket->RetieveData(connections[remote].inbasket);
 
           ///If we couldn't extract any messages it was random data/connection
           if (num == 0)
             connections.erase(remote);
-          else ///Otherwise start the timer.
-            connections[remote].first.Start();
+
         }
       }
     }
@@ -86,9 +86,23 @@ namespace Framework
     ///Check to see if any users have timed out...
   }
 
+  void Network::UpdateConnections( void )
+  {
+    ///Go through and send all messages to each connection.
+
+    ConnectionMap::iterator begin = connections.begin(), end = connections.end();
+    while (begin != end)
+    {
+      /// Tell the protocol which message basket to send from.
+      protocol->SetMessageList(begin->second.outbasket);
+      socket->SendTo(begin->first, protocol);
+      //begin->second.EmptyOutBasket();
+    }
+  }
+
   Network::Network( void ) : socket(0) 
   {
-    ErrorIf(NETWORK!=NULL,"Graphics already initialized.");
+    ErrorIf(NETWORK!=NULL,"Network already initialized.");
     NETWORK = this;
 
     NetAPI->Init();
@@ -111,55 +125,31 @@ namespace Framework
     Lock lock(mutex);
     ///Check timers on all connections.
     CheckForTimeouts();
-
-    ///Send all messages out to users.
-    ConnectionOutBox::iterator begin = outboxes.begin(), end = outboxes.end();
-    while (begin != end)
-    {
-      MessageBoxMap::iterator mb = begin->second.begin(), me = begin->second.begin();
-      while (mb != me)
-      {
-        ///Get the protocol to send the messages with.
-        IProtocol *protocol = NetAPI->GetProtocol(mb->first);
-        if (protocol)
-        {
-          ///Set the MessageList for the protocol to use.
-          protocol->SetMessageList(&mb->second);
-          socket->SendTo(idmap[begin->first], protocol);
-          protocol->ClearMessages();
-
-          ///Delete all the messages when we're done sending them so we don't send them twice.
-          MessageList::iterator lb = mb->second.begin(), le = mb->second.end();
-          while (lb != le)
-            delete *le++;
-
-          //Empty the list.
-          mb->second.clear();
-        }
-        ++mb; // Next!
-      }
-    }
+    //Send all messages to connections.
+    UpdateConnections();
   }
 
   void Network::Initialize( void )
   {
+    //Hard coded for now.
+    protocol = new GameProtocol();
   }
 
   ///Builds up a buffer of messages to send to all connections.
-  void Network::SendNetMessage( const ProtocolType &ptype, const INetMessage &m )
+  void Network::SendNetMessage( const INetMessage &m )
   {
     ///Add the message to all of the message queues.
-    ConnectionOutBox::iterator begin = outboxes.begin(), end = outboxes.end();
+    ConnectionMap::iterator begin = connections.begin(), end = connections.end();
     while (begin != end)
-      begin++->second[ptype].push_back(m.Clone());
+      begin->second.outbasket[m.Type()].push_back(m.Clone());
   }
 
   ///Builds up a buffer of messages to send to a specific connection.
-  void Network::SendNetMessage( const std::string &user, const ProtocolType &ptype, const INetMessage &m )
+  void Network::SendNetMessage( const NetAddress &connection, const INetMessage &m )
   {
     ///Add the message to the requested connection.
-    if (outboxes.count(user))
-      outboxes[user][ptype].push_back(m.Clone());
+    if (connections.count(connection))
+      connections[connection].outbasket[m.Type()].push_back(m.Clone());
   }
 
   ///Creates a socket and waits for connections.

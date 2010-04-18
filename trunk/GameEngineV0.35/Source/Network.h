@@ -12,18 +12,21 @@ namespace Framework
     ///The max time to wait without hearing from a connection.
     static const double CONNECTION_TIMEOUT;
 
-    ///In Connection, first is the timeout timer, second is all the messages received.
-    typedef std::pair<Timer, MessageList> Connection;
-    typedef std::map<ProtocolType, MessageList> MessageBoxMap;
+    ///Stores all the data about a connection.
+    struct Connection
+    {
+      Timer timer;         ///< Keeps track of last time contact was made.
+
+      MessageList outbasket[NMid::NumIds]; ///< Messages to be sent.
+      MessageList inbasket[NMid::NumIds];  ///< Messages received.
+    };
+
     typedef std::map<NetAddress, Connection> ConnectionMap;
-    typedef std::map<std::string, NetAddress> ConnectionIdMap;
-    typedef std::map<std::string, MessageBoxMap> ConnectionOutBox;
 
     /// TODO: Maybe make separate channels for Chat and Game.
     UDPSOCKET socket;          ///< Connection to server/clients.
-    ConnectionMap connections; ///< All connections.
-    ConnectionIdMap idmap;     ///< Keeps track of which name is assosiated with what address.
-    ConnectionOutBox outboxes; ///< The out boxes for all the users.
+    ConnectionMap connections; ///< All connections by address.
+    IProtocol *protocol;       ///< The protocol to use.
     Mutex mutex;               ///< Keep from overwriting data in message queue.
     MessageList messages;      ///< The bank of messages received.
     bool listening;            ///< Whether or not to continue listening.
@@ -40,6 +43,7 @@ namespace Framework
 
     void InitializeSocket( void );
     void CheckForTimeouts( void );
+    void UpdateConnections( void );
   public:
     Network( void );
     ~Network( void );
@@ -55,10 +59,10 @@ namespace Framework
     virtual void Initialize( void );
 
     ///Builds up a buffer of messages to send to all connections.
-    void SendNetMessage( const ProtocolType &ptype, const INetMessage &m );
+    void SendNetMessage( const INetMessage &m );
 
     ///Builds up a buffer of messages to send to a specific connection.
-    void SendNetMessage( const std::string &user, const ProtocolType &ptype, const INetMessage &m );
+    void SendNetMessage( const NetAddress &connection, const INetMessage &m );
 
     ///Creates a socket and waits for connections.
     bool HostServer( void );

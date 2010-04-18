@@ -15,7 +15,7 @@ namespace Framework
 		virtual ~CreateMessage( void );
 
 		// Used when extracting messages from the list.
-		virtual Mid::MessageIdType Type( void ) const;
+    virtual NMid::NetMessageIdType Type( void ) const;
 
 		// Creates a carbon copy of the message.
 		virtual INetMessage * Clone( void ) const;

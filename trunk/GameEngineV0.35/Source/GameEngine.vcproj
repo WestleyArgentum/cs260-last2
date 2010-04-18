@@ -836,16 +836,12 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Chat"
+						Name="Game"
 						>
 						<File
-							RelativePath=".\ChatProtocol.h"
+							RelativePath=".\GameProtocol.cpp"
 							>
 						</File>
-					</Filter>
-					<Filter
-						Name="Gameplay"
-						>
 						<File
 							RelativePath=".\GameProtocol.h"
 							>

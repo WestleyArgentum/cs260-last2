@@ -5,6 +5,23 @@
 
 namespace Framework
 {
+  ///NetMessage Id
+  namespace NMid
+  {
+    ///NetMessage types.
+    enum NetMessageIdType
+    {
+       Connection = 0
+      ,Update
+      ,Create
+      ,Destroy
+      ,Stats
+      ,KeepAlive
+
+      ,NumIds ///< Keep track of how many there are.
+    };
+  }
+
   ///An interface for the NetMessages to be sent through the TCP and UDP sockets.
   class INetMessage
   {
@@ -13,7 +30,7 @@ namespace Framework
     virtual ~INetMessage( void ) {;}
 
     ///Returns the type of message. Used when extracting messages from the list.
-    virtual Mid::MessageIdType Type( void ) const = 0;
+    virtual NMid::NetMessageIdType Type( void ) const = 0;
 
     ///Creates a carbon copy of the message.
     virtual INetMessage * Clone( void ) const = 0;
