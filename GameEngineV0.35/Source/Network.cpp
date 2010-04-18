@@ -97,6 +97,8 @@ namespace Framework
       protocol->SetMessageList(begin->second.outbasket);
       socket->SendTo(begin->first, protocol);
       //begin->second.EmptyOutBasket();
+
+
     }
   }
 

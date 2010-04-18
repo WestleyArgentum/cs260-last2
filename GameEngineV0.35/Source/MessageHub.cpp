@@ -40,6 +40,15 @@ namespace Framework
 		}
 	}
 
+  // Direct a message to a specific entity.
+  void Message_Hub::Direct(Message& msg, GOCId id)
+  {
+    GOC *obj = FACTORY->GetObjectWithId(id);
+
+    if (obj)
+      obj->SendMessage(&msg);
+  }
+
 	void Message_Hub::Register( GOCId entity_id, Mid::MessageIdType msg_type )
 	{
 		EntityIds& ids = entities_per_msgtype[msg_type];

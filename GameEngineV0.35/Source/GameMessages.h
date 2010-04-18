@@ -2,6 +2,7 @@
 
 #include "INetMessage.h"
 
+#include "NetUtilities.h"
 #include "INetMessage.h"
 #include "Message.h"
 #include "VMath.h"
@@ -20,9 +21,6 @@ namespace Framework
 		// Creates a carbon copy of the message.
 		virtual INetMessage * Clone( void ) const;
 
-		// Returns the size of the entire message, including the header.
-		virtual unsigned Size( void ) const;
-
 		// Writes the contents of the message to the buffer of size size provided.
 		virtual int SerializeData( DataStream &stream ) const;
 
@@ -37,16 +35,13 @@ namespace Framework
   class DestroyMessage : public INetMessage
   {
   public:
-    DestroyMessage( GOCId id_ ) : id(id_) {;}
+    DestroyMessage( GOCId id_ = 0 ) : id(id_) {;}
 
     // Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
 
     // Creates a carbon copy of the message.
     virtual INetMessage * Clone( void ) const;
-
-    // Returns the size of the entire message, including the header.
-    virtual unsigned Size( void ) const;
 
     // Writes the contents of the message to the buffer of size size provided.
     virtual int SerializeData( DataStream &stream ) const;
@@ -57,6 +52,26 @@ namespace Framework
     GOCId id;
   };
 
+
+  class ConnectionMessage : public INetMessage
+  {
+  public:
+
+    // Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const;
+
+    // Creates a carbon copy of the message.
+    virtual INetMessage * Clone( void ) const;
+
+    // Writes the contents of the message to the buffer of size size provided.
+    virtual int SerializeData( DataStream &stream ) const;
+
+    // Interprets the data in a buffer as the contents of its own message type.
+    virtual void InterpretData( DataStream &stream );
+
+    std::string name;
+    NetAddress address;
+  };
 
 
 }

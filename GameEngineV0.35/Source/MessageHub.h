@@ -18,6 +18,9 @@ namespace Framework
 		// Post a message to all entities that are listening.
 		void Post (Message& msg);
 
+    // Direct a message to a specific entity.
+    void Direct(Message& msg, GOCId id);
+
 		// Register your entity today!
 		// Components that are interested in getting messages should register their entities with the hub.
 		// Don't worry about registering an entity more than once.

@@ -104,14 +104,10 @@ namespace Framework
   ///Sends a message to the connected address, returns the number of bytes sent.
   int TCPSocket::Send( const INetMessage &msg ) throw ( Error )
   {
-    ///Don't send empty messages.
-    if (msg.Size() == 0)
-      return 0;
-
     sstream.Clear();
     ///Have the message serialize its data into the buffer
-    msg.SerializeData(sstream);
-    int ret = send(socket, sstream.GetBuffer(), msg.Size(), 0);
+    //msg.SerializeData(sstream);
+    int ret = 0;//send(socket, sstream.GetBuffer(), msg.Size(), 0);
     if (ret == SOCKET_ERROR) {
       if ( !blocking && WSAGetLastError() == WSAEWOULDBLOCK )
 			  return ret; // would have blocked

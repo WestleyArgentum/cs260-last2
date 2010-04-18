@@ -18,11 +18,6 @@ namespace Framework
 		return new CreateMessage(*this);
 	}
 
-	unsigned CreateMessage::Size( void ) const
-	{
-		return 0;
-	}
-
 	int CreateMessage::SerializeData( DataStream &stream ) const
 	{
 		if(stream.IsWriteGood())
@@ -44,7 +39,8 @@ namespace Framework
 		if (stream.IsReadGood())
 			StreamRead(stream, pos);
 	}
-
+ 
+//////////////////////////////////////////////////////////////////////////
   NMid::NetMessageIdType DestroyMessage::Type( void ) const
   {
     return NMid::Destroy;
@@ -53,11 +49,6 @@ namespace Framework
   INetMessage * DestroyMessage::Clone( void ) const
   {
     return new DestroyMessage(*this);
-  }
-
-  unsigned DestroyMessage::Size( void ) const
-  {
-    return 0;
   }
 
   int DestroyMessage::SerializeData( DataStream &stream ) const
@@ -73,5 +64,33 @@ namespace Framework
     //Read the object id.
     StreamRead(stream,id);
   }
+
+//////////////////////////////////////////////////////////////////////////
+  NMid::NetMessageIdType ConnectionMessage::Type( void ) const
+  {
+    return NMid::Connection;
+  }
+
+  INetMessage * ConnectionMessage::Clone( void ) const
+  {
+    return new ConnectionMessage(*this);
+  }
+
+  int ConnectionMessage::SerializeData( DataStream &stream ) const
+  {
+    ///Write the object id.
+    StreamWrite(stream,name);
+    StreamWrite(stream,address);
+
+    return 0;
+  }
+
+  void ConnectionMessage::InterpretData( DataStream &stream )
+  {
+    //Read the object id.
+    StreamRead(stream,name);
+    StreamRead(stream,address);
+  }
+
 
 }
