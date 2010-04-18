@@ -25,12 +25,24 @@ namespace Framework
 
 	int CreateMessage::SerializeData( DataStream &stream ) const
 	{
+		if(stream.IsWriteGood())
+		{
+			StreamWrite(stream, obj_type);
+			StreamWrite(stream, id);
+			StreamWrite(stream, pos);
+		}
+
 		return 0;
 	}
 
 	void CreateMessage::InterpretData( DataStream &stream )
 	{
-
+		if (stream.IsReadGood())
+			StreamRead(stream, obj_type);
+		if (stream.IsReadGood())
+			StreamRead(stream, id);
+		if (stream.IsReadGood())
+			StreamRead(stream, pos);
 	}
 
   NMid::NetMessageIdType DestroyMessage::Type( void ) const

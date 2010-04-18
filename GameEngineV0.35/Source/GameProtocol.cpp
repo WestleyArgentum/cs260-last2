@@ -10,7 +10,7 @@ namespace Framework
   {
     ///Write the number of each type of message.
     for (unsigned type = 0; type < NMid::NumIds; ++type)
-      stream.WriteUInt(messages[type].size());
+      stream.WriteData(messages[type].size());
   }
 
   ///Because Pepper > Salt : Salted hash added here if needed.
@@ -28,7 +28,7 @@ namespace Framework
   void GameProtocol::StripHeader( DataStream &stream )
   {
     for (unsigned type = 0; type < NMid::NumIds; ++type)
-      stream.ReadUInt(NumMessages[type]);
+      stream.ReadData(NumMessages[type]);
   }
 
   ///Builds a message with the remaining data after the message has been decrypted/validated.

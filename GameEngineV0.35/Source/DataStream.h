@@ -1,5 +1,7 @@
 #pragma once
 
+#include "INetMessage.h"
+
 namespace Framework
 {
   ///DataStream takes a character buffer and writes and reads from it.
@@ -19,27 +21,7 @@ namespace Framework
     unsigned WriteSpace( void ) const { return size_ - write_; }
     unsigned ReadSpace( void ) const { return size_ - read_; }
 
-    template <typename T>
-    void ReadData( T &data )
-    {
-      if (ReadSpace() >= sizeof(T)) {
-        memcpy(&data,buffer_,sizeof(T));
-        read_ += sizeof(T);
-      }
-      else ///If we can't read that much data, set the read failbit.
-        readfail_ = true;
-    }
-
-    template <typename T>
-    void WriteData( T &data )
-    {
-      if (WriteSpace() > sizeof(T)) {
-        memcpy(buffer_,&data,sizeof(T));
-        write_ += sizeof(T);
-      }
-      else ///If we can't write that much, set the write failbit.
-        writefail_ = true;
-    }
+    
 
   public:
     DataStream( unsigned size );
@@ -64,91 +46,69 @@ namespace Framework
     ///Sets the reading index. Used when writing directly to the buffer.
     void SetReadIndex( unsigned index );
 
-    ///Reading methods.
-    void ReadInt( int& i );
-    void ReadUInt( unsigned &u );
-    void ReadBool( bool &b );
-    void ReadFloat( float &f );
-    void ReadDouble( double &d );
-    void ReadString( std::string &str );
-    void ReadLine( std::string &str );
+		template <typename T>
+		void ReadData( T &data )
+		{
+			if (ReadSpace() >= sizeof(T)) {
+				memcpy(&data,buffer_,sizeof(T));
+				read_ += sizeof(T);
+			}
+			else ///If we can't read that much data, set the read failbit.
+				readfail_ = true;
+		}
 
-    ///Writing methods.
-    void WriteInt( const int& i );
-    void WriteUInt( const unsigned &u );
-    void WriteBool( const bool &b );
-    void WriteFloat( const float &f );
-    void WriteDouble( const double &d );
-    void WriteString( const std::string &str );
-    void WriteLine( const std::string &str );
+		template <typename T>
+		void WriteData( const T &data )
+		{
+			if (WriteSpace() > sizeof(T)) {
+				memcpy(buffer_,&data,sizeof(T));
+				write_ += sizeof(T);
+			}
+			else ///If we can't write that much, set the write failbit.
+				writefail_ = true;
+		}
+
+		void ReadData ( std::string& str );
+		void WriteData ( const std::string& str );
+
   };
 
   // Rob: Added these for ease of extending the streaming of data. (And to keep it similar from 
-  //  Streaming primitave types)
+  //  Streaming primitive types)
 
   // Reading base object case, object serializes itself.
-  template < typename Type >
+  /*template < typename Type >
   inline void StreamRead( DataStream &stream, Type &t )
   {
     t.InterpretData( stream );
-  }
+  }*/
 
-  // Reading primiative base cases.
-  inline void StreamRead( DataStream &stream, float &f )
+  // Reading primitive base cases.
+
+	// Writing base case, object interprets its data itself
+	template < typename Type >
+	inline void StreamRead( DataStream &stream, Type &t )
 	{
-		stream.ReadFloat(f);
+		stream.ReadData( t );
 	}
 
-	inline void StreamRead( DataStream &stream, int &i )
+	// Writing primitive base cases.
+	inline void StreamRead( DataStream &stream, INetMessage &m )
 	{
-		stream.ReadInt(i);
-	}
-
-	inline void StreamRead( DataStream &stream, unsigned int &ui )
-	{
-		stream.ReadUInt(ui);
-	}
-
-	inline void StreamRead( DataStream &stream, std::string &str )
-	{
-		stream.ReadString(str);
-	}
-
-	inline void StreamReadLine( DataStream &stream, std::string &str )
-	{
-		stream.ReadLine(str);
+		m.InterpretData( stream );
 	}
 
   // Writing base case, object interprets its data itself
   template < typename Type >
   inline void StreamWrite( DataStream &stream, const Type &t )
   {
-    t.SerializeData( stream );
+    stream.WriteData( t );
   }
 
-  // Writing primiative base cases.
-  inline void StreamWrite( DataStream &stream, const float &f )
+  // Writing primitive base cases.
+  inline void StreamWrite( DataStream &stream, const INetMessage &m )
 	{
-		stream.WriteFloat(f);
+		m.SerializeData( stream );
 	}
 
-	inline void StreamWrite( DataStream &stream, const int &i )
-	{
-		stream.WriteInt(i);
-	}
-
-	inline void StreamWrite( DataStream &stream, const unsigned int &ui )
-	{
-		stream.WriteUInt(ui);
-	}
-
-	inline void StreamWrite( DataStream &stream, const std::string &str )
-	{
-		stream.WriteString(str);
-	}
-
-	inline void StreamWriteLine( DataStream &stream, const std::string &str )
-	{
-		stream.WriteLine(str);
-	}
 }

@@ -221,7 +221,7 @@ namespace Framework
     IProtocol *protocol = 0;
 
     ///Determine the type of protocol to use.
-    rstream.ReadString(ptype);
+    rstream.ReadData(ptype);
     protocol = NetAPI->GetProtocol(ptype);
 
     ///Protocol doesn't exist!!

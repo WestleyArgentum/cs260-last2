@@ -59,29 +59,8 @@ namespace Framework
     read_ = index;
   }
 
-  ///Reading methods.
-  void DataStream::ReadInt( int& i )
-  {
-    ReadData(i);
-  }
-
-  void DataStream::ReadUInt( unsigned &u )
-  {
-    ReadData(u);
-  }
-  void DataStream::ReadBool( bool &b )
-  {
-    ReadData(b);
-  }
-  void DataStream::ReadFloat( float &f )
-  {
-    ReadData(f);
-  }
-  void DataStream::ReadDouble( double &d )
-  {
-    ReadData(d);
-  }
-  void DataStream::ReadString( std::string &str )
+  ///Read method.
+  void DataStream::ReadData( std::string &str )
   {
     ///Relies on there being whitespace / NULL / '\n' character.
     if (IsReadGood()) {
@@ -90,28 +69,8 @@ namespace Framework
     }
   }
 
-  ///Writing methods.
-  void DataStream::WriteInt( const int& i )
-  {
-    WriteData(i);
-  }
-  void DataStream::WriteUInt( const unsigned &u )
-  {
-    WriteData(u);
-  }
-  void DataStream::WriteBool( const bool &b )
-  {
-    WriteData(b);
-  }
-  void DataStream::WriteFloat( const float &f )
-  {
-    WriteData(f);
-  }
-  void DataStream::WriteDouble( const double &d )
-  {
-    WriteData(d);
-  }
-  void DataStream::WriteString( const std::string &str )
+	///Write method.
+  void DataStream::WriteData( const std::string &str )
   {
     //Make sure we have enough space for the string and null character.
     if (WriteSpace() > str.size()) {
