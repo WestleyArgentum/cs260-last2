@@ -1,6 +1,8 @@
 #include "Precompiled.h"
 #include "ClientState.h"
 #include "Network.h"
+#include "Factory.h"
+#include "UtilityGameFunctions.h"
 #include "GameMessages.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
@@ -27,6 +29,12 @@ void Framework::ClientState::AddController( Controller *controller )
 void Framework::ClientState::RemoveController( Controller *controller )
 {
 	// ya... na...
+}
+
+void Framework::ClientState::HandleCreate( INetMessage *msg )
+{
+  CreateMessage* message = static_cast<CreateMessage*>(msg);
+  CreateObjectAt(message->pos, 0, message->obj_type, message->id);
 }
 
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )
