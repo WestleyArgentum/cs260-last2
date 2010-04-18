@@ -135,7 +135,7 @@ namespace Framework
             HandleDestroy(msg);
             break;
           }
-        case NMid::Input:
+        case NMid::InputBtn:
           {
             HandleInput(msg);
             break;

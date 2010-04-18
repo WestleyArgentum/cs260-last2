@@ -206,13 +206,13 @@ namespace Framework
   }
 
   ///Attempts to find a server already running and connect to it.
-  bool Network::FindServer( const std::string &name )
+  bool Network::FindServer()
   {
     InitializeSocket();
 
     //Build a connection message.
     ConnectionMessage msg;
-    msg.name = name;
+    msg.name = NetAPI->Username();
     msg.address = socket->GetAddress();
 
     // add the broadcast connection to the connection list.

@@ -71,7 +71,7 @@ namespace Framework
 	  localIP = inet_ntoa(*(in_addr*)*gethostbyname("")->h_addr_list);
 
     ///Read in the range of UDP ports specified by the config file.
-    Config config( "Data\\Config.txt" );\
+    Config config( "Data\\Config.txt" );
     unsigned low = config.range_.low_;
     unsigned high = config.range_.high_;
 
@@ -81,6 +81,9 @@ namespace Framework
     ///Add all the ports to the bank.
     while (low <= high)
       ports.push_back(PortState(low++,false));
+
+		///Grab the username
+
 
     ///Success
 	  init = true;
@@ -110,6 +113,15 @@ namespace Framework
 
 	  return localIP;
   }
+
+	///Returns the local username
+	std::string NetAPI_::Username( void ) const
+	{
+		if (!init)
+			return IPAddress("Not Connected");
+
+		return username;
+	}
 
   NetAddress NetAPI_::GetBroadcastAddress( void ) const
   {
