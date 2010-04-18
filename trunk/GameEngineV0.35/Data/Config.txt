@@ -1,0 +1,10 @@
+[Username]
+magic!
+
+[Server]
+IP: 10.10.50.80
+Port: 8000
+
+[UDP_Range]
+Low: 8001
+High: 8009
