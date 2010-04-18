@@ -13,29 +13,23 @@ namespace Framework
 {
 
 	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm )
- 	{
- 
- 	}
+ 	{}
 
 	Framework::ServerState::~ServerState( void )
-	{
-
-	}
+	{}
 
 	void Framework::ServerState::Initialize( void )
 	{
 		LoadFromFile("Levels\\Server.txt");
 		SpawnRandomAsteroids();
 
-		if (NETWORK)
-			NETWORK->HostServer();
+		ErrorIf(!NETWORK);
+		NETWORK->HostServer();
 		
 	}
 
 	void Framework::ServerState::OnCleanup( void )
-	{
-
-	}
+	{}
 
 	void Framework::ServerState::AddController( Controller *controller )
 	{
