@@ -1,18 +1,26 @@
 #pragma once
 
 #include "IGameState.h"
+#include "NetUtilities.h"
 
 namespace Framework
 {
-
+  class ConnectionMessage;
 	// The Server will be running the simulation, receiving input from clients,
 	// and posting messages about created, destroyed, and updated objects.
 	class ServerState : public IGameState
   {
+    typedef std::map<std::string,NetAddress> ConnectionMap;
+
+    ///Holds a way to reference users by address.
+    ConnectionMap connections;
+
     void HandleConnection(INetMessage *msg);
     void HandleCreate(INetMessage *msg);
     void HandleDestroy(INetMessage *msg);
     void HandleInput(INetMessage *msg);
+
+    void InitializeConnection(ConnectionMessage *connect);
 
 	public:
 		// Create, init,  and destroy methods -----

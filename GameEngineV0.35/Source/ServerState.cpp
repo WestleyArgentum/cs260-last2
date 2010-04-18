@@ -8,6 +8,8 @@
 #include "Stats.h"
 #include "MessageHub.h"
 #include "Network.h"
+#include "GameMessages.h"
+#include "Transform.h"
 
 namespace Framework
 {
@@ -15,19 +17,37 @@ namespace Framework
 
   void ServerState::HandleConnection(INetMessage *msg)
   {
-
+    ConnectionMessage *connect = static_cast<ConnectionMessage*>(msg);
+    ///Create a new player with the name specified.
+    GOC *obj = CreateObjectAt(Vec2(0,0),0,"PlayerShip");
+    InitializeConnection(connect);
+    //Send special message informing the connection which ship is theirs.
+    //WEEEE
   }
-  void ServerState::HandleCreate(INetMessage *msg)
-  {
 
-  }
-  void ServerState::HandleDestroy(INetMessage *msg)
-  {
-
-  }
   void ServerState::HandleInput(INetMessage *msg)
   {
+    InputButtonMessage *input = static_cast<InputButtonMessage*>(msg);
+    ///Handle player input.
 
+    GOC *obj = FACTORY->GetObjectWithId(input->id);
+    obj->SendMessage(input);
+  }
+
+  ///Goes through every object in the current game and sends a create message for it.
+  void ServerState::InitializeConnection(ConnectionMessage *connect)
+  {
+    GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
+    GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
+    while (begin != end)
+    {
+      CreateMessage create;
+      create.id = begin->first;
+      create.obj_type = begin->second->GetType();
+      create.pos = begin->second->has(Transform)->Position;
+      NETWORK->SendNetMessage(connect->address, create);
+      ++begin;
+    }
   }
 
 	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm )
@@ -125,16 +145,6 @@ namespace Framework
             HandleConnection(msg);
             break;
           }
-        case NMid::Create:
-          {
-            HandleCreate(msg);
-            break;
-          }
-        case NMid::Destroy:
-          {
-            HandleDestroy(msg);
-            break;
-          }
         case NMid::InputBtn:
           {
             HandleInput(msg);
@@ -160,11 +170,22 @@ namespace Framework
 			b->Update(dt);
 			++b;
 		}
+
+    GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
+    GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
+    while (begin != end)
+    {
+      UpdateMessage update;
+      update.id = begin->first;
+      update.pos = begin->second->has(Transform)->Position;
+      NETWORK->SendNetMessage(update);
+      ++begin;
+    }
+
 	}
 
 	void Framework::ServerState::Restart( void )
 	{
-
 	}
 
 }

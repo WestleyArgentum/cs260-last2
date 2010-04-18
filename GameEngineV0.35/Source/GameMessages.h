@@ -208,4 +208,16 @@ namespace Framework
 
 	};  // InputMouseMessage
 
+  class PlayerMessage : public INetMessage
+  {
+  public:
+    // Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const;
+
+    // Creates a carbon copy of the message.
+    virtual INetMessage * Clone( void ) const;
+
+    GOCId id;
+  };
+
 }
