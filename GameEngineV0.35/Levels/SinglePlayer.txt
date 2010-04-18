@@ -7,16 +7,16 @@ Score
 0
 
 HorizontalBarrier
-0 1000
+0 2000
 0
 VerticalBarrier
-1000 0
+2000 0
 0
 HorizontalBarrier
-0 -1000
+0 -2000
 0
 VerticalBarrier
--1000 0
+-2000 0
 0
 
 PlayerShip

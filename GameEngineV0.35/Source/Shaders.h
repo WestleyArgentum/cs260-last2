@@ -22,5 +22,10 @@ namespace Framework
     virtual void InitPhase( ID3DXEffect *shader, Sprite *sprite );
   };    // WaterShader
 
+  struct MainMenuShader : public ISpriteShader
+  {
+    virtual void InitPhase( ID3DXEffect *shader, Sprite *sprite );
+  };    // MainMenuShader
+
 }   // namespace Framework
 

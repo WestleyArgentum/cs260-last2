@@ -534,18 +534,6 @@
 					</File>
 				</Filter>
 			</Filter>
-			<Filter
-				Name="Stats"
-				>
-				<File
-					RelativePath=".\Stats.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Stats.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Systems"
@@ -585,6 +573,10 @@
 						</File>
 						<File
 							RelativePath="..\Shaders\DebugShader.fx"
+							>
+						</File>
+						<File
+							RelativePath="..\Shaders\Menu.fx"
 							>
 						</File>
 						<File
@@ -764,17 +756,6 @@
 					Name="Messages"
 					>
 					<File
-						RelativePath=".\ChatMessages.h"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCustomBuildTool"
-							/>
-						</FileConfiguration>
-					</File>
-					<File
 						RelativePath=".\GameMessages.cpp"
 						>
 					</File>
@@ -791,6 +772,14 @@
 					</File>
 					<File
 						RelativePath=".\INetMessage.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Stats.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Stats.h"
 						>
 					</File>
 				</Filter>
@@ -918,6 +907,10 @@
 				</File>
 				<File
 					RelativePath="..\Objects\HorizontalBarrier.txt"
+					>
+				</File>
+				<File
+					RelativePath="..\Objects\MainMenuBackground.txt"
 					>
 				</File>
 				<File
