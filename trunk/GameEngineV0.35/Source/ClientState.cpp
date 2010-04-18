@@ -37,7 +37,7 @@ void Framework::ClientState::RemoveController( Controller *controller )
 void Framework::ClientState::HandleCreate( INetMessage *msg )
 {
   CreateMessage* message = static_cast<CreateMessage*>(msg);
-  CreateObjectAt(message->pos, 0, message->obj_type, message->id);
+  CreateObjectAt(message->pos, message->rot, message->obj_type, message->id);
 }
 
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )

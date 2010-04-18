@@ -69,6 +69,7 @@ namespace Framework
 		std::string obj_type;
 		GOCId id;
 		Vec2 pos;
+    float rot;
 	};  // CreateMessage
 
   class DestroyMessage : public INetMessage
