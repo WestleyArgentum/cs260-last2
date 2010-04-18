@@ -163,7 +163,9 @@ namespace Framework
   {
     ///Write the object id.
     StreamWrite(stream,name);
-    StreamWrite(stream,address);
+    StreamWrite(stream,address.ip_);
+    StreamWrite(stream,address.port_);
+    StreamWrite(stream,address.address);
 
     return 0;
   }
@@ -172,7 +174,9 @@ namespace Framework
   {
     //Read the object id.
     StreamRead(stream,name);
-    StreamRead(stream,address);
+    StreamRead(stream,address.ip_);
+    StreamRead(stream,address.port_);
+    StreamRead(stream,address.address);
   }
 
   ///Sends itself out into the system.

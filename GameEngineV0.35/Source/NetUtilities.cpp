@@ -24,13 +24,11 @@ namespace Framework
 
   ///Comparison operators because there aren't any for sockaddr_in or sockaddr.
   bool NetAddress::operator==( const NetAddress &rhs ) const {
-      return address.sin_family == rhs.address.sin_family && address.sin_port == rhs.address.sin_port &&
-          address.sin_addr.s_addr == rhs.address.sin_addr.s_addr; 
+    return ip_ == rhs.ip_ && port_ == rhs.port_; 
   }
 
   bool NetAddress::operator!=( const NetAddress &rhs ) const {
-      return address.sin_family != rhs.address.sin_family || address.sin_port != rhs.address.sin_port ||
-          address.sin_addr.s_addr != rhs.address.sin_addr.s_addr;
+      return ip_ != rhs.ip_ || port_ != rhs.port_;
   }
 
   ///Creates an Error from the code and formats it into a human readable string.
