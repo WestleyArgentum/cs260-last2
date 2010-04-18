@@ -15,7 +15,7 @@ namespace Framework
 
 	INetMessage * CreateMessage::Clone( void ) const
 	{
-		return NULL;
+		return new CreateMessage(*this);
 	}
 
 	unsigned CreateMessage::Size( void ) const
@@ -32,5 +32,34 @@ namespace Framework
 	{
 
 	}
+
+  NMid::NetMessageIdType DestroyMessage::Type( void ) const
+  {
+    return NMid::Destroy;
+  }
+
+  INetMessage * DestroyMessage::Clone( void ) const
+  {
+    return new DestroyMessage(*this);
+  }
+
+  unsigned DestroyMessage::Size( void ) const
+  {
+    return 0;
+  }
+
+  int DestroyMessage::SerializeData( DataStream &stream ) const
+  {
+    ///Write the object id.
+    StreamWrite(stream,id);
+
+    return 0;
+  }
+
+  void DestroyMessage::InterpretData( DataStream &stream )
+  {
+    //Read the object id.
+    StreamRead(stream,id);
+  }
 
 }
