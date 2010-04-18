@@ -78,6 +78,8 @@ namespace Framework
     server.SetIP(config.ip_.c_str());
     server.SetPort(config.port_);
 
+    username = config.username_;
+
     ///Add all the ports to the bank.
     while (low <= high)
       ports.push_back(PortState(low++,false));

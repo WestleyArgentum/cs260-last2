@@ -41,6 +41,16 @@ namespace Framework
     bool operator==( const NetAddress &rhs ) const;
     bool operator!=( const NetAddress &rhs ) const;
 
+    bool operator<( const NetAddress &rhs ) const
+    {
+      if (address.sin_family != rhs.address.sin_family)
+        return address.sin_family < rhs.address.sin_family;
+      else if (address.sin_addr.s_addr != rhs.address.sin_addr.s_addr)
+        return address.sin_addr.s_addr < rhs.address.sin_addr.s_addr;
+      else
+        return address.sin_port < rhs.address.sin_port;
+    }
+
     NetAddress & operator=( const NetAddress &rhs )
     {
       memcpy(&address, &rhs.address, sizeof(address));
