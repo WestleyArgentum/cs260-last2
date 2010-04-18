@@ -19,6 +19,7 @@ namespace Framework
       ,Destroy
       ,Stats
       ,KeepAlive
+      ,Input
 
       ,NumIds ///< Keep track of how many there are.
     };
