@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IController.h"
+#include "GameMessages.h"
 
 namespace Framework
 {
@@ -20,6 +21,8 @@ namespace Framework
 		virtual void OnInitialize ( void );
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
+
+    void HandleUpdateMessage(UpdateMessage* mess);
 	};
 
 }
