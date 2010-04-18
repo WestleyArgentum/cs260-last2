@@ -101,6 +101,10 @@ namespace Framework
         return NULL;
       }
 
+      // set up the GOCType
+      unsigned begin = filename.find_last_of("/\\") + 1;
+      unsigned end = filename.find_last_of('.');
+      gameObject->MyType = filename.substr(begin, end - begin);
 			return gameObject;
 		}
 

@@ -18,13 +18,7 @@ namespace Framework
 {
 	///Game Object Id Type
 	typedef unsigned int GOCId;
-
-	///Game Object Type
-	enum GOCType
-	{
-
-	};
-
+	
 
 	///This class the foundational object for all dynamic objects in the game world. 
 	///The GOC is a piece of logical interactive content and the primary mechanism
@@ -74,7 +68,7 @@ namespace Framework
 		///Get the game object's Id
 		GOCId GetId () { return ObjectId; }
 
-		GOCType GetType () { return MyType; }
+    std::string GetType () { return MyType; }
 
 	private:
 
@@ -88,7 +82,7 @@ namespace Framework
 		//A unique id for each object used to safely reference 
 		//GOCs.
 		GOCId ObjectId;
-		GOCType MyType;
+    std::string MyType;
 
 		//The constructor and destructor are private to prevent a user
 		//from creating or deleting an object directly they must use the Destroy function
