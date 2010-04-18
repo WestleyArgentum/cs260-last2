@@ -58,8 +58,7 @@ namespace Framework
     GOC * BuildAndSerialize(const std::string& filename, GOCId id );
 
 		///Id object and store it in the object map.
-		void IdGameObject(GOC* gameObject);
-    void IdGameObject(GOC* gameObject, GOCId id);
+    bool IdGameObject(GOC* gameObject, GOCId id);
 
 		///Add a component creator enabling data driven composition
 		void AddComponentCreator(const std::string& name,IComponentCreator* creator);
