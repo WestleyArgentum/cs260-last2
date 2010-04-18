@@ -178,7 +178,7 @@ namespace Framework
 			++b;
 		}
 
-    GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
+    /*GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
     while (begin != end)
     {
@@ -187,7 +187,7 @@ namespace Framework
       update.pos = begin->second->has(Transform)->Position;
       NETWORK->SendNetMessage(update);
       ++begin;
-    }
+    }*/
 
 	}
 
