@@ -14,6 +14,7 @@ namespace Framework
     enum NetMessageIdType
     {
        Connection = 0
+      ,RestartGame
       ,Update
       ,Create
       ,Destroy
@@ -21,7 +22,6 @@ namespace Framework
       ,KeepAlive
       ,Input
       ,EndGame
-      ,RestartGame
 
       ,NumIds ///< Keep track of how many there are.
     };

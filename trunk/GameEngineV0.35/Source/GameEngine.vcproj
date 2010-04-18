@@ -866,6 +866,10 @@
 		<Filter
 			Name="Resources"
 			>
+			<File
+				RelativePath="..\Data\Config.txt"
+				>
+			</File>
 			<Filter
 				Name="Levels"
 				>
