@@ -38,11 +38,17 @@ namespace Framework
 		//this function is used to create compositions
 		//programmatically
 		GOC * gameObject = new GOC();
-		IdGameObject(gameObject);
+		IdGameObject(gameObject, ++LastGameObjectId);
 		return gameObject;	
 	}
 
-	GOC * GameObjectFactory::BuildAndSerialize(const std::string& filename)
+  GOC * GameObjectFactory::BuildAndSerialize( const std::string& filename )
+  {
+		//Id and initialize the game object composition
+    return BuildAndSerialize( filename, ++LastGameObjectId );
+  }
+
+	GOC * GameObjectFactory::BuildAndSerialize( const std::string& filename, GOCId id )
 	{
 		//Open the text file stream serializer
 		TextSerializer stream;
@@ -86,11 +92,10 @@ namespace Framework
 					gameObject->AddComponent( componentName , component );
 				}
 
+		    IdGameObject(gameObject, id);
+
         componentName.clear();
 			}
-
-			//Id and initialize the game object composition
-			IdGameObject(gameObject);
 
 			return gameObject;
 		}
@@ -98,13 +103,9 @@ namespace Framework
 		return NULL;
 	}
 
-	void GameObjectFactory::IdGameObject(GOC* gameObject)
+	void GameObjectFactory::IdGameObject(GOC* gameObject, GOCId id)
 	{
-		//Just increment the last id used. Does not handle 
-		//overflow but it would take over 4 billion objects
-		//to break
-		++LastGameObjectId;
-		gameObject->ObjectId = LastGameObjectId;
+		gameObject->ObjectId = id;
 
 		//Store the game object in the global object id map
 		GameObjectIdMap[LastGameObjectId] = gameObject;
@@ -122,8 +123,19 @@ namespace Framework
 	GOC * GameObjectFactory::Create(const std::string& filename)
 	{
 		GOC * goc = BuildAndSerialize(filename);
-		if(goc) goc->Initialize();
-		return goc;
+		if(goc)
+      goc->Initialize();
+
+    return goc;
+	}
+
+	GOC * GameObjectFactory::Create( const std::string& filename, GOCId id )
+	{
+		GOC * goc = BuildAndSerialize( filename, id );
+		if(goc)
+      goc->Initialize();
+
+    return goc;
 	}
 
 	void GameObjectFactory::SendMessage(Message * message)
@@ -136,6 +148,12 @@ namespace Framework
 		//Add the object to the to be deleted list they will be delete
 		//when the factory is updated
 		ObjectsToBeDeleted.insert(gameObject);
+	}
+
+	void GameObjectFactory::DestroyById( GOCId gameObject )
+	{
+		if (GameObjectComposition* obj = GetObjectWithId(gameObject))
+			ObjectsToBeDeleted.insert(obj);
 	}
 
 	void GameObjectFactory::Update(float dt)
@@ -173,11 +191,5 @@ namespace Framework
 			delete it->second;
 
 		GameObjectIdMap.clear();
-	}
-
-	void GameObjectFactory::DestroyById( GOCId gameObject )
-	{
-		if (GameObjectComposition* obj = GetObjectWithId(gameObject))
-			ObjectsToBeDeleted.insert(obj);
 	}
 }
