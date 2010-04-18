@@ -151,6 +151,7 @@ namespace Framework
 
   Network::~Network( void )
   {
+    delete protocol;
     CloseConnection();
     NetAPI->Cleanup();
   }
