@@ -10,10 +10,10 @@ namespace Framework
 	class ClientState : public IGameState
 	{
     void HandleCreate( INetMessage *msg ) {}
-    void HandleDestroy( INetMessage *msg ) {}
-    void HandleUpdate( INetMessage *msg ) {}
-    void HandlePlayerId( INetMessage *msg ) {}
+    void HandleDestroy( INetMessage *msg );
+    void HandlePlayerId( INetMessage *msg );
 
+    GOCId playerid_;
 	public:
 		// Create, init,  and destroy methods -----
 		ClientState( GameStateManager *gsm );

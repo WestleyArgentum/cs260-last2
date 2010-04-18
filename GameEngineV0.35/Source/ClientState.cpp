@@ -1,6 +1,7 @@
 #include "Precompiled.h"
 #include "ClientState.h"
 #include "Network.h"
+#include "GameMessages.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
 {}
@@ -28,6 +29,18 @@ void Framework::ClientState::RemoveController( Controller *controller )
 	// ya... na...
 }
 
+void Framework::ClientState::HandlePlayerId( INetMessage *msg )
+{
+  PlayerMessage *pid = static_cast<PlayerMessage*>(msg);
+  playerid_ = pid->id;
+}
+
+void Framework::ClientState::HandleDestroy( INetMessage *msg )
+{
+  DestroyMessage *destroy = static_cast<DestroyMessage*>(msg);
+  FACTORY->DestroyById(destroy->id);
+}
+
 void Framework::ClientState::SendMessage( Message *m )
 {
   if (m->MessageId == Mid::NetMessage)
@@ -43,11 +56,6 @@ void Framework::ClientState::SendMessage( Message *m )
     case NMid::Destroy:
       {
         HandleDestroy(msg);
-        break;
-      }
-    case NMid::Update:
-      {
-        HandleUpdate(msg);
         break;
       }
     case NMid::PlayerId:
