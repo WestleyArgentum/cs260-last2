@@ -83,10 +83,10 @@ namespace Framework
 				//if( !ObjectToCreate.empty() )
 				//	CreateObjectAt(WorldMousePosition,0,ObjectToCreate);
 
-				//Enable Physics Debugging
-				if( key->character == 'z' )
+        //Enable Physics Debugging
+				if( key->character == 'z' || key->character == 'Z' )
 					PHYSICS->AdvanceStep = true;
-				if( key->character == 'z' && IsShiftHeld() )
+        if( key->character == 'z' || key->character == 'Z' && IsShiftHeld() )
 					PHYSICS->StepModeActive = !PHYSICS->StepModeActive;
 
 				if( key->character == 'g' )
