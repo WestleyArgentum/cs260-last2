@@ -8,6 +8,51 @@ namespace Framework
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// EndGameMessage
+  NMid::NetMessageIdType EndGameMessage::Type( void ) const
+  {
+    return NMid::EndGame;
+  }
+
+  INetMessage* EndGameMessage::Clone( void ) const
+  {
+		return new EndGameMessage(*this);
+  }
+
+  int EndGameMessage::SerializeData( DataStream &stream ) const
+  {
+    StreamWrite( stream, winner_ );
+    StreamWrite( stream, winnerId_ );
+
+    return 0;
+  }
+
+  void EndGameMessage::InterpretData( DataStream &stream )
+  {
+    StreamRead( stream, winner_ );
+    StreamRead( stream, winnerId_ );
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// RestartMessage
+  NMid::NetMessageIdType RestartMessage::Type( void ) const
+  {
+    return NMid::RestartGame;
+  }
+
+  INetMessage* RestartMessage::Clone( void ) const
+  {
+		return new RestartMessage(*this);
+  }
+
+  void RestartMessage::SendThis( void )
+  {
+    GSM->SendMessage( this );
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // CreateMessage
 	CreateMessage::~CreateMessage( void )
 	{}

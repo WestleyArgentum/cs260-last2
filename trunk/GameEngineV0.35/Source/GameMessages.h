@@ -12,6 +12,40 @@
 
 namespace Framework
 {
+	class EndGameMessage : public INetMessage
+	{
+	public:
+    EndGameMessage( const std::string &winner = "", GOCId winnerId = 0 ) : winner_(winner),
+      winnerId_(winnerId) {;}
+
+		// Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const;
+
+		// Creates a carbon copy of the message.
+		virtual INetMessage * Clone( void ) const;
+
+		// Writes the contents of the message to the buffer of size size provided.
+		virtual int SerializeData( DataStream &stream ) const;
+
+		// Interprets the data in a buffer as the contents of its own message type.
+		virtual void InterpretData( DataStream &stream );
+
+    std::string winner_;
+    GOCId winnerId_;
+	};  // EndGameMessage
+
+  class RestartMessage : public INetMessage
+  {
+		// Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const;
+
+		// Creates a carbon copy of the message.
+		virtual INetMessage * Clone( void ) const;
+
+    ///Sends itself out into the system.
+    virtual void SendThis( void );
+  };    // RestartMessage
+
 	class CreateMessage : public INetMessage
 	{
 	public:
