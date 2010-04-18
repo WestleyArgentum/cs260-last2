@@ -1,6 +1,6 @@
 #include "Precompiled.h"
 #include "GameProtocol.h"
-//#include "GameMessages.h"
+#include "GameMessages.h"
 
 namespace Framework
 {
