@@ -25,10 +25,9 @@ namespace Framework
   ///Formats the buffer into a packet with the correct protocol.
   int IProtocol::FormatPacket( DataStream &stream ) const
   {
-
+    unsigned validation = VALIDATION_NUMBER;
     ///Write the type of protocol in the beginning of the buffer.
-    //memcpy(buffer, &pType, sizeof(pType));
-
+    StreamWrite(stream,validation);
 
     ///Each format call returns the number of bytes it wrote.
     FormatHeader(stream);

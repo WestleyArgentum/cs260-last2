@@ -73,7 +73,7 @@ namespace Framework
     bool HostServer( void );
 
     ///Attempts to find a server already running and connect to it.
-    bool FindServer( void );
+    bool FindServer( const std::string &name );
 
     ///Closes the socket 
     void CloseConnection( void );
