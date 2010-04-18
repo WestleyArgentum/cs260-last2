@@ -44,7 +44,7 @@ namespace Framework
 		transform->Rotation = rotation;
 
 		//Initialize the composition
-		newObject->Initialize();
+		//newObject->Initialize();
 
 		GSM->RegisterComposition(newObject->GetId());
 
