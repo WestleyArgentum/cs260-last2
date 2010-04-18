@@ -28,9 +28,7 @@ namespace Framework
 		SpawnRandomAsteroids();
 
 		if (NETWORK)
-		{
 			NETWORK->HostServer();
-		}
 		
 	}
 

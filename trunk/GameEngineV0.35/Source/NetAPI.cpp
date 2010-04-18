@@ -71,7 +71,7 @@ namespace Framework
 	  localIP = inet_ntoa(*(in_addr*)*gethostbyname("")->h_addr_list);
 
     ///Read in the range of UDP ports specified by the config file.
-    Config config( "..\\Data\\Config.txt" );\
+    Config config( "Data\\Config.txt" );\
     unsigned low = config.range_.low_;
     unsigned high = config.range_.high_;
 

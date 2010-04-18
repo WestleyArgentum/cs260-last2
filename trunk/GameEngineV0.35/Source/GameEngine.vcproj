@@ -381,13 +381,6 @@
 				<File
 					RelativePath=".\DataStream.cpp"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\DataStream.h"
@@ -780,6 +773,10 @@
 								Name="VCCustomBuildTool"
 							/>
 						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\GameMessages.cpp"
+						>
 					</File>
 					<File
 						RelativePath=".\GameMessages.h"
