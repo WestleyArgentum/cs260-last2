@@ -353,6 +353,7 @@ namespace Framework
 		LoadTexture("Assets/SquareOutline.png");
 		LoadTexture("Assets/Ship_template.png");
 		LoadTexture("Assets/HBarrier.png");
+    LoadTexture("Assets/StillBackground.png");
 
 		//Load the shaders
 
@@ -360,7 +361,7 @@ namespace Framework
     LOAD_EFFECT( DebugShader, NULL );
     LOAD_EFFECT( Water,       new WaterShader() );
     LOAD_EFFECT( Bullet,      NULL );
-    LOAD_EFFECT( Menu,        new MainMenuShader() );
+    LOAD_EFFECT( Menu,        NULL );
 	}
 
   PixelShaders Graphics::GetShaderIndex( const std::string &shadername )
