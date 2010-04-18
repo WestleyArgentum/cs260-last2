@@ -1,7 +1,7 @@
 #pragma once // Make sure this header is only included once.
 
 #include "Message.h"
-
+#include "Core.h"
 
 namespace Framework
 {
@@ -25,9 +25,10 @@ namespace Framework
   }
 
   ///An interface for the NetMessages to be sent through the TCP and UDP sockets.
-  class INetMessage
+  class INetMessage : public Message
   {
   public:
+    INetMessage( Mid::MessageIdType id = Mid::NetMessage ) : Message(id) {;}
     ///Makes sure all destructors are virtual.
     virtual ~INetMessage( void ) {;}
 
@@ -42,6 +43,12 @@ namespace Framework
 
     ///Interprets the data in a buffer as the contents of its own message type.
     virtual void InterpretData( DataStream &stream ) = 0;
+
+    ///Sends itself out into the system.
+    virtual void SendThis( void )
+    {
+      CORE->BroadcastMessage(this);
+    }
   };
 
 }

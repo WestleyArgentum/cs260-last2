@@ -19,6 +19,11 @@ namespace Framework
 
       MessageList outbasket[NMid::NumIds]; ///< Messages to be sent.
       MessageList inbasket[NMid::NumIds];  ///< Messages received.
+
+      void EmptyInBasket( void );
+      void EmptyOutBasket( void );
+
+      void DistributeMessages( void );
     };
 
     typedef std::map<NetAddress, Connection> ConnectionMap;

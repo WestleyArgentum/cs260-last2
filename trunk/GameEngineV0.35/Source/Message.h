@@ -28,7 +28,8 @@ namespace Framework
 			MouseMove,
 			FileDrop,
       StatsUpdate,
-			Create,
+
+      NetMessage
 		};
 	}
 
