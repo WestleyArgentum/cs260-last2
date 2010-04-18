@@ -204,6 +204,7 @@ namespace Framework
     sockets[sock->id] = sock;
 
     //Setup the address of the socket and save the index of the port.
+    sock->address.SetIP(localIP);
     sock->address.SetPort(port);
     sock->portIndex = i;
 
@@ -218,6 +219,8 @@ namespace Framework
     int size = sock->GetAddress().Size();
     if (getsockname(sock->socket, sock->address, &size) == SOCKET_ERROR)
       ThrowError(Error::E_SocketError);
+
+    sock->address.ResetData();
 
     ///Success! ^_^
     return sock;
