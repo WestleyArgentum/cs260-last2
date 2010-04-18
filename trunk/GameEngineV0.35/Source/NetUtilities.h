@@ -3,7 +3,7 @@
 namespace Framework
 {
   ///Maximum message size per packet.
-  const unsigned MAX_MSG_SIZE = 1024;
+  const unsigned MAX_MSG_SIZE = 1024 * 4;
 
   ///Typedefs to make life easier...
   typedef std::string     EMessage;
