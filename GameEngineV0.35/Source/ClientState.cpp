@@ -89,6 +89,7 @@ void Framework::ClientState::SendMessage( Message *m )
 
 void Framework::ClientState::Update( float dt )
 {
+
 }
 
 void Framework::ClientState::Restart( void )
