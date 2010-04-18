@@ -41,7 +41,7 @@ namespace Framework
     for (unsigned i = 0; i < NumMessages[NMid::Connection] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new ConnectionMessage();
-      msg->SerializeData(stream);
+      msg->InterpretData(stream);
       messages[NMid::Connection].push_back(msg);
       ++num;
     }
@@ -49,7 +49,7 @@ namespace Framework
     for (unsigned i = 0; i < NumMessages[NMid::Update] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new UpdateMessage();
-      msg->SerializeData(stream);
+      msg->InterpretData(stream);
       messages[NMid::Connection].push_back(msg);
       ++num;
     }
@@ -57,7 +57,7 @@ namespace Framework
     for (unsigned i = 0; i < NumMessages[NMid::Create] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new CreateMessage();
-      msg->SerializeData(stream);
+      msg->InterpretData(stream);
       messages[NMid::Connection].push_back(msg);
       ++num;
     }
@@ -65,7 +65,7 @@ namespace Framework
     for (unsigned i = 0; i < NumMessages[NMid::Destroy] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new DestroyMessage();
-      msg->SerializeData(stream);
+      msg->InterpretData(stream);
       messages[NMid::Connection].push_back(msg);
       ++num;
     }
@@ -73,7 +73,7 @@ namespace Framework
     for (unsigned i = 0; i < NumMessages[NMid::Stats] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new StatsMessage();
-      msg->SerializeData(stream);
+      msg->InterpretData(stream);
       messages[NMid::Connection].push_back(msg);
       ++num;
     }
@@ -81,7 +81,7 @@ namespace Framework
     //for (unsigned i = 0; i < NumMessages[NMid::KeepAlive] && stream.IsReadGood(); ++i)
     //{
     //  INetMessage *msg = new KeepAliveMessage();
-    //  msg->SerializeData(stream);
+    //  msg->InterpretData(stream);
     //  messages[NMid::Connection].push_back(msg);
     //  ++num;
     //}
