@@ -75,6 +75,9 @@ namespace Framework
     unsigned low = config.range_.low_;
     unsigned high = config.range_.high_;
 
+    server.SetIP(config.ip_.c_str());
+    server.SetPort(config.port_);
+
     ///Add all the ports to the bank.
     while (low <= high)
       ports.push_back(PortState(low++,false));
@@ -106,6 +109,20 @@ namespace Framework
 		  return IPAddress("Not Connected");
 
 	  return localIP;
+  }
+
+  NetAddress NetAPI_::GetBroadcastAddress( void ) const
+  {
+    NetAddress address;
+    address.address.sin_addr.s_addr = htonl(INADDR_BROADCAST);
+    address.SetPort(8001);
+
+    return address;
+  }
+
+  NetAddress NetAPI_::GetServerAddress( void ) const
+  {
+    return server;
   }
 
   ///Creates a new TCP socket, initalizes parts of it and returns it.

@@ -1,5 +1,7 @@
 #pragma once
 
+#define VALIDATION_NUMBER 0xAABBCCDD
+
 namespace Framework
 {
   ///Forward declaration of base message type.

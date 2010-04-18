@@ -1,6 +1,7 @@
 #include "Precompiled.h"
 #include "Network.h"
 #include "GameProtocol.h"
+#include "GameMessages.h"
 
 namespace Framework
 {
@@ -50,8 +51,8 @@ namespace Framework
 
   void Network::InitializeThread( void )
   {
-
   }
+
   void Network::Run( void )
   {
     ///Listen continuously for packets from users/server.
@@ -205,11 +206,24 @@ namespace Framework
   }
 
   ///Attempts to find a server already running and connect to it.
-  bool Network::FindServer( void )
+  bool Network::FindServer( const std::string &name )
   {
     InitializeSocket();
 
-    ///Spawn new thread.
+    //Build a connection message.
+    ConnectionMessage msg;
+    msg.name = name;
+    msg.address = socket->GetAddress();
+
+    // add the broadcast connection to the connection list.
+    connections[msg.address].outbasket[NMid::Connection].push_back(&msg);
+    protocol->SetMessageList(connections[msg.address].outbasket);
+
+    ///Send out the request for the server...
+    socket->SendTo(NetAPI->GetServerAddress(), protocol);
+
+    ///Clear the outbasket.
+    connections[msg.address].outbasket[NMid::Connection].clear();
 
     return true;
   }

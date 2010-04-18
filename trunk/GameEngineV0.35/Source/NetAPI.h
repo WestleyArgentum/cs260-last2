@@ -40,6 +40,7 @@ namespace Framework ///< Networking API namespace
     PortBank ports;     ///< The set of ports allowed for UDP sockets.
 	  SocketBank sockets; ///< All the sockets that have been created.
     IPAddress localIP;  ///< Local IP saved for convience.
+    NetAddress server;  ///< Server address.
 	  WSADATA wsData;     ///< The winsock context data.
 	  bool init;          ///< Whether or not the system has been initialized.
 
@@ -65,6 +66,13 @@ namespace Framework ///< Networking API namespace
 
 	  ///Returns the local IP address
 	  IPAddress LocalIP( void ) const;
+
+    ///Attempts to get the broadcast address.
+    NetAddress GetBroadcastAddress( void ) const;
+
+    ///Returns the server address specified in the config file.
+    NetAddress GetServerAddress( void ) const;
+
 
 	  ///Makes a new TCP socket and returns it.
 	  TCPSOCKET NewTCPSocket( void );
