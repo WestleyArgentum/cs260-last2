@@ -27,7 +27,8 @@ namespace Framework
 			MouseButton,
 			MouseMove,
 			FileDrop,
-      StatsUpdate
+      StatsUpdate,
+			Create,
 		};
 	}
 
