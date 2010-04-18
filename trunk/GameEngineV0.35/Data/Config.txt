@@ -2,9 +2,9 @@
 Koala^_^
 
 [Server]
-IP: 10.10.50.80
+IP: 10.10.40.63
 Port: 8000
 
 [UDP_Range]
-Low: 8001
+Low: 8000
 High: 8009

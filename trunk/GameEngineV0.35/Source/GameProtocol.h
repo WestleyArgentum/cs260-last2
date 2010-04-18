@@ -10,7 +10,7 @@ namespace Framework
     unsigned NumMessages[NMid::NumIds]; ///< The number of messages of each type stored within.
 
   public:
-    GameProtocol( void ) {;}
+    GameProtocol( void ) : IProtocol("GameProtocol") {;}
     virtual ~GameProtocol( void ) {;}
  
   protected:
