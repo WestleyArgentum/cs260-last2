@@ -116,7 +116,11 @@ namespace Framework
         // set my position to the position of the update message
         UpdateMessage* mess = dynamic_cast<UpdateMessage*>(m);
         if(mess)
-          GetOwner()->has(Transform)->Position = mess->pos;
+        {
+          Transform* trans = GetOwner()->has(Transform);
+          trans->Position = mess->pos;
+          trans->Rotation = mess->rot;
+        }
         break;
       }
 

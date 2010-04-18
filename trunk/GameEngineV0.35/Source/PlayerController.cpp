@@ -236,6 +236,7 @@ namespace Framework
           {
             UpdateMessage *umsg = static_cast<UpdateMessage *>(msg);
             transform->Position = umsg->pos;
+            transform->Rotation = umsg->rot;
             break;
           }
         case NMid::InputBtn:

@@ -116,6 +116,7 @@ namespace Framework
 
     GOCId id;   ///< Id of the object to update
     Vec2 pos;   ///< Position of the object now!
+    float rot;  ///< Rotation of the object now!
   };    // UpdateMessage
 
   class ConnectionMessage : public INetMessage

@@ -48,6 +48,9 @@ namespace Framework
 				GetOwner()->Destroy();
 				break;
 			}
+    case Mid::NetMessage:
+      {
+      }
 		}
 	}
 

@@ -123,6 +123,7 @@ namespace Framework
     ///Write the object id.
     StreamWrite(stream, id);
     StreamWrite(stream, pos);
+    StreamWrite(stream, rot);
 
     return 0;
   }
@@ -132,6 +133,7 @@ namespace Framework
     //Read the object id.
     StreamRead(stream, id);
     StreamRead(stream, pos);
+    StreamRead(stream, rot);
   }
 
   ///Sends itself out into the system.
