@@ -23,6 +23,7 @@ namespace Framework
       ,InputBtn
 			,InputMouse
       ,EndGame
+      ,PlayerId
 
       ,NumIds ///< Keep track of how many there are.
     };

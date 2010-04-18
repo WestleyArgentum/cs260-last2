@@ -263,5 +263,18 @@ namespace Framework
 	void InputMouseMessage::SendThis( void )
 	{}
 
+
+  // Used when extracting messages from the list.
+  NMid::NetMessageIdType PlayerMessage::Type( void ) const
+  {
+    return NMid::PlayerId;
+  }
+
+  // Creates a carbon copy of the message.
+  INetMessage * PlayerMessage::Clone( void ) const
+  {
+    return new PlayerMessage(*this);
+  }
+
 }   // namespace Framework
 
