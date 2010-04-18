@@ -37,6 +37,13 @@ namespace Framework
     ///Clears the memory in the sockaddr_in struct to keep data safe...
     void ClearMemory( void ) { SecureZeroMemory( &address, sizeof(address) ); }
 
+    void ResetData( void )
+    {
+
+      ip_.assign(inet_ntoa(address.sin_addr));
+      port_ = ntohs(address.sin_port);
+    }
+
     ///Comparison operators because there aren't any for sockaddr_in or sockaddr.
     bool operator==( const NetAddress &rhs ) const;
     bool operator!=( const NetAddress &rhs ) const;

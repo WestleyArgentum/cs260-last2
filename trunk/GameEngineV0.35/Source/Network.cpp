@@ -79,6 +79,8 @@ namespace Framework
       NetAddress remote;
       int ret = socket->RecvFrom( remote );
 
+      remote.ResetData();
+
       ///If we received data and it's from someone we know.
       if (ret > 0)
       {
