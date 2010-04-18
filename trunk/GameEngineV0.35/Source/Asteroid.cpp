@@ -9,6 +9,11 @@
 #include "PRNG.h"
 #include "Physics.h"
 
+#include "GameStateManager.h"
+#include "BulletController.h"
+#include "PlayerController.h"
+#include "ScoreDisplay.h"
+
 namespace Framework
 {
 	void Asteroid::OnInitialize()
@@ -37,34 +42,77 @@ namespace Framework
 		StreamRead(stream, vel_range_y);
 	}
 
-	void Asteroid::SendMessage(Message* m)
+	void Asteroid::SendMessage( Message* m )
 	{
-    MessageCollide *mc = dynamic_cast<MessageCollide*>(m);
+    switch ( m->MessageId )
+    {
+    case Mid::Collide:
+      {
+		    //^! for now we will check what we collided with and behave accordingly...
+        MessageCollide *mc = static_cast<MessageCollide*>(m);
 
-		if( m->MessageId == Mid::Collide && mc && !mc->CollidedWith->has(Asteroid))
-		{	
-			//^! for now we will check what we collided with and behave accordingly...
-			MessageCollide* collide_msg = static_cast<MessageCollide*>(m);
-			if (collide_msg->CollidedWith->has(Asteroid))
-				return;
+          // Reference the object that we collided with for ease of access.
+        GOC* &collidedObject = mc->CollidedWith;
 
-			if( (int)timeGetTime() - SpawnTime > Fuse )
-			{
-				GetOwner()->Destroy();
-				if( SubSpawnCount > 0 )
-				{			
-					Transform * transform = GetOwner()->has(Transform);
-					for(int i=-1;i<=1;++i)
-					{
-						Vec2 dir( sin( float(i)*D3DX_PI*0.3f) , cos( float(i)*D3DX_PI*0.3f) );		
-						GOC * a = FACTORY->Create("Objects\\Shrapnel.txt");
-						Body * bodyA = a->has(Body);
-						bodyA->SetVelocity(dir * 120);
-						bodyA->SetPosition(transform->Position);
-					}
-				}
-			}
-		}
+          // Ignore Asteroid -> Asteroid collision.
+        if ( collidedObject->has(Asteroid) )
+        {
+          return;
+        }
+        else
+        {
+          BulletController *bullet = collidedObject->has(BulletController);
+
+          // If we collided with a player or a bullet, explode this asteroid.
+          if ( bullet || collidedObject->has(PlayerController) )
+          {
+			      GetOwner()->Destroy();
+
+              // If we should spawn more asteroids after this collision.
+			      if ( SubSpawnCount > 0 )
+			      {
+				      Transform * transform = GetOwner()->has(Transform);
+				      for ( int i = -1; i <= 1; ++i)
+				      {
+					      Vec2 dir( sin( float(i) * D3DX_PI * 0.3f ), cos( float(i) * D3DX_PI * 0.3f) );
+
+                GOC *shrapnel = CreateObjectAt( transform->Position, 0, "Shrapnel" );
+					      Body *shrapnelBody = shrapnel->has(Body);
+
+                if ( shrapnelBody )
+                {
+					        shrapnelBody->SetVelocity( dir * 120 );
+                }
+				      }
+			      }
+          }
+
+          if ( bullet )
+          {
+              // Get the owner of the bullet and add score to that player.
+            GSM->AddScoreTo( bullet->firedFrom, 100 );
+
+              // Create a text object displaying the score that the player recieved.
+            GOC *score = CreateObjectAt( transform->Position, 0, "ScoreText_100" );
+
+            if ( score )
+            {
+              DisplayScore *displayScore = score->has(DisplayScore);
+              PlayerStats *pStats = GSM->GetPlayerInfo(bullet->firedFrom);
+
+              if ( displayScore && pStats )
+              {
+                displayScore->SetColor( pStats->color_ );
+              }
+            }
+          }
+		    }
+      }   // case Mid::Collide
+
+    }
+
+    return;
 	}
 
 }
+

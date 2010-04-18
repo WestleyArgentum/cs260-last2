@@ -2,7 +2,7 @@ Transform
 0 0 
 0
 
-ScoreDisplay
+ScoreHUD
 24 10
 Screen
 16 8

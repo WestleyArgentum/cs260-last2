@@ -72,6 +72,11 @@ namespace Framework
 				// set up bullets velocity (a little crude)
 				Body* bulletbody = bullet->has(Body);
 				BulletController* bulletbrain = bullet->has(BulletController);
+        Sprite* bulletsprite = bullet->has(Sprite);
+
+          // Store the player that fired this bullet. (So we know who to give points to!)
+        bulletbrain->firedFrom = GetOwner()->GetId();
+        bulletsprite->Color = GetOwner()->has(Sprite)->Color;
 
 				Vec2 vel(cos(transform->Rotation - 89.5f) * bulletbrain->speed,
 								 sin(transform->Rotation - 89.5f) * bulletbrain->speed);
