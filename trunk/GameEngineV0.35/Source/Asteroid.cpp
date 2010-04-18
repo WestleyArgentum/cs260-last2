@@ -31,7 +31,7 @@ namespace Framework
 
 	void Asteroid::Serialize(ISerializer& stream)
 	{
-		//StreamRead(stream,Fuse);
+		StreamRead(stream,Fuse);
 		StreamRead(stream,SubSpawnCount);
 		StreamRead(stream, vel_range_x);
 		StreamRead(stream, vel_range_y);
@@ -48,8 +48,8 @@ namespace Framework
 			if (collide_msg->CollidedWith->has(Asteroid))
 				return;
 
-			//if( (int)timeGetTime() - SpawnTime > Fuse )
-			//{
+			if( (int)timeGetTime() - SpawnTime > Fuse )
+			{
 				GetOwner()->Destroy();
 				if( SubSpawnCount > 0 )
 				{			
@@ -62,7 +62,7 @@ namespace Framework
 						bodyA->SetVelocity(dir * 120);
 						bodyA->SetPosition(transform->Position);
 					}
-				//}
+				}
 			}
 		}
 	}

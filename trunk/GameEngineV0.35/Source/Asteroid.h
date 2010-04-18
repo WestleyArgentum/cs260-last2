@@ -18,7 +18,7 @@ namespace Framework
 	class Asteroid : public Controller
 	{
 	public:
-		//int Fuse;
+		int Fuse;
 		int SubSpawnCount;
 		int SpawnTime;
 
