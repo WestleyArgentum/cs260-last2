@@ -20,7 +20,8 @@ namespace Framework
       ,Destroy
       ,Stats
       ,KeepAlive
-      ,Input
+      ,InputBtn
+			,InputMouse
       ,EndGame
 
       ,NumIds ///< Keep track of how many there are.

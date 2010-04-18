@@ -37,12 +37,13 @@ namespace Framework ///< Networking API namespace
 
 
 	  //Mutex mutex;        ///< Keeps data structures safe.
-    PortBank ports;     ///< The set of ports allowed for UDP sockets.
-	  SocketBank sockets; ///< All the sockets that have been created.
-    IPAddress localIP;  ///< Local IP saved for convience.
-    NetAddress server;  ///< Server address.
-	  WSADATA wsData;     ///< The winsock context data.
-	  bool init;          ///< Whether or not the system has been initialized.
+    PortBank ports;       ///< The set of ports allowed for UDP sockets.
+	  SocketBank sockets;   ///< All the sockets that have been created.
+    IPAddress localIP;    ///< Local IP saved for convenience.
+		std::string username; ///< Local username saved for convenience.
+    NetAddress server;    ///< Server address.
+	  WSADATA wsData;       ///< The winsock context data.
+	  bool init;            ///< Whether or not the system has been initialized.
 
     ProtocolMap Protocols; ///<The protocol map itself.
 
@@ -66,6 +67,9 @@ namespace Framework ///< Networking API namespace
 
 	  ///Returns the local IP address
 	  IPAddress LocalIP( void ) const;
+
+		///Returns the local username (should typedef)
+		std::string Username( void ) const;
 
     ///Attempts to get the broadcast address.
     NetAddress GetBroadcastAddress( void ) const;

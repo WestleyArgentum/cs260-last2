@@ -25,6 +25,7 @@
 #include "ServerState.h"
 
 #include <ctime>
+#include "ClientState.h"
 
 namespace Framework
 {
@@ -53,6 +54,7 @@ namespace Framework
     RegisterGameState(SinglePlayer);
     RegisterGameState(MainMenu);
 		RegisterGameState(ServerState);
+		RegisterGameState(ClientState);
 
 	}
 

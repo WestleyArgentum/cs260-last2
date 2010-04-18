@@ -181,5 +181,87 @@ namespace Framework
     GSM->SendMessage(this);
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// InputButtonMessage
+	InputButtonMessage::InputButtonMessage () : character(0), key(0)
+	{}
+
+	InputButtonMessage::~InputButtonMessage( void )
+	{}
+
+	NMid::NetMessageIdType InputButtonMessage::Type( void ) const
+	{
+		return NMid::InputBtn;
+	}
+
+	INetMessage * InputButtonMessage::Clone( void ) const
+	{
+		return new InputButtonMessage(*this);
+	}
+
+	int InputButtonMessage::SerializeData( DataStream &stream ) const
+	{
+		StreamWrite(stream, character);
+		StreamWrite(stream, key);
+
+		/*StreamWrite(stream, MouseButtonIndex);
+		StreamWrite(stream, ButtonIsPressed);
+		StreamWrite(stream, MousePosition);*/
+
+		return 0;
+	}
+
+	void InputButtonMessage::InterpretData( DataStream &stream )
+	{
+		StreamRead(stream, character);
+		StreamRead(stream, key);
+
+		/*StreamRead(stream, MouseButtonIndex);
+		StreamRead(stream, ButtonIsPressed);
+		StreamRead(stream, MousePosition);*/
+	}
+
+	void InputButtonMessage::SendThis( void )
+	{}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// InputMouseMessage
+	InputMouseMessage::InputMouseMessage () : MouseButtonIndex(Invalid_Id)
+	{}
+
+	InputMouseMessage::~InputMouseMessage( void )
+	{}
+
+	NMid::NetMessageIdType InputMouseMessage::Type( void ) const
+	{
+		return NMid::InputMouse;
+	}
+
+	INetMessage * InputMouseMessage::Clone( void ) const
+	{
+		return new InputMouseMessage(*this);
+	}
+
+	int InputMouseMessage::SerializeData( DataStream &stream ) const
+	{
+		StreamWrite(stream, MouseButtonIndex);
+		StreamWrite(stream, ButtonIsPressed);
+		StreamWrite(stream, MousePosition);
+
+		return 0;
+	}
+
+	void InputMouseMessage::InterpretData( DataStream &stream )
+	{
+		StreamRead(stream, MouseButtonIndex);
+		StreamRead(stream, ButtonIsPressed);
+		StreamRead(stream, MousePosition);
+	}
+
+	void InputMouseMessage::SendThis( void )
+	{}
+
 }   // namespace Framework
 

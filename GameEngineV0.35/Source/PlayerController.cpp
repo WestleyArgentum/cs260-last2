@@ -48,9 +48,9 @@ namespace Framework
 	{
 		// handle movement
 		if( IsUpHeld() || IsWHeld() )
-			body->AddForce(Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));  //^! <-- odd
+			body->AddForce(Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));  //^! <-- odd
 		if( IsDownHeld() || IsSHeld() )
-			body->AddForce(-Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed));
+			body->AddForce(-Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));
 		if( IsLeftHeld() || IsAHeld() )
 			transform->Rotation += rot_angle * DEG_TO_RAD;
 		if( IsRightHeld() || IsDHeld() )

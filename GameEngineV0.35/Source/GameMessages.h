@@ -140,10 +140,11 @@ namespace Framework
     NetAddress address;
   };
 
-	class InputMessage : public INetMessage
+	class InputButtonMessage : public INetMessage
 	{
 	public:
-		virtual ~InputMessage( void );
+		InputButtonMessage ();
+		virtual ~InputButtonMessage( void );
 
 		// Used when extracting messages from the list.
 		virtual NMid::NetMessageIdType Type( void ) const;
@@ -159,12 +160,6 @@ namespace Framework
 
     virtual void SendThis( void );
 
-		enum MouseButtonIndexId
-		{
-			LeftMouse,
-			RightMouse
-		};
-
     // Object sending
     GOCId id;
 
@@ -173,12 +168,44 @@ namespace Framework
 		WPARAM key;
 		// -------
 
+	};  // InputButtonMessage
+
+	class InputMouseMessage : public INetMessage
+	{
+	public:
+		InputMouseMessage ();
+		virtual ~InputMouseMessage( void );
+
+		// Used when extracting messages from the list.
+		virtual NMid::NetMessageIdType Type( void ) const;
+
+		// Creates a carbon copy of the message.
+		virtual INetMessage * Clone( void ) const;
+
+		// Writes the contents of the message to the buffer of size size provided.
+		virtual int SerializeData( DataStream &stream ) const;
+
+		// Interprets the data in a buffer as the contents of its own message type.
+		virtual void InterpretData( DataStream &stream );
+
+		virtual void SendThis( void );
+
+		enum MouseButtonIndexId
+		{
+			Invalid_Id,
+			LeftMouse,
+			RightMouse
+		};
+
+		// Object sending
+		GOCId id;
+
 		// mouse -----
 		MouseButtonIndexId MouseButtonIndex;
 		bool ButtonIsPressed;
 		Vec2 MousePosition;
 		// -------
 
-	};  // InputMessage
+	};  // InputMouseMessage
 
 }

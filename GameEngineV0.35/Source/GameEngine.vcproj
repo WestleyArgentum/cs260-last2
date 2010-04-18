@@ -529,6 +529,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="ClientState"
+					>
+					<File
+						RelativePath=".\ClientState.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ClientState.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
