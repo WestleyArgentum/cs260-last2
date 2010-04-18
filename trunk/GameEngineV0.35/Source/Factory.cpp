@@ -92,10 +92,14 @@ namespace Framework
 					gameObject->AddComponent( componentName , component );
 				}
 
-		    IdGameObject(gameObject, id);
-
         componentName.clear();
 			}
+
+	    if ( !IdGameObject(gameObject, id) )
+      {
+        delete gameObject;
+        return NULL;
+      }
 
 			return gameObject;
 		}
@@ -103,16 +107,25 @@ namespace Framework
 		return NULL;
 	}
 
-	void GameObjectFactory::IdGameObject(GOC* gameObject, GOCId id)
+	bool GameObjectFactory::IdGameObject(GOC* gameObject, GOCId id)
 	{
-		gameObject->ObjectId = id;
+    GameObjectIdMapType::iterator it = GameObjectIdMap.find( id );
 
-    GOC* &object = GameObjectIdMap[id];
+      // If the object hasn't been created yet!
+    if ( it == GameObjectIdMap.end() )
+    {
+		  // Store the game object in the global object id map
+      GameObjectIdMap[id] = gameObject;
 
-    ErrorIf( object, "Error: Object already exists with the id specified!" );
-
-		//Store the game object in the global object id map
-		object = gameObject;
+      // Id the game object and return successful identification.
+      gameObject->ObjectId = id;
+      return true;
+    }
+    else
+    {
+      ErrorIf( true, "Error: Object already exists with the id specified!" );
+      return false;
+    }
 	}
 
 	GOC * GameObjectFactory::GetObjectWithId(GOCId id)
