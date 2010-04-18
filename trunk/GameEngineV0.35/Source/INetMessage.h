@@ -37,9 +37,6 @@ namespace Framework
     ///Creates a carbon copy of the message.
     virtual INetMessage * Clone( void ) const = 0;
 
-    ///Returns the size of the entire message, including the header.
-    virtual unsigned Size( void ) const = 0;
-
     ///Writes the contents of the message to the buffer of size size provided.
     virtual int SerializeData( DataStream &stream ) const = 0;
 
