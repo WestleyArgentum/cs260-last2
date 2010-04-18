@@ -186,6 +186,7 @@ namespace Framework
       UpdateMessage update;
       update.id = begin->first;
       update.pos = begin->second->has(Transform)->Position;
+      update.rot = begin->second->has(Transform)->Rotation;
       NETWORK->SendNetMessage(update);
       ++begin;
     }
