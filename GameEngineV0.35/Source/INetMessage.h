@@ -20,6 +20,8 @@ namespace Framework
       ,Stats
       ,KeepAlive
       ,Input
+      ,EndGame
+      ,RestartGame
 
       ,NumIds ///< Keep track of how many there are.
     };
@@ -40,10 +42,10 @@ namespace Framework
     virtual INetMessage * Clone( void ) const = 0;
 
     ///Writes the contents of the message to the buffer of size size provided.
-    virtual int SerializeData( DataStream &stream ) const = 0;
+    virtual int SerializeData( DataStream &stream ) const { return 0;}
 
     ///Interprets the data in a buffer as the contents of its own message type.
-    virtual void InterpretData( DataStream &stream ) = 0;
+    virtual void InterpretData( DataStream &stream ) {;}
 
     ///Sends itself out into the system.
     virtual void SendThis( void )
