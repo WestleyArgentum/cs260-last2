@@ -19,6 +19,8 @@ namespace Framework
 		  virtual void Serialize( ISerializer &stream );	
 		  virtual void Initialize( void );
 
+      void ChangeFont( unsigned width, unsigned height, const std::string &fontname );
+
         /// Sets the color of the text on the screen. Maybe be helpful to have specific function for
         ///  fading colors if desired.
       void SetColor( unsigned char red, unsigned char green, unsigned char blue,

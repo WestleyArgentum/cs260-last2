@@ -174,7 +174,7 @@ namespace Framework
   {
     for ( unsigned i = 0; i < LI_NumberOfIndexes; ++i )
     {
-      SetTextColor( indexes_[i], 200, 200, 200, 255 );
+      SetTextColor( indexes_[i], 100, 100, 100, 255 );
     }
 
       // Highlight the current text index the player is on.

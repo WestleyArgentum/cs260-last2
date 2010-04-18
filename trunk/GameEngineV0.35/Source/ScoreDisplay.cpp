@@ -1,12 +1,54 @@
 #include "Precompiled.h"
 #include "ScoreDisplay.h"
+
 #include "MessageHub.h"
-#include "Text.h"
+#include "Graphics.h"
+#include "GameStateManager.h"
+
+const unsigned MAX_PLAYERS = 8;
 
 namespace Framework
 {
-  ScoreDisplay::ScoreDisplay( void )
+  namespace
   {
+    struct HighestScore : public std::binary_function< const PlayerStats&, const PlayerStats&, bool>
+    {
+      bool operator()( const PlayerStats &lhs, const PlayerStats &rhs ) const
+      {
+        return lhs.score_ > rhs.score_;
+      }
+    };    // HighestScore
+  }   // namespace
+
+  ScoreDisplay::ScoreDisplay( void ) : transforms_(MAX_PLAYERS - 1)
+  {
+    text_.reserve(MAX_PLAYERS - 1);
+  }
+
+  void ScoreDisplay::Serialize( ISerializer &stream )
+  {
+    unsigned width, height;
+    StreamRead( stream, height );
+    StreamRead( stream, width );
+
+    StreamRead( stream, playerText_ );
+
+      // Initialize the player's score text
+    GRAPHICS->TextList.push_back( &playerText_ );
+    playerText_.transform = &playerTransform_;
+
+    for ( unsigned i = 0; i < MAX_PLAYERS - 1; ++i )
+    {
+        // Make a copy of this player text
+      text_.push_back( playerText_ );
+
+        // Self initalize this text object to get drawn using the transform components we gave it
+        //  similuating that it was attached to a object.
+      GRAPHICS->TextList.push_back( &text_[i] );
+      text_[i].transform = &transforms_[i];
+    }
+
+    playerText_.ChangeFont( width, height, playerText_.fontname_ );
   }
 
   void ScoreDisplay::OnInitialize( void )
@@ -16,19 +58,34 @@ namespace Framework
 
   void ScoreDisplay::LogicalUpdate( float dt )
   {
-    Text *text = GetOwner()->has(Text);
+      // Sort the statistics by the highest score, highest score on top.
+    std::sort( stats_.begin(), stats_.end(), HighestScore() );
 
-    if ( text )
+    Vec2 start( 5, 0 );
+
+    Statistics::iterator it = stats_.begin();
+    for ( unsigned i = 0; i < MAX_PLAYERS && it != stats_.end(); ++it )
     {
-      char buffer[1024] = {0};
-      char *walker = buffer;
-
-      for ( Statistics::iterator it = stats_.begin(); it != stats_.end(); ++it )
+      if ( it->playerId_ == GSM->GetPlayerId() )    // If we are draw the current player's score
       {
-        walker += sprintf( walker, "Score: %d\n", it->score_ );
-      }
+        playerText_.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+        playerText_.SetText( "Score: %u", it->score_ );
 
-      text->SetText( buffer );
+        playerTransform_.Position = start;
+        start.y += 22;
+      }
+      else    // Otherwise we are drawing someone other player's score
+      {
+        Text &current = text_[i];
+
+        current.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+        current.SetText( "Score: %u", it->score_ );
+ 
+        current.transform->Position = start;
+        start.y += 20;
+
+        ++i;
+      }
     }
   }
 

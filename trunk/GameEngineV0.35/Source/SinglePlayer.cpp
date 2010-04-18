@@ -102,15 +102,14 @@ namespace Framework
     ///Load the assets of the level.
 	  LoadFromFile("Levels\\SinglePlayer.txt");
 	  SpawnRandomAsteroids();
+
+    singlePlayerStats_.push_back( PlayerStats( GSM->GetPlayerId(), 0 ) );
   } //Initialize
 
   ///Update the game, updates all systems.
   void SinglePlayer::Update( float dt )
   {
-    UpdateStats stats;
-    static unsigned score = 0;
-    stats.stats_.push_back( PlayerStats(0, ++score ) );
-
+    UpdateStats stats( singlePlayerStats_ );
     MessageHub->Post( stats );
 
     ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();
@@ -124,11 +123,13 @@ namespace Framework
   ///Cleanup assets and cleanup and ties to other states.
   void SinglePlayer::OnCleanup( void )
   {
+    singlePlayerStats_.clear();
   } //Cleanup
 
   ///Reset all the positions, objects, scores, ect...
   void SinglePlayer::Restart( void )
   {
+    singlePlayerStats_[0].score_ = 0;
   } //Restart
 
   ///Loads a level from a file. Doesn't unload current level.

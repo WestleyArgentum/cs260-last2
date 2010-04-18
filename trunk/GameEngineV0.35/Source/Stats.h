@@ -1,5 +1,6 @@
 #pragma once
 
+#include "VMath.h"        // Color
 #include "Message.h"
 #include "INetMessage.h"
 
@@ -7,14 +8,16 @@ namespace Framework
 {
   struct PlayerStats
   {
-    PlayerStats( void ) : playerId_(0), score_(0) {;}
-    PlayerStats( unsigned playerId, unsigned score ) : playerId_(playerId), score_(score) {;}
+    PlayerStats( void ) : playerId_(0), score_(0), color_(255, 255, 255, 255) {;}
+    PlayerStats( unsigned playerId, unsigned score, Color color = Color(255, 255, 255, 255) )
+      : playerId_(playerId), score_(score), color_(color) {;}
 
     int SerializeData( DataStream &stream ) const;
     int InterpretData( DataStream &stream );
 
     unsigned playerId_;
     unsigned score_;
+    Color color_;
   };    // PlayerStats
 
   typedef std::vector<PlayerStats> Statistics;

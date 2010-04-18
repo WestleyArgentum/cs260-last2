@@ -10,7 +10,7 @@ namespace Framework
 {
 /**************************************************************************************************/
 /**************************************************************************************************/
-  Text::Text( void ) : pFont_(NULL), height_(0), width_(0), screen_(false)
+  Text::Text( void ) : Next(NULL), Prev(NULL), pFont_(NULL), height_(0), width_(0), screen_(false)
   {
   }
 
@@ -67,6 +67,16 @@ namespace Framework
     StreamRead( stream, alpha );
 
     SetColor( red, green, blue, alpha );
+    ChangeFont( width_, height_, fontname_ );
+  }
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+  void Text::ChangeFont( unsigned width, unsigned height, const std::string &fontname )
+  {
+    width_ = width;
+    height_ = height_;
+    fontname_ = fontname;
 
       // Get the font this text is going to use from graphics.
     pFont_ = GRAPHICS->GetFont( fontname_, width_, height_ );

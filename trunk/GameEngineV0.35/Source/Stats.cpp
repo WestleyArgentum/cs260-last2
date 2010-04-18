@@ -11,6 +11,10 @@ namespace Framework
 /**************************************************************************************************/
   int PlayerStats::SerializeData( DataStream &stream ) const
   {
+    StreamWrite( stream, playerId_ );
+    StreamWrite( stream, score_ );
+    StreamWrite( stream, color_ );
+
     return sizeof(PlayerStats);
   }
 
@@ -44,7 +48,7 @@ namespace Framework
       // Store all the PlayerStats within the given buffer too!
     for ( Statistics::const_iterator it = stats_.begin(); it != stats_.end(); ++it )
     {
-      it->SerializeData( stream );
+      StreamWrite( stream, *it );
     }
 
     return Size();
@@ -64,7 +68,7 @@ namespace Framework
 
     for ( unsigned i = 0; i < size; ++i )
     {
-      playerStats.InterpretData( stream );
+      StreamRead( stream, playerStats );
 
       stats_.push_back( playerStats );
     }

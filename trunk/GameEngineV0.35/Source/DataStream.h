@@ -82,4 +82,73 @@ namespace Framework
     void WriteString( const std::string &str );
     void WriteLine( const std::string &str );
   };
+
+  // Rob: Added these for ease of extending the streaming of data. (And to keep it similar from 
+  //  Streaming primitave types)
+
+  // Reading base object case, object serializes itself.
+  template < typename Type >
+  inline void StreamRead( DataStream &stream, Type &t )
+  {
+    t.InterpretData( stream );
+  }
+
+  // Reading primiative base cases.
+  inline void StreamRead( DataStream &stream, float &f )
+	{
+		stream.ReadFloat(f);
+	}
+
+	inline void StreamRead( DataStream &stream, int &i )
+	{
+		stream.ReadInt(i);
+	}
+
+	inline void StreamRead( DataStream &stream, unsigned int &ui )
+	{
+		stream.ReadUInt(ui);
+	}
+
+	inline void StreamRead( DataStream &stream, std::string &str )
+	{
+		stream.ReadString(str);
+	}
+
+	inline void StreamReadLine( DataStream &stream, std::string &str )
+	{
+		stream.ReadLine(str);
+	}
+
+  // Writing base case, object interprets its data itself
+  template < typename Type >
+  inline void StreamWrite( DataStream &stream, const Type &t )
+  {
+    t.SerializeData( stream );
+  }
+
+  // Writing primiative base cases.
+  inline void StreamWrite( DataStream &stream, const float &f )
+	{
+		stream.WriteFloat(f);
+	}
+
+	inline void StreamWrite( DataStream &stream, const int &i )
+	{
+		stream.WriteInt(i);
+	}
+
+	inline void StreamWrite( DataStream &stream, const unsigned int &ui )
+	{
+		stream.WriteUInt(ui);
+	}
+
+	inline void StreamWrite( DataStream &stream, const std::string &str )
+	{
+		stream.WriteString(str);
+	}
+
+	inline void StreamWriteLine( DataStream &stream, const std::string &str )
+	{
+		stream.WriteLine(str);
+	}
 }
