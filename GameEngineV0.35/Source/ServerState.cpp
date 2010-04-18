@@ -12,6 +12,24 @@
 namespace Framework
 {
 
+
+  void ServerState::HandleConnection(INetMessage *msg)
+  {
+
+  }
+  void ServerState::HandleCreate(INetMessage *msg)
+  {
+
+  }
+  void ServerState::HandleDestroy(INetMessage *msg)
+  {
+
+  }
+  void ServerState::HandleInput(INetMessage *msg)
+  {
+
+  }
+
 	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm )
  	{}
 
@@ -97,6 +115,34 @@ namespace Framework
 				GSM->WorldMousePosition = GRAPHICS->ScreenToWorldSpace(mouseMove->MousePosition);
 				break;
 			}
+    case Mid::NetMessage:
+      {
+        INetMessage *msg = static_cast<INetMessage*>(m);
+        switch (msg->Type())
+        {
+        case NMid::Connection:
+          {
+            HandleConnection(msg);
+            break;
+          }
+        case NMid::Create:
+          {
+            HandleCreate(msg);
+            break;
+          }
+        case NMid::Destroy:
+          {
+            HandleDestroy(msg);
+            break;
+          }
+        case NMid::Input:
+          {
+            HandleInput(msg);
+            break;
+          }
+        }
+        break;
+      }
 		}
 	}
 
