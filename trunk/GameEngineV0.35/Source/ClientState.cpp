@@ -29,7 +29,47 @@ void Framework::ClientState::RemoveController( Controller *controller )
 }
 
 void Framework::ClientState::SendMessage( Message *m )
-{}
+{
+  if (m->MessageId == Mid::NetMessage)
+  {
+    INetMessage *msg = static_cast<INetMessage*>(m);
+    switch (msg->Type())
+    {
+    case NMid::Create:
+      {
+        HandleCreate(msg);
+        break;
+      }
+    case NMid::Destroy:
+      {
+        HandleDestroy(msg);
+        break;
+      }
+    case NMid::Update:
+      {
+        HandleUpdate(msg);
+        break;
+      }
+    case NMid::PlayerId:
+      {
+        HandlePlayerId(msg);
+        break;
+      }
+    case NMid::EndGame:
+      {
+        break;
+      }
+    case NMid::RestartGame:
+      {
+        break;
+      }
+    case NMid::Stats:
+      {
+        break;
+      }
+    }
+  }
+}
 
 void Framework::ClientState::Update( float dt )
 {
