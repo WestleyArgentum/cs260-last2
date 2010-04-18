@@ -23,7 +23,7 @@ namespace Framework
 	class GameObjectFactory : public ISystem
 	{
   public:
-		typedef std::map<unsigned,GOC*> GameObjectIdMapType;
+		typedef stdext::hash_map<unsigned,GOC*> GameObjectIdMapType;
 	public:
 		GameObjectFactory();
 		~GameObjectFactory();

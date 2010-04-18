@@ -17,6 +17,7 @@
 #include "Engine.h"
 #include "IController.h"
 #include "IGameState.h"
+#include "Stats.h"
 
 namespace Framework
 {
@@ -41,6 +42,7 @@ namespace Framework
 
     ///The GOCId of the player...
     GOCId playerShipId_;
+    Statistics gameStats_;   ///< Statistics of all the players of the game!
 
     ///Adds a new GameState to the choices of possible states.
     void AddGameState( const std::string &name, IGameState *state );
@@ -72,9 +74,17 @@ namespace Framework
 
     ///Returns the player's GOCId.
     GOCId GetPlayerId( void ) { return playerShipId_; }
+    Statistics& GetStats( void ) { return gameStats_; }
 
     ///Stores the current player Id in the current gamestate.
     void SetPlayerId( GOCId pid ) { playerShipId_ = pid; }
+
+    // Statistic update functions.
+    void SetPlayerColor( GOCId pid, Color shipColor );
+    void AddScoreTo( GOCId pid, int amount );
+
+    // Get all the information about the player in question.
+    PlayerStats* GetPlayerInfo( GOCId pid );
 
     void AddController( Controller *controller );
     void RemoveController( Controller *controller );

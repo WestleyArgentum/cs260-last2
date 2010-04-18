@@ -954,6 +954,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Objects\ScoreText_100.txt"
+					>
+				</File>
+				<File
 					RelativePath="..\Objects\Shrapnel.txt"
 					>
 				</File>

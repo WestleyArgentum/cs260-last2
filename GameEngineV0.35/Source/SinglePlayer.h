@@ -4,7 +4,6 @@
 #include "Engine.h"
 #include "IController.h"
 #include "ObjectLinkedList.h"
-#include "Stats.h"
 
 namespace Framework
 {
@@ -41,7 +40,5 @@ namespace Framework
 
 	private:
 		virtual void LoadFromFile ( const std::string &filename );
-
-    Statistics singlePlayerStats_;
   };
 }

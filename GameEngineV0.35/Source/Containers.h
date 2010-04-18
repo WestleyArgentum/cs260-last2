@@ -12,3 +12,4 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <hash_map>

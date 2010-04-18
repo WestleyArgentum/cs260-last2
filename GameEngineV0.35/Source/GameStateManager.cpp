@@ -19,6 +19,7 @@
 #include "Asteroid.h"
 #include "ScoreDisplay.h"
 #include "BulletController.h"
+#include "Sprite.h"
 
 #include "SinglePlayer.h"
 #include "MainMenu.h"
@@ -37,7 +38,7 @@ namespace Framework
   const GameStateManager::GameStateID GameStateManager::GS_RESTART("RESTART");
 
   ///Initialize the GSM pointer and check for duplicate creations
-  GameStateManager::GameStateManager() : playerShipId_(0)
+  GameStateManager::GameStateManager() : playerShipId_(0), gameStats_(8)
 	{	
 		//Set up the global pointer
 		ErrorIf(GSM!=NULL,"Logic already initialized");
@@ -47,8 +48,9 @@ namespace Framework
     RegisterComponent(Transform);
     RegisterComponent(PlayerController);
     RegisterComponent(Asteroid);
-    RegisterComponent(ScoreDisplay);
+    RegisterComponent(ScoreHUD);
 		RegisterComponent(BulletController);
+    RegisterComponent(DisplayScore);
 
     //GameStates are created and registered here.
     RegisterGameState(SinglePlayer);
@@ -92,6 +94,22 @@ namespace Framework
     else if (Next == GS_RESTART)
       GameStates[Curr]->Restart();
 
+    // UPdate all the statistics of the game!
+    for ( Statistics::iterator it = gameStats_.begin(); it != gameStats_.end(); ++it )
+    {
+      GOC *ship = FACTORY->GetObjectWithId( it->playerId_ );
+
+      if ( ship )
+      {
+        Sprite *shipImage = ship->has(Sprite);
+
+        if ( shipImage )
+        {
+          it->color_ = Convert(shipImage->Color);
+        }
+      }
+    }
+
     ///Update the current state!
     GameStates[Curr]->Update(dt);
   }
@@ -124,6 +142,39 @@ namespace Framework
     GameStates[name] = state;
   }
 
+  void GameStateManager::SetPlayerColor( GOCId pid, Color shipColor )
+  {
+    int index = StatsFind( gameStats_, pid );
+
+    if ( index != -1 )
+    {
+      gameStats_[index].color_ = shipColor;
+    }
+  }
+
+  void GameStateManager::AddScoreTo( GOCId pid, int amount )
+  {
+    int index = StatsFind( gameStats_, pid );
+
+    if ( index != -1 )
+    {
+      gameStats_[index].score_ += amount;
+    }
+  }
+
+  PlayerStats* GameStateManager::GetPlayerInfo( GOCId pid )
+  {
+    int index = StatsFind( gameStats_, pid );
+
+    if ( index != -1 )
+    {
+      return &gameStats_[index];
+    }
+    else
+    {
+      return NULL;
+    }
+  }
 
   void GameStateManager::AddController( Controller *controller )
   {

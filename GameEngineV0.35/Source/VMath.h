@@ -139,5 +139,10 @@ namespace Framework
 		objectPtr = NULL;
 	}
 
+  inline Color Convert( const Vec4 &vec )
+  {
+    return Color( vec.x * 255.0f, vec.y * 255.0f, vec.z * 255.0f, vec.w * 255.0f);
+  }
+
 	typedef unsigned int uint;
 }

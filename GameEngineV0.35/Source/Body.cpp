@@ -83,7 +83,8 @@ namespace Framework
 			Drawer::Instance.SetColor( Vec4(1,1,1,1) );
 
 			//Draw the shape of the object
-			BodyShape->Draw();
+      if ( BodyShape )
+			  BodyShape->Draw();
 		}
 		else
 		{		
@@ -91,7 +92,8 @@ namespace Framework
 			Drawer::Instance.SetColor( Vec4(1,0,0,1) );
 
 			//Draw the shape of the object
-			BodyShape->Draw();
+      if ( BodyShape )
+			  BodyShape->Draw();
 
 			//Draw the velocity of the object
 			Drawer::Instance.SetColor( Vec4(1,1,1,1) );
@@ -127,7 +129,8 @@ namespace Framework
 			InvMass = 0.0f;
 		}
 
-		BodyShape->body = this;
+    if ( BodyShape )
+		  BodyShape->body = this;
 	}
 
 	void Body::Serialize(ISerializer& stream)
@@ -152,6 +155,11 @@ namespace Framework
 			StreamRead(stream,shape->Extents);
 			this->BodyShape  = shape;
 		}
+
+    if ( shapeName == "None" )
+    {
+      this->BodyShape = NULL;
+    }
 
 	}
 

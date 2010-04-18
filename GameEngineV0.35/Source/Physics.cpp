@@ -61,7 +61,8 @@ namespace Framework
 				//Do not collide static bodies with other static bodies
 				if( !bodyA->IsStatic || !bodyB->IsStatic )
 				{
-					Collsion.GenerateContacts( (bodyA)->BodyShape , (bodyA)->Position , (bodyB)->BodyShape , (bodyB)->Position , &Contacts );
+          if ( bodyA->BodyShape && bodyB->BodyShape )
+					  Collsion.GenerateContacts( (bodyA)->BodyShape , (bodyA)->Position , (bodyB)->BodyShape , (bodyB)->Position , &Contacts );
 				}
 			}
 		}
@@ -146,8 +147,9 @@ namespace Framework
 	{
 		for(BodyIterator it=Bodies.begin();it!=Bodies.end();++it)
 		{
-			if( it->BodyShape->TestPoint(testPosition) )
-				return it->GetOwner();
+      if ( it->BodyShape )
+			  if( it->BodyShape->TestPoint(testPosition) )
+				  return it->GetOwner();
 		}
 
 		return NULL;

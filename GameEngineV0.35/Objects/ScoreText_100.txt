@@ -1,0 +1,21 @@
+Transform 
+0 0 
+0
+
+Text
+World
+32 16
+Comic Sans MS
+255 255 255 255
+
+DisplayScore
+100
+1.5
+10
+0 1
+
+Body
+1
+0.4
+0.4
+None

@@ -22,6 +22,8 @@ namespace Framework
 
   typedef std::vector<PlayerStats> Statistics;
 
+  int StatsFind( const Statistics &stats, unsigned playerId );
+
   class StatsMessage : public INetMessage
   {
     public:

@@ -9,6 +9,60 @@ const unsigned MAX_PLAYERS = 8;
 
 namespace Framework
 {
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// DisplayScore
+  void DisplayScore::Serialize( ISerializer &stream )
+  {
+    StreamRead( stream, amount_ );    // Number to display
+    StreamRead( stream, time_ );      // Time to display this text before removing it
+    StreamRead( stream, speed_ );     // Speed at which to move this text in the direction desired
+    StreamRead( stream, dir_ );       // The direction to move this text in.
+  }
+
+  void DisplayScore::OnInitialize( void )
+  {
+    Body *body = GetOwner()->has(Body);
+    Text *text = GetOwner()->has(Text);
+
+    if ( body && text )
+    {
+      body->SetVelocity( dir_ * speed_ );
+      text->SetText( "%d", amount_ );
+    }
+
+    maxTime_ = time_;
+  }
+
+  void DisplayScore::LogicalUpdate( float dt )
+  {
+    time_ -= dt;
+
+    float ratio = time_ / maxTime_;
+
+    playerColor_.a = ratio * 255.0f;
+    SetColor( playerColor_ );
+
+    if ( time_ < 0 )
+    {
+      GetOwner()->Destroy();
+    }
+  }
+
+  void DisplayScore::SetColor( Color color )
+  {
+    Text *text = GetOwner()->has(Text);
+
+    playerColor_ = color;
+#pragma warning( push )
+#pragma warning( disable : 4244 )
+    text->SetColor( playerColor_.r, playerColor_.g, playerColor_.b, playerColor_.a );
+#pragma warning( pop )
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// ScoreHUD
   namespace
   {
     struct HighestScore : public std::binary_function< const PlayerStats&, const PlayerStats&, bool>
@@ -20,12 +74,12 @@ namespace Framework
     };    // HighestScore
   }   // namespace
 
-  ScoreDisplay::ScoreDisplay( void ) : transforms_(MAX_PLAYERS - 1)
+  ScoreHUD::ScoreHUD( void ) : transforms_(MAX_PLAYERS - 1)
   {
     text_.reserve(MAX_PLAYERS - 1);
   }
 
-  void ScoreDisplay::Serialize( ISerializer &stream )
+  void ScoreHUD::Serialize( ISerializer &stream )
   {
     unsigned width, height;
     StreamRead( stream, height );
@@ -51,12 +105,12 @@ namespace Framework
     playerText_.ChangeFont( width, height, playerText_.fontname_ );
   }
 
-  void ScoreDisplay::OnInitialize( void )
+  void ScoreHUD::OnInitialize( void )
   {
     MessageHub->Register( GetOwner()->GetId(), Mid::StatsUpdate );
   }
 
-  void ScoreDisplay::LogicalUpdate( float dt )
+  void ScoreHUD::LogicalUpdate( float dt )
   {
       // Sort the statistics by the highest score, highest score on top.
     std::sort( stats_.begin(), stats_.end(), HighestScore() );
@@ -66,6 +120,11 @@ namespace Framework
     Statistics::iterator it = stats_.begin();
     for ( unsigned i = 0; i < MAX_PLAYERS && it != stats_.end(); ++it )
     {
+        // Ignore any playerId that is invalid.
+      if ( it->playerId_ == 0 )
+      {
+        continue;
+      }
       if ( it->playerId_ == GSM->GetPlayerId() )    // If we are draw the current player's score
       {
   // 'argument' : conversion from 'FLOAT' to 'unsigned char', possible loss of data
@@ -100,7 +159,7 @@ namespace Framework
     }
   }
 
-  void ScoreDisplay::SendMessage( Message *message )
+  void ScoreHUD::SendMessage( Message *message )
   {
     switch ( message->MessageId )
     {

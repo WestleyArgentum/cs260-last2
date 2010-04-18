@@ -52,7 +52,8 @@ namespace Framework
 	}
 
 	void BulletController::LogicalUpdate( float dt )
-	{}
+	{
+  }
 
 	void BulletController::DestroyCheck()
 	{
