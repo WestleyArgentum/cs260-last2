@@ -83,29 +83,27 @@ namespace Framework
     t.InterpretData( stream );
   }*/
 
-  // Reading primitive base cases.
-
-	// Writing base case, object interprets its data itself
+	// Generic reading case - all primitives
 	template < typename Type >
 	inline void StreamRead( DataStream &stream, Type &t )
 	{
 		stream.ReadData( t );
 	}
 
-	// Writing primitive base cases.
+	// Specialized case for INetMessage
 	inline void StreamRead( DataStream &stream, INetMessage &m )
 	{
 		m.InterpretData( stream );
 	}
 
-  // Writing base case, object interprets its data itself
+  // Generic writing case - all primitives
   template < typename Type >
   inline void StreamWrite( DataStream &stream, const Type &t )
   {
     stream.WriteData( t );
   }
 
-  // Writing primitive base cases.
+  // Specialized write for INetMessage
   inline void StreamWrite( DataStream &stream, const INetMessage &m )
 	{
 		m.SerializeData( stream );
