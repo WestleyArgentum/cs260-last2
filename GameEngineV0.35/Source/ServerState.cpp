@@ -8,8 +8,11 @@
 #include "Stats.h"
 #include "MessageHub.h"
 #include "Network.h"
+#include "Console.h"
 #include "GameMessages.h"
 #include "Transform.h"
+
+#include <iostream>
 
 namespace Framework
 {
@@ -63,11 +66,15 @@ namespace Framework
 
 		ErrorIf(!NETWORK);
 		NETWORK->HostServer();
-		
+
+    CreateConsole();
+    std::cout << "Server IP:"   << NetAPI->LocalIP() << std::endl;
 	}
 
 	void Framework::ServerState::OnCleanup( void )
-	{}
+	{
+    RemoveConsole();
+  }
 
 	void Framework::ServerState::AddController( Controller *controller )
 	{

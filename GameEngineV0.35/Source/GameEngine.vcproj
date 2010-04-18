@@ -406,6 +406,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Console"
+				>
+				<File
+					RelativePath=".\Console.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Console.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="GameLogic"
