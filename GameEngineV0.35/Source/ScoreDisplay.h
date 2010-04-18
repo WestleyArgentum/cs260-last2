@@ -2,6 +2,7 @@
 
 #include "IController.h"
 #include "Stats.h"
+#include "Text.h"
 
 namespace Framework
 {
@@ -10,6 +11,9 @@ namespace Framework
   {
     public:
       ScoreDisplay( void );
+
+    private:
+      void Serialize( ISerializer &stream );
 		  void OnInitialize( void );
 		  void LogicalUpdate ( float dt );
 
@@ -17,6 +21,15 @@ namespace Framework
 
     private:
       Statistics stats_;
+      Text playerText_;
+      Transform playerTransform_;
+
+      typedef std::vector<Text>       TextComps;
+      typedef std::vector<Transform>  TransformComps;
+        /// Will display the score of each player using different text objects so we can show the
+        ///  text with different colors and different sizes.
+      TextComps text_;
+      TransformComps transforms_;
   };    // ScoreDisplay
 
 }   // namespace Framework

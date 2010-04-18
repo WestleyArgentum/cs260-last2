@@ -18,4 +18,5 @@
 #include "DirectXIncludes.h"
 #include "Containers.h"
 #include "DebugDiagnostic.h"
+#include <algorithm>
 

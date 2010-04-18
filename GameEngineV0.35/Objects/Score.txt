@@ -2,11 +2,9 @@ Transform
 0 0 
 0
 
-Text
+ScoreDisplay
+24 10
 Screen
-30 12
+16 8
 Comic Sans MS
 255 0 255 255
-
-ScoreDisplay
-
