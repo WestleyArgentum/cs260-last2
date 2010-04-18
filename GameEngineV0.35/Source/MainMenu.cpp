@@ -51,6 +51,7 @@ namespace Framework
                   break;
                 case LI_JoinGame:
                   // Join game state change here
+                  gsm_->ChangeState( "ClientState" );
                   break;
                 case LI_Quit:
                   MessageQuit q;
