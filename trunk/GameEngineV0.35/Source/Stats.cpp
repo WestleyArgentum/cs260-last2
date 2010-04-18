@@ -43,7 +43,7 @@ namespace Framework
   int UpdateStats::SerializeData( DataStream &stream ) const
   {
       // Store the number of elements within our array into the given buffer.
-    stream.WriteUInt(stats_.size());
+    stream.WriteData(stats_.size());
 
       // Store all the PlayerStats within the given buffer too!
     for ( Statistics::const_iterator it = stats_.begin(); it != stats_.end(); ++it )
@@ -60,7 +60,7 @@ namespace Framework
   {
       // Pull out the size of the array stored in the buffer 
     unsigned size = 0;
-    stream.ReadUInt(size);
+    stream.ReadData(size);
 
     stats_.reserve( size );
 

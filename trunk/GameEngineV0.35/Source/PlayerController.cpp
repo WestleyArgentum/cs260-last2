@@ -76,8 +76,7 @@ namespace Framework
 				Vec2 vel(cos(transform->Rotation - 89.5f) * bulletbrain->speed,
 								 sin(transform->Rotation - 89.5f) * bulletbrain->speed);
 
-				vel.x += D3DXVec2Length(&body->Velocity);
-				vel.y += D3DXVec2Length(&body->Velocity);
+				vel += body->Velocity;
 
 				bulletbody->Velocity = vel;
 			}

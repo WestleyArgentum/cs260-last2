@@ -1,10 +1,12 @@
 #pragma once // Make sure this header is only included once.
 
-#include "DataStream.h"
 #include "Message.h"
+
 
 namespace Framework
 {
+	class DataStream;
+
   ///NetMessage Id
   namespace NMid
   {
@@ -44,4 +46,5 @@ namespace Framework
     ///Interprets the data in a buffer as the contents of its own message type.
     virtual void InterpretData( DataStream &stream ) = 0;
   };
-};
+
+}
