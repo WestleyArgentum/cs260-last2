@@ -30,7 +30,7 @@ namespace Framework
 
 
       ///Returns the type of message this is.
-      virtual Mid::MessageIdType Type( void ) const { return MessageId; }
+      virtual NMid::NetMessageIdType Type( void ) const { return NMid::Stats; }
 
       ///Creates a carbon copy of the message.
       virtual UpdateStats * Clone( void ) const { return new UpdateStats(*this); }

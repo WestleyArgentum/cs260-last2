@@ -103,6 +103,6 @@ namespace Framework
     int RecvFrom( NetAddress &remote ) throw ( Error );
 
     ///Retrieves the messages from the buffer. Returns the number of messages received.
-    int RetieveData( MessageList &messages );
+    int RetieveData( MessageList *messages );
   };
 }

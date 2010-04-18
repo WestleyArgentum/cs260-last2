@@ -46,7 +46,7 @@ namespace Framework
   }
 
   ///Attempts to extract a message from the data in the buffer.
-  int IProtocol::ExtractMessages( DataStream &stream, MessageList &messages)
+  int IProtocol::ExtractMessages( DataStream &stream, MessageList *messages)
   {
     ///If the message isn't a valid message, discard it.
     if (!ValidateMessage(stream))
