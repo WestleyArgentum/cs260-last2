@@ -10,6 +10,7 @@
 #include "SinglePlayer.h"
 #include "UtilityGameFunctions.h"
 #include "BulletController.h"
+#include "GameMessages.h"
 
 namespace Framework
 {
@@ -118,6 +119,49 @@ namespace Framework
 		// Here we could kill the character if he flew out of bounds or something also
 	}
 
+  void PlayerController::UpdateInput(INetMessage *msg)
+  {
+    InputButtonMessage *btn = static_cast<InputButtonMessage*>(msg);
+    
+		// handle movement
+    if( btn->character == 'w' || btn->key == VK_UP )
+			body->AddForce(Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));  //^! <-- odd
+		if( btn->character == 's' || btn->key == VK_DOWN )
+			body->AddForce(-Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));
+		if( btn->character == 'a' || btn->key == VK_LEFT )
+			transform->Rotation += rot_angle * DEG_TO_RAD;
+		if( btn->character == 'd' || btn->key == VK_RIGHT )
+			transform->Rotation -= rot_angle * DEG_TO_RAD;
+    if ( btn->key == VK_SPACE )
+    {
+			if(/*state && */time_last_fire <= 0)
+			{
+				time_last_fire = recharge_time;  // reset recharge time
+
+				// set up the offset for the bullet (so it is in front of the ship)
+				Vec2 laser_offset(cos(transform->Rotation - 89.5f) * 30, sin(transform->Rotation - 89.5f) * 30);
+
+				GOC* bullet = CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Bullet");
+
+				// set up bullets velocity (a little crude)
+				Body* bulletbody = bullet->has(Body);
+				BulletController* bulletbrain = bullet->has(BulletController);
+        Sprite* bulletsprite = bullet->has(Sprite);
+
+          // Store the player that fired this bullet. (So we know who to give points to!)
+        bulletbrain->firedFrom = GetOwner()->GetId();
+        bulletsprite->Color = GetOwner()->has(Sprite)->Color;
+
+				Vec2 vel(cos(transform->Rotation - 89.5f) * bulletbrain->speed,
+								 sin(transform->Rotation - 89.5f) * bulletbrain->speed);
+
+				vel += body->Velocity;
+
+				bulletbody->Velocity = vel;
+			}
+    }
+  }
+
 	void PlayerController::Serialize(ISerializer& stream)
 	{
 		StreamRead(stream, health);
@@ -176,7 +220,26 @@ namespace Framework
 				}
 				break;
 			}
-		}
+    case Mid::NetMessage:
+      {
+        INetMessage *msg = static_cast<INetMessage*>(message);
+        switch (msg->Type())
+        {
+        case NMid::Update:
+          {
+            UpdateMessage *umsg = static_cast<UpdateMessage *>(msg);
+            transform->Position = umsg->pos;
+            break;
+          }
+        case NMid::InputBtn:
+          {
+            UpdateInput(msg);
+            break;
+          }
+        }
+        break;
+      }
+    }
 	}
 
 }

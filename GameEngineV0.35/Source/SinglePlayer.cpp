@@ -119,6 +119,11 @@ namespace Framework
       b->Update(dt);
       ++b;
     }
+
+
+    PHYSICS->Update(dt);
+    GRAPHICS->Update(dt);
+
   } //Update
 
   ///Cleanup assets and cleanup and ties to other states.
