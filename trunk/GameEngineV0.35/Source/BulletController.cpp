@@ -4,6 +4,9 @@
 #include "Body.h"
 #include "SinglePlayer.h"
 #include "GameStateManager.h"
+#include "Transform.h"
+#include "Composition.h"
+
 #include <assert.h>
 
 namespace Framework
@@ -50,9 +53,22 @@ namespace Framework
 			}
     case Mid::NetMessage:
       {
+        switch(static_cast<INetMessage*>(message)->Type())
+        {
+        case NMid::Update:
+          HandleUpdateMessage(static_cast<UpdateMessage*>(message));
+          break;
+        }
       }
 		}
 	}
+
+  void BulletController::HandleUpdateMessage(UpdateMessage* mess)
+  {
+    Transform* trans = GetOwner()->has(Transform);
+    trans->Position = mess->pos;
+    trans->Rotation = mess->rot;
+  }
 
 	void BulletController::LogicalUpdate( float dt )
 	{
