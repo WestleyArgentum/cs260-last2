@@ -6,6 +6,7 @@
 #include "GameStateManager.h"
 #include "Transform.h"
 #include "Composition.h"
+#include "Network.h"
 
 #include <assert.h>
 
@@ -21,26 +22,7 @@ namespace Framework
 	}
 
 	void BulletController::OnInitialize( void )
-	{
-		// set up velocity
-		//SinglePlayer* state = GetGameState(SinglePlayer);
-		////assert(state);
-		//if (!state)
-		//	return;  // maybe report some sort of error
-
-		//GameObjectComposition* player = FACTORY->GetObjectWithId(state->player_ship_id);
-		//Vec2 my_vel;
-		//if (player)
-		//{
-		//	Transform* transform = player->has(Transform);
-		//	my_vel = Vec2(cos(transform->Rotation - 89.5f) * speed, sin(transform->Rotation - 89.5f) * speed);
-		//	my_vel.x += D3DXVec2Length(&player->has(Body)->Velocity);
-		//	my_vel.y += D3DXVec2Length(&player->has(Body)->Velocity);
-		//}
-
-		//Body* body = GetOwner()->has(Body);
-		//body->SetVelocity(my_vel);
-	}
+	{}
 
 	void BulletController::SendMessage( Message* message )
 	{
@@ -48,6 +30,10 @@ namespace Framework
 		{
 		case Mid::Collide:
 			{
+        DestroyMessage destroy;
+        destroy.id = GetOwner()->GetId();
+        NETWORK->SendNetMessage(destroy);
+
 				GetOwner()->Destroy();
 				break;
 			}
