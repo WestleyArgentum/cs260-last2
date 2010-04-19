@@ -204,6 +204,7 @@ namespace Framework
 
 	int InputButtonMessage::SerializeData( DataStream &stream ) const
 	{
+    StreamWrite(stream, id);
 		StreamWrite(stream, character);
 		StreamWrite(stream, key);
 
@@ -216,6 +217,7 @@ namespace Framework
 
 	void InputButtonMessage::InterpretData( DataStream &stream )
 	{
+    StreamRead(stream, id);
 		StreamRead(stream, character);
 		StreamRead(stream, key);
 
