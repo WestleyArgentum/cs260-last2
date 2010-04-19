@@ -50,7 +50,7 @@ namespace Framework
     {
       INetMessage *msg = new UpdateMessage();
       msg->InterpretData(stream);
-      messages[NMid::Connection].push_back(msg);
+      messages[NMid::Update].push_back(msg);
       ++num;
     }
 
@@ -58,7 +58,7 @@ namespace Framework
     {
       INetMessage *msg = new CreateMessage();
       msg->InterpretData(stream);
-      messages[NMid::Connection].push_back(msg);
+      messages[NMid::Create].push_back(msg);
       ++num;
     }
 
@@ -66,7 +66,7 @@ namespace Framework
     {
       INetMessage *msg = new DestroyMessage();
       msg->InterpretData(stream);
-      messages[NMid::Connection].push_back(msg);
+      messages[NMid::Destroy].push_back(msg);
       ++num;
     }
 
@@ -74,7 +74,23 @@ namespace Framework
     {
       INetMessage *msg = new StatsMessage();
       msg->InterpretData(stream);
-      messages[NMid::Connection].push_back(msg);
+      messages[NMid::Stats].push_back(msg);
+      ++num;
+    }
+    
+    for (unsigned i = 0; i < NumMessages[NMid::InputBtn] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new InputButtonMessage();
+      msg->InterpretData(stream);
+      messages[NMid::InputBtn].push_back(msg);
+      ++num;
+    }
+    
+    for (unsigned i = 0; i < NumMessages[NMid::PlayerId] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new PlayerMessage();
+      msg->InterpretData(stream);
+      messages[NMid::PlayerId].push_back(msg);
       ++num;
     }
 
