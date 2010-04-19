@@ -78,7 +78,7 @@ namespace Framework
 
     // spawn character
     GOC* myplayer = CreateObjectAt(Vec2(0,0), 0, "PlayerShip");
-    SetPlayerId(myplayer->GetId());
+    GSM->SetPlayerId(myplayer->GetId());
 
 		SpawnRandomAsteroids();
 
@@ -238,7 +238,7 @@ namespace Framework
 		}
 
     ///Update yourself
-    GOC *hack = FACTORY->GetObjectWithId(GetPlayerId());
+    GOC *hack = FACTORY->GetObjectWithId(GSM->GetPlayerId());
     if (hack)
       hack->has(PlayerController)->Update(dt);
 

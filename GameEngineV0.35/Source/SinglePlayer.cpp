@@ -120,7 +120,7 @@ namespace Framework
       ++b;
     }
     
-    GOC *hack = FACTORY->GetObjectWithId(GetPlayerId());
+    GOC *hack = FACTORY->GetObjectWithId(GSM->GetPlayerId());
     if (hack)
       hack->has(PlayerController)->Update(dt);
 
