@@ -6,6 +6,7 @@
 #include "GameMessages.h"
 #include "Core.h"
 #include "Physics.h"
+#include "PlayerController.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
 {}
@@ -92,8 +93,13 @@ void Framework::ClientState::SendMessage( Message *m )
 
 void Framework::ClientState::Update( float dt )
 {
-  for(ObjectLinkList<Controller>::iterator it = Controllers.begin(); it != Controllers.end(); ++it)
-    it->ClientUpdate(dt);
+  GOC *player = FACTORY->GetObjectWithId(playerid_);
+  if (player)
+  {
+    PlayerController *pc = player->has(PlayerController);
+    if (pc)
+      pc->Update(dt);
+  }
 }
 
 void Framework::ClientState::Restart( void )
