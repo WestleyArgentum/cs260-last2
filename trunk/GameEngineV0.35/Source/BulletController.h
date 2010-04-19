@@ -9,6 +9,7 @@ namespace Framework
 	class BulletController : public Controller
 	{
 	public:
+    BulletController( void ) : Controller(CID_Bullet) {;}
 		virtual ~BulletController ();
 
 		virtual void Serialize (ISerializer& stream);

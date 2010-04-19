@@ -10,6 +10,14 @@
 
 namespace Framework
 {
+  enum ControllerID
+  {
+     CID_Asteroid
+    ,CID_Bullet
+    ,CID_Player
+    ,CID_DisplayScore
+    ,CID_ScoreHUD
+  };    // ControllerID
 
 	///Sample Demo Component Movement Controller. Used
 	///to move objects around the world not under
@@ -21,12 +29,14 @@ namespace Framework
 		Controller * Next;
 		Controller * Prev;
 
-		Controller ();
+    Controller ( ControllerID cid ) : cid_(cid) {;}
 		virtual ~Controller ();
 		virtual void Serialize (ISerializer& stream);
 
 		void Update (float dt);
     virtual void ClientUpdate (float dt) {};
+
+    ControllerID GetControllerID( void ) { return cid_; }
 
 	protected:
 		// implement these when you derive from controller
@@ -36,6 +46,8 @@ namespace Framework
 
   private:
 		virtual void Initialize();
+
+    ControllerID cid_;
 	};
 
 }

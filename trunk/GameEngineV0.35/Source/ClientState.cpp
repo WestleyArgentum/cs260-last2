@@ -27,12 +27,26 @@ void Framework::ClientState::OnCleanup( void )
 
 void Framework::ClientState::AddController( Controller *controller )
 {
-  Controllers.push_back(controller);
+  switch ( controller->GetControllerID() )
+  {
+  case CID_DisplayScore:
+    {
+      Controllers.push_back(controller);
+      break;
+    }
+  }
 }
 
 void Framework::ClientState::RemoveController( Controller *controller )
 {
-  Controllers.erase(controller);
+  switch ( controller->GetControllerID() )
+  {
+  case CID_DisplayScore:
+    {
+      Controllers.erase(controller);
+      break;
+    }
+  }
 }
 
 void Framework::ClientState::HandleCreate( INetMessage *msg )
@@ -100,6 +114,11 @@ void Framework::ClientState::Update( float dt )
     if (pc)
       pc->ClientUpdate(dt);
   }
+
+  for ( ObjectLinkList<Controller>::iterator it = Controllers.begin(); it != Controllers.end(); ++it )
+  {
+		it->Update( dt );
+	}
 }
 
 void Framework::ClientState::Restart( void )

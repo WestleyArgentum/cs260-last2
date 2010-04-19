@@ -18,6 +18,8 @@ namespace Framework
 	class Asteroid : public Controller
 	{
 	public:
+    Asteroid( void ) : Controller(CID_Asteroid) {;}
+
 		int Fuse;
 		int SubSpawnCount;
 		int SpawnTime;
