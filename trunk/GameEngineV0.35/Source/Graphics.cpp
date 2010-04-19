@@ -16,6 +16,17 @@
 #include "ComponentCreator.h"
 #include "Shaders.h"
 
+namespace std
+{
+  template <>
+  struct less<Framework::Sprite*> : public binary_function<Framework::Sprite*, Framework::Sprite*, bool>
+  {
+    bool operator()( const Framework::Sprite *lhs, const Framework::Sprite *rhs) const
+		{
+		  return lhs->ZValue < lhs->ZValue;
+		}
+	};    // std::lest<Sprite>
+}
 
 namespace Framework
 {
@@ -211,9 +222,10 @@ namespace Framework
 
 		//Iterate through the link list of sprite and draw them all
 		//TODO: Need Visibility to cull off screen sprites
-		for ( ObjectLinkList<Sprite>::iterator it = SpriteList.begin(); it != SpriteList.end(); ++it )
+    SpriteList.sort( std::less<Sprite*>() );
+    for ( std::list<Sprite*>::iterator it = SpriteList.begin(); it != SpriteList.end(); ++it )
     {
-      it->Draw( pDevice, shaders_[it->sIndex_].effect_ );
+      (*it)->Draw( pDevice, shaders_[(*it)->sIndex_].effect_ );
     }
 
     for ( ObjectLinkList<Text>::iterator it = TextList.begin(); it != TextList.end(); ++it )

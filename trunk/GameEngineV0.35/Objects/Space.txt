@@ -5,7 +5,7 @@ Transform
 Sprite
 Water
 square
-12000
-12000
+12000 12000
+1
 0.1 0 1 1
 

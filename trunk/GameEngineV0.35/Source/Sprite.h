@@ -41,6 +41,8 @@ namespace Framework
 		std::string SpriteName;
 		//Blend color of this sprite
 		Vec4 Color;
+    //Sprites z value!
+    float ZValue;
     // Determines which pixel shader this sprite should draw, aka shader index.
     PixelShaders sIndex_;
 		//Draw the sprite to the screen
