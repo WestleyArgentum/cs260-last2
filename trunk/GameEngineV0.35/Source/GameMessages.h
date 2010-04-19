@@ -219,6 +219,8 @@ namespace Framework
     // Creates a carbon copy of the message.
     virtual INetMessage * Clone( void ) const;
 
+    virtual void SendThis( void );
+
     GOCId id;
   };
 

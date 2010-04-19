@@ -25,7 +25,9 @@ namespace Framework
     GOC *obj = CreateObjectAt(Vec2(0,0),0,"PlayerShip");
     InitializeConnection(connect);
     //Send special message informing the connection which ship is theirs.
-    //WEEEE
+    PlayerMessage player;
+    player.id = obj->GetId();
+    NETWORK->SendNetMessage(connect->address,player);
   }
 
   void ServerState::HandleInput(INetMessage *msg)
