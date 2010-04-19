@@ -89,6 +89,7 @@ namespace Framework
     {
       /// TODO: Check if Next exists!!
       GameStates[Curr]->Cleanup();
+      FACTORY->Update(0);
       Curr = Next;
       GameStates[Next]->Initialize();
     }

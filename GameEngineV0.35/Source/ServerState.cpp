@@ -124,7 +124,7 @@ namespace Framework
 
 	void Framework::ServerState::AddController( Controller *controller )
 	{
-    if (controller->GetControllerID() == CID_Player && controller->GetOwner()->GetId() != player)
+    if (controller->GetControllerID() == CID_Player)
       OtherPlayers.push_back(controller);
     else
   		Controllers.push_back(controller);
@@ -132,7 +132,7 @@ namespace Framework
 
 	void Framework::ServerState::RemoveController( Controller *controller )
 	{
-    if (controller->GetControllerID() == CID_Player && controller->GetOwner()->GetId() != player)
+    if (controller->GetControllerID() == CID_Player)
       OtherPlayers.erase(controller);
     else
   		Controllers.erase(controller);
@@ -237,6 +237,7 @@ namespace Framework
 			++b;
 		}
 
+    ///Update yourself
     GOC *hack = FACTORY->GetObjectWithId(GetPlayerId());
     if (hack)
       hack->has(PlayerController)->Update(dt);
