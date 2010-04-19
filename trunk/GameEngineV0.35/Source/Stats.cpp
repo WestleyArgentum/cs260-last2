@@ -46,12 +46,12 @@ namespace Framework
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-  unsigned StatsMessage::Size( void ) const
-  {
-      // Size of the vector that we are passing across the network, then the size of the array that
-      //  we need to send.
-    return sizeof(unsigned) + sizeof(PlayerStats) * stats_.size();
-  }
+  //unsigned StatsMessage::Size( void ) const
+  //{
+  //    // Size of the vector that we are passing across the network, then the size of the array that
+  //    //  we need to send.
+  //  return sizeof(unsigned) + sizeof(PlayerStats) * stats_.size();
+  //}
 
 /**************************************************************************************************/
 /**************************************************************************************************/
@@ -66,7 +66,7 @@ namespace Framework
       StreamWrite( stream, *it );
     }
 
-    return Size();
+    return stream.Size();
   }
 
 /**************************************************************************************************/

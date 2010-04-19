@@ -37,7 +37,7 @@ namespace Framework
       virtual StatsMessage * Clone( void ) const { return new StatsMessage(*this); }
 
         /// Return the size of the information that we need to write to the given buffer.
-      virtual unsigned Size( void ) const;
+      //virtual unsigned Size( void ) const;
 
         /// Write the statistics of this structure to the the buffer given.
       virtual int SerializeData( DataStream &stream ) const;
