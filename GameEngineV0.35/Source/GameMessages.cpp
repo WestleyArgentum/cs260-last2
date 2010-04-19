@@ -278,5 +278,10 @@ namespace Framework
     return new PlayerMessage(*this);
   }
 
+  
+  void PlayerMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
+  }
 }   // namespace Framework
 
