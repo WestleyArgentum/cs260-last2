@@ -22,7 +22,3 @@ HorizontalBarrier
 VerticalBarrier
 -2000 0
 0
-
-PlayerShip
-0 0
-0
