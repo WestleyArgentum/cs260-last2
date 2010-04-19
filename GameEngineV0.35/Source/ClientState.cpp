@@ -62,6 +62,7 @@ void Framework::ClientState::HandlePlayerId( INetMessage *msg )
 {
   PlayerMessage *pid = static_cast<PlayerMessage*>(msg);
   SetPlayerId(pid->id);
+  SetStatsId(pid->statsid);
 }
 
 void Framework::ClientState::HandleDestroy( INetMessage *msg )

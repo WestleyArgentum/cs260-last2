@@ -2,6 +2,7 @@
 
 #include "IGameState.h"
 #include "NetUtilities.h"
+#include "Stats.h"
 
 namespace Framework
 {
@@ -10,10 +11,14 @@ namespace Framework
 	// and posting messages about created, destroyed, and updated objects.
 	class ServerState : public IGameState
   {
+    typedef std::map<GOCId, unsigned> PlayerToStatsMap;
     typedef std::map<std::string,NetAddress> ConnectionMap;
 
     ///Holds a way to reference users by address.
     ConnectionMap connections;
+
+    unsigned statsindexbase;
+    PlayerToStatsMap statsIndicies;
 
     void HandleConnection(INetMessage *msg);
     void HandleCreate(INetMessage *msg);

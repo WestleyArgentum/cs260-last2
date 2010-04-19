@@ -285,6 +285,7 @@ namespace Framework
 	int PlayerMessage::SerializeData( DataStream &stream ) const
 	{
 		StreamWrite(stream, id);
+    StreamWrite(stream, statsid);
 
 		return 0;
 	}
@@ -292,6 +293,7 @@ namespace Framework
 	void PlayerMessage::InterpretData( DataStream &stream )
 	{
 		StreamRead(stream, id);
+    StreamRead(stream, statsid);
 	}
 
   
