@@ -938,6 +938,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Objects\MainBackground.txt"
+					>
+				</File>
+				<File
 					RelativePath="..\Objects\MainMenuBackground.txt"
 					>
 				</File>

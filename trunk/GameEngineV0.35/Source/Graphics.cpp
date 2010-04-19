@@ -23,7 +23,7 @@ namespace std
   {
     bool operator()( const Framework::Sprite *lhs, const Framework::Sprite *rhs) const
 		{
-		  return lhs->ZValue < lhs->ZValue;
+		  return lhs->ZValue < rhs->ZValue;
 		}
 	};    // std::lest<Sprite>
 }

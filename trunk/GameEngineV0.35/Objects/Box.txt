@@ -6,7 +6,7 @@ Sprite
 Basic
 squareoutline
 60 60
-1
+10
 1 0 0 1
 
 Body

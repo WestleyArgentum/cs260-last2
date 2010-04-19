@@ -6,6 +6,6 @@ Sprite
 Menu
 square
 800 600
-1
+0
 1 1 1 1
 

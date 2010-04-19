@@ -6,8 +6,8 @@ Sprite
 Basic
 ship_template
 60 60
-1
-1 1 1 1
+12
+1 0 0 1
 
 Body
 1
