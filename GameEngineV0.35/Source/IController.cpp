@@ -7,10 +7,6 @@
 
 namespace Framework
 {
-
-	Controller::Controller()
-  {}
-
 	Controller::~Controller()
 	{
 		GSM->RemoveController( this );
