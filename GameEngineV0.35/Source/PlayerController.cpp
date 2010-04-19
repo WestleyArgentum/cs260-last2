@@ -151,8 +151,6 @@ namespace Framework
     // handle movement
 		if( IsUpHeld() || IsWHeld() )
     {
-			body->AddForce(Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));  //^! <-- odd
-
       InputButtonMessage btn;
       btn.id = GetOwner()->GetId();
       btn.character = 'w';
@@ -160,8 +158,6 @@ namespace Framework
     }
 		if( IsDownHeld() || IsSHeld() )
     {
-			body->AddForce(-Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));
-
       InputButtonMessage btn;
       btn.id = GetOwner()->GetId();
       btn.character = 's';
@@ -169,8 +165,6 @@ namespace Framework
     }
 		if( IsLeftHeld() || IsAHeld() )
     {
-			transform->Rotation += rot_angle * DEG_TO_RAD;
-
       InputButtonMessage btn;
       btn.id = GetOwner()->GetId();
       btn.character = 'a';
@@ -178,11 +172,16 @@ namespace Framework
     }
 		if( IsRightHeld() || IsDHeld() )
     {
-			transform->Rotation -= rot_angle * DEG_TO_RAD;
-
       InputButtonMessage btn;
       btn.id = GetOwner()->GetId();
       btn.character = 'd';
+      NETWORK->SendNetMessage(btn);
+    }
+    if( IsSpaceHeld() )
+    {
+      InputButtonMessage btn;
+      btn.id = GetOwner()->GetId();
+      btn.key = VK_SPACE;
       NETWORK->SendNetMessage(btn);
     }
   }
