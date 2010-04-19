@@ -219,6 +219,9 @@ namespace Framework
     // Creates a carbon copy of the message.
     virtual INetMessage * Clone( void ) const;
 
+    virtual int SerializeData( DataStream &stream ) const;
+    virtual void InterpretData( DataStream &stream );
+
     virtual void SendThis( void );
 
     GOCId id;
