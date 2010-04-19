@@ -160,9 +160,7 @@ namespace Framework
 	}
 
 	void GameObjectFactory::SendMessage(Message * message)
-	{
-
-	}
+  {}
 
 	void GameObjectFactory::Destroy(GOC * gameObject)
 	{
