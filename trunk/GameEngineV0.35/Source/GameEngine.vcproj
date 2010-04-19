@@ -497,6 +497,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="CameraController"
+					>
+					<File
+						RelativePath=".\CameraController.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\CameraController.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="GameStates"

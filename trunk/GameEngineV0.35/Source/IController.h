@@ -17,6 +17,7 @@ namespace Framework
     ,CID_Player
     ,CID_DisplayScore
     ,CID_ScoreHUD
+    ,CID_Camera
   };    // ControllerID
 
 	///Sample Demo Component Movement Controller. Used

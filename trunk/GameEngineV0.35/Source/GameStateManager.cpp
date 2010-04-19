@@ -20,6 +20,7 @@
 #include "ScoreDisplay.h"
 #include "BulletController.h"
 #include "Sprite.h"
+#include "CameraController.h"
 
 #include "SinglePlayer.h"
 #include "MainMenu.h"
@@ -51,6 +52,7 @@ namespace Framework
     RegisterComponent(ScoreHUD);
 		RegisterComponent(BulletController);
     RegisterComponent(DisplayScore);
+    RegisterComponent(CameraController);
 
     //GameStates are created and registered here.
     RegisterGameState(SinglePlayer);

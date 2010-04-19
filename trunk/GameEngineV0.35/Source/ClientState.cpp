@@ -20,6 +20,7 @@ void Framework::ClientState::Initialize( void )
 	ErrorIf(!NETWORK);
 	NETWORK->FindServer();
   CORE->SleepSystem(PHYSICS);
+  CreateObjectAt(Vec2(0,0), 0, "Camera");
 }
 
 void Framework::ClientState::OnCleanup( void )
@@ -29,6 +30,7 @@ void Framework::ClientState::AddController( Controller *controller )
 {
   switch ( controller->GetControllerID() )
   {
+  case CID_Camera:
   case CID_DisplayScore:
     {
       Controllers.push_back(controller);
@@ -41,6 +43,7 @@ void Framework::ClientState::RemoveController( Controller *controller )
 {
   switch ( controller->GetControllerID() )
   {
+  case CID_Camera:
   case CID_DisplayScore:
     {
       Controllers.erase(controller);
