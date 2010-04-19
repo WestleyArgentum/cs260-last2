@@ -18,14 +18,14 @@ namespace Framework
 
 		virtual void SendMessage(Message * message);
 
+    virtual void ClientUpdate ( float dt );
+
 		int health;  // health of the character (decremented by collisions, etc)
 
 	private:
 		virtual void OnInitialize ();
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
-    virtual void ClientUpdate ( float dt );
-
     
     void UpdateInput(INetMessage *msg);
 

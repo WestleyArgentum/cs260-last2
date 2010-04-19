@@ -98,7 +98,7 @@ void Framework::ClientState::Update( float dt )
   {
     PlayerController *pc = player->has(PlayerController);
     if (pc)
-      pc->Update(dt);
+      pc->ClientUpdate(dt);
   }
 }
 
