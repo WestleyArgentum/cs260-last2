@@ -58,7 +58,7 @@ void Framework::ClientState::HandleCreate( INetMessage *msg )
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )
 {
   PlayerMessage *pid = static_cast<PlayerMessage*>(msg);
-  playerid_ = pid->id;
+  SetPlayerId(pid->id);
 }
 
 void Framework::ClientState::HandleDestroy( INetMessage *msg )
@@ -107,7 +107,7 @@ void Framework::ClientState::SendMessage( Message *m )
 
 void Framework::ClientState::Update( float dt )
 {
-  GOC *player = FACTORY->GetObjectWithId(playerid_);
+  GOC *player = FACTORY->GetObjectWithId(GetPlayerId());
   if (player)
   {
     PlayerController *pc = player->has(PlayerController);
