@@ -30,7 +30,7 @@ namespace Framework
 
 	Sprite::~Sprite()
 	{
-		GRAPHICS->SpriteList.erase( this );
+    GRAPHICS->SpriteList.remove( this );
 	}
 
 	void Sprite::Initialize()
@@ -50,6 +50,7 @@ namespace Framework
 
 		StreamRead(stream, SpriteName);
 		StreamRead(stream, Size);
+    StreamRead(stream, ZValue );
 		StreamRead(stream, Color);
 
     std::transform( SpriteName.begin(), SpriteName.end(), SpriteName.begin(), tolower );

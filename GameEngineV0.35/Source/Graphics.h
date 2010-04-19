@@ -130,7 +130,7 @@ namespace Framework
 		//Stored copy of the DirectX Presentation Parameters
 		D3DPRESENT_PARAMETERS PresentParameters;
 		Vec2 SurfaceSize;
-		ObjectLinkList<Sprite> SpriteList;
+    std::list<Sprite*> SpriteList;
     ObjectLinkList<Text> TextList;
 	};    // Graphics
 
