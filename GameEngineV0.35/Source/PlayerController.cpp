@@ -35,8 +35,6 @@ namespace Framework
 	{
 		transform = GetOwner()->has(Transform);
 		body = GetOwner()->has(Body);
-    GSM->SetPlayerId(GetOwner()->GetId());
-
 		MessageHub->Register(GetOwner()->GetId(), Mid::MouseButton);
 
 		//^! this is a hack
