@@ -47,6 +47,7 @@ namespace Framework
 		GameObjectIds MyGameObjects;
 
     GOCId playerid;
+    unsigned statsid;
 
   public:
     IGameState( GameStateManager *gsm ) : gsm_(gsm) { MyGameObjects.reserve(1000); }
@@ -56,6 +57,9 @@ namespace Framework
     //NO HACKS!!
     virtual void SetPlayerId( GOCId id ) { playerid = id; }
     virtual GOCId GetPlayerId( void ) { return playerid; }
+
+    virtual void SetStatsId( unsigned id ) { statsid = id; }
+    virtual unsigned GetStatsId( void ) { return statsid; }
 
     ///Adds a controller to the internal list of the GameState.
     virtual void AddController( Controller *controller ) = 0;

@@ -225,6 +225,7 @@ namespace Framework
     virtual void SendThis( void );
 
     GOCId id;
+    unsigned statsid;
   };
 
 }

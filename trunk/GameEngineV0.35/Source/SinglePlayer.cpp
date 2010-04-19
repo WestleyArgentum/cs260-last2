@@ -119,6 +119,10 @@ namespace Framework
       b->Update(dt);
       ++b;
     }
+    
+    GOC *hack = FACTORY->GetObjectWithId(GetPlayerId());
+    if (hack)
+      hack->has(PlayerController)->Update(dt);
 
 
     PHYSICS->Update(dt);

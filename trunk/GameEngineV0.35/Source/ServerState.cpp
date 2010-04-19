@@ -28,6 +28,15 @@ namespace Framework
     //Send special message informing the connection which ship is theirs.
     PlayerMessage player;
     player.id = obj->GetId();
+    
+    if (statsindexbase < 7)
+    {
+      GSM->GetStats()[statsindexbase].playerId_ = obj->GetId();
+
+      statsIndicies[obj->GetId()] = statsindexbase;
+      player.statsid = statsindexbase++;
+    }
+
     NETWORK->SendNetMessage(connect->address,player);
   }
 
@@ -57,7 +66,7 @@ namespace Framework
     }
   }
 
-	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm )
+	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm ), statsindexbase(0)
  	{}
 
 	Framework::ServerState::~ServerState( void )
@@ -79,6 +88,33 @@ namespace Framework
 
     CreateConsole();
     std::cout << "Server IP: " << NetAPI->LocalIP() << std::endl;
+
+    PlayerStats *stats;
+
+    stats = &GSM->GetStats()[0];
+    (*stats) = PlayerStats(0,0,Color(.7f,.0f,.0f,1.f));
+
+    stats = &GSM->GetStats()[1];
+    (*stats) = PlayerStats(0,0,Color(.4f,.2f,.1f,1.f));
+    
+    stats = &GSM->GetStats()[2];
+    (*stats) = PlayerStats(0,0,Color(.2f,.4f,.2f,1.f));
+    
+    stats = &GSM->GetStats()[3];
+    (*stats) = PlayerStats(0,0,Color(.1f,.7f,.0f,1.f));
+    
+    stats = &GSM->GetStats()[4];
+    (*stats) = PlayerStats(0,0,Color(.0f,.5f,.5f,1.f));
+    
+    stats = &GSM->GetStats()[5];
+    (*stats) = PlayerStats(0,0,Color(.2f,.2f,.7f,1.f));
+    
+    stats = &GSM->GetStats()[6];
+    (*stats) = PlayerStats(0,0,Color(.3f,.1f,.4f,1.f));
+    
+    stats = &GSM->GetStats()[7];
+    (*stats) = PlayerStats(0,0,Color(.0f,.0f,.0f,1.f));
+
 	}
 
 	void Framework::ServerState::OnCleanup( void )
@@ -200,6 +236,10 @@ namespace Framework
 			static_cast<PlayerController*>(&*b)->ServerUpdate(dt);
 			++b;
 		}
+
+    GOC *hack = FACTORY->GetObjectWithId(GetPlayerId());
+    if (hack)
+      hack->has(PlayerController)->Update(dt);
 
     GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
