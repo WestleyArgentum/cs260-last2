@@ -119,6 +119,13 @@ namespace Framework
                 displayScore->SetColor( pStats->color_ );
               }
             }
+
+            CreateMessage create;
+            create.id = score->GetId();
+            create.obj_type = "ScoreText_100";
+            create.pos = score->has(Transform)->Position;
+            create.rot = score->has(Transform)->Rotation;
+            NETWORK->SendNetMessage(create);
           }
 		    }
         break;
