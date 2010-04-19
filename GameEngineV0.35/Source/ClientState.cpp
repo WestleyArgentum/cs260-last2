@@ -26,12 +26,12 @@ void Framework::ClientState::OnCleanup( void )
 
 void Framework::ClientState::AddController( Controller *controller )
 {
-	// hahaha, no.
+  Controllers.push_back(controller);
 }
 
 void Framework::ClientState::RemoveController( Controller *controller )
 {
-	// ya... na...
+  Controllers.erase(controller);
 }
 
 void Framework::ClientState::HandleCreate( INetMessage *msg )
@@ -92,7 +92,8 @@ void Framework::ClientState::SendMessage( Message *m )
 
 void Framework::ClientState::Update( float dt )
 {
-
+  for(ObjectLinkList<Controller>::iterator it = Controllers.begin(); it != Controllers.end(); ++it)
+    it->ClientUpdate(dt);
 }
 
 void Framework::ClientState::Restart( void )

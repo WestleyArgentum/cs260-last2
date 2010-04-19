@@ -21,15 +21,16 @@ namespace Framework
 		Controller * Next;
 		Controller * Prev;
 
-		Controller();
-		virtual ~Controller();
-		virtual void Serialize(ISerializer& stream);
+		Controller ();
+		virtual ~Controller ();
+		virtual void Serialize (ISerializer& stream);
 
-		void Update(float dt);
+		void Update (float dt);
+    virtual void ClientUpdate (float dt) {};
 
 	protected:
 		// implement these when you derive from controller
-    virtual void OnInitialize( void ) = 0;
+    virtual void OnInitialize ( void ) = 0;
 		virtual void LogicalUpdate ( float dt ) = 0;
 		virtual void DestroyCheck ();
 

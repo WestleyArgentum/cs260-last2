@@ -24,6 +24,7 @@ namespace Framework
 		virtual void OnInitialize ();
 		virtual void LogicalUpdate ( float dt );
 		virtual void DestroyCheck ();
+    virtual void ClientUpdate ( float dt );
 
     
     void UpdateInput(INetMessage *msg);

@@ -9,8 +9,7 @@ namespace Framework
 {
 
 	Controller::Controller()
-  {
-  }
+  {}
 
 	Controller::~Controller()
 	{
