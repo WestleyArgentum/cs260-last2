@@ -185,49 +185,6 @@ namespace Framework
       btn.character = 'd';
       NETWORK->SendNetMessage(btn);
     }
-
-
-		// check for fire
-		if( IsSpaceHeld() )
-		{
-			//SinglePlayer* state = GetGameState(SinglePlayer);
-			if(/*state && */time_last_fire <= 0)
-			{
-				time_last_fire = recharge_time;  // reset recharge time
-
-				// set up the offset for the bullet (so it is in front of the ship)
-				Vec2 laser_offset(cos(transform->Rotation - 89.5f) * 30, sin(transform->Rotation - 89.5f) * 30);
-
-				GOC* bullet = CreateObjectAt(transform->Position + laser_offset, transform->Rotation, "Bullet");
-
-				// set up bullets velocity (a little crude)
-				Body* bulletbody = bullet->has(Body);
-				BulletController* bulletbrain = bullet->has(BulletController);
-        Sprite* bulletsprite = bullet->has(Sprite);
-
-          // Store the player that fired this bullet. (So we know who to give points to!)
-        bulletbrain->firedFrom = GetOwner()->GetId();
-        bulletsprite->Color = GetOwner()->has(Sprite)->Color;
-
-				Vec2 vel(cos(transform->Rotation - 89.5f) * bulletbrain->speed,
-								 sin(transform->Rotation - 89.5f) * bulletbrain->speed);
-
-				vel += body->Velocity;
-
-				bulletbody->Velocity = vel;
-        
-
-        CreateMessage create;
-        create.id = bullet->GetId();
-        create.obj_type = "Bullet";
-        create.pos = bullet->has(Transform)->Position;
-        create.rot = 0;
-        NETWORK->SendNetMessage(create);
-			}
-		}
-
-		// dec the time until we can fire again
-		time_last_fire -= dt;
   }
 
 	void PlayerController::DestroyCheck()
