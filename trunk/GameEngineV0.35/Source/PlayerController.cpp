@@ -43,9 +43,6 @@ namespace Framework
 		SinglePlayer* state = GetGameState(SinglePlayer);
 		if (state)
 			state->SetPlayerId(GetOwner()->GetId());
-    ServerState* server = GetGameState(ServerState);
-    if (server)
-      server->SetPlayerId(GetOwner()->GetId());
 		//else
 			//issue some sort of error
 	}

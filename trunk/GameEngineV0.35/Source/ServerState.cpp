@@ -76,12 +76,12 @@ namespace Framework
 	{
 		LoadFromFile("Levels\\Server.txt");
 
+    // spawn character
     GOC* myplayer = CreateObjectAt(Vec2(0,0), 0, "PlayerShip");
-    player = myplayer->GetId();
+    SetPlayerId(myplayer->GetId());
 
 		SpawnRandomAsteroids();
 
-    // spawn character
 
 		ErrorIf(!NETWORK);
 		NETWORK->HostServer();
