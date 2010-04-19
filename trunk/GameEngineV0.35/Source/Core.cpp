@@ -111,7 +111,7 @@ namespace Framework
     //issues anyway.
     for (unsigned i = 0; i < InactiveSystems.size(); ++i)
 		{
-			delete InactiveSystems[Systems.size()-i-1];
+			delete InactiveSystems[InactiveSystems.size()-i-1];
 		}
 	}
 }

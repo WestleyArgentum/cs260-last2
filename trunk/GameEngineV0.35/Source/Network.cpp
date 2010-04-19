@@ -180,6 +180,7 @@ namespace Framework
 
   Network::~Network( void )
   {
+    Kill();
     delete protocol;
     CloseConnection();
     NetAPI->Cleanup();
