@@ -50,13 +50,42 @@ namespace Framework
 	{
 		// handle movement
 		if( IsUpHeld() || IsWHeld() )
+    {
 			body->AddForce(Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));  //^! <-- odd
+
+      InputButtonMessage btn;
+      btn.id = GetOwner()->GetId();
+      btn.character = 'w';
+      NETWORK->SendNetMessage(btn);
+    }
 		if( IsDownHeld() || IsSHeld() )
+    {
 			body->AddForce(-Vec2(cos(transform->Rotation - 90.0f) * speed, sin(transform->Rotation - 90.0f) * speed));
+
+      InputButtonMessage btn;
+      btn.id = GetOwner()->GetId();
+      btn.character = 's';
+      NETWORK->SendNetMessage(btn);
+    }
 		if( IsLeftHeld() || IsAHeld() )
+    {
 			transform->Rotation += rot_angle * DEG_TO_RAD;
+
+      InputButtonMessage btn;
+      btn.id = GetOwner()->GetId();
+      btn.character = 'a';
+      NETWORK->SendNetMessage(btn);
+    }
 		if( IsRightHeld() || IsDHeld() )
+    {
 			transform->Rotation -= rot_angle * DEG_TO_RAD;
+
+      InputButtonMessage btn;
+      btn.id = GetOwner()->GetId();
+      btn.character = 'd';
+      NETWORK->SendNetMessage(btn);
+    }
+
 
 		// check for fire
 		if( IsSpaceHeld() )
