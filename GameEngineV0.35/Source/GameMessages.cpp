@@ -277,6 +277,18 @@ namespace Framework
   {
     return new PlayerMessage(*this);
   }
+  
+	int PlayerMessage::SerializeData( DataStream &stream ) const
+	{
+		StreamWrite(stream, id);
+
+		return 0;
+	}
+
+	void PlayerMessage::InterpretData( DataStream &stream )
+	{
+		StreamRead(stream, id);
+	}
 
   
   void PlayerMessage::SendThis( void )
