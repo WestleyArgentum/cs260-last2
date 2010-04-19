@@ -86,6 +86,14 @@ namespace Framework
 				vel += body->Velocity;
 
 				bulletbody->Velocity = vel;
+        
+
+        CreateMessage create;
+        create.id = bullet->GetId();
+        create.obj_type = "Bullet";
+        create.pos = bullet->has(Transform)->Position;
+        create.rot = 0;
+        NETWORK->SendNetMessage(create);
 			}
 		}
 
