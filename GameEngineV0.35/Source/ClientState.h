@@ -13,7 +13,6 @@ namespace Framework
     void HandleDestroy( INetMessage *msg );
     void HandlePlayerId( INetMessage *msg );
 
-    GOCId playerid_;
 	public:
 		// Create, init,  and destroy methods -----
 		ClientState( GameStateManager *gsm );
