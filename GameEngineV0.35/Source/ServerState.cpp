@@ -213,6 +213,8 @@ namespace Framework
       ++begin;
     }
 
+    NETWORK->SendNetMessage(StatsMessage(GSM->GetStats()));
+
 	}
 
 	void Framework::ServerState::Restart( void )
