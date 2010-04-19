@@ -180,7 +180,7 @@ void RoutineObject::Kill( void )
 
 /**************************************************************************************************/
 /**************************************************************************************************/
-DWORD WINAPI RoutineObject::Routine( void *arg ) 
+DWORD WINAPI RoutineObject::Routine( void *arg )
 {
     // Collect our Routine, then run the Routine until the object is finished.
   RoutineObject *object = reinterpret_cast<RoutineObject*>(arg);
