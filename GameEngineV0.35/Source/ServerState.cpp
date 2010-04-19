@@ -181,6 +181,11 @@ namespace Framework
 		ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();
 		while (b != e)
 		{
+      if (b->GetOwner()->GetType() == "PlayerShip" && b->GetOwner()->GetId() != player)
+      {
+        ++b;
+        continue;
+      }
 			b->Update(dt);
 			++b;
 		}
