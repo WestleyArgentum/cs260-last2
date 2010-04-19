@@ -46,6 +46,7 @@ namespace Framework
 
 	private:
 		ObjectLinkList<Controller> Controllers;
+		ObjectLinkList<Controller> OtherPlayers;
     GOCId player;
 	};
 }

@@ -12,6 +12,7 @@
 #include "BulletController.h"
 #include "GameMessages.h"
 #include "Network.h"
+#include "ServerState.h"
 
 namespace Framework
 {
@@ -41,7 +42,10 @@ namespace Framework
 		//^! this is a hack
 		SinglePlayer* state = GetGameState(SinglePlayer);
 		if (state)
-			state->player_ship_id = GetOwner()->GetId();
+			state->SetPlayerId(GetOwner()->GetId());
+    ServerState* server = GetGameState(ServerState);
+    if (server)
+      server->SetPlayerId(GetOwner()->GetId());
 		//else
 			//issue some sort of error
 	}
@@ -184,6 +188,11 @@ namespace Framework
       btn.key = VK_SPACE;
       NETWORK->SendNetMessage(btn);
     }
+  }
+  
+  void PlayerController::ServerUpdate ( float dt )
+  {
+    time_last_fire -= dt;
   }
 
 	void PlayerController::DestroyCheck()

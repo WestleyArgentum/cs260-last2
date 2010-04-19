@@ -11,6 +11,7 @@
 #include "Console.h"
 #include "GameMessages.h"
 #include "Transform.h"
+#include "PlayerController.h"
 
 #include <iostream>
 
@@ -65,11 +66,13 @@ namespace Framework
 	void Framework::ServerState::Initialize( void )
 	{
 		LoadFromFile("Levels\\Server.txt");
+
+    GOC* myplayer = CreateObjectAt(Vec2(0,0), 0, "PlayerShip");
+    player = myplayer->GetId();
+
 		SpawnRandomAsteroids();
 
     // spawn character
-    GOC* myplayer = CreateObjectAt(Vec2(0,0), 0, "PlayerShip");
-    player = myplayer->GetId();
 
 		ErrorIf(!NETWORK);
 		NETWORK->HostServer();
@@ -85,12 +88,18 @@ namespace Framework
 
 	void Framework::ServerState::AddController( Controller *controller )
 	{
-		Controllers.push_back(controller);
+    if (controller->GetControllerID() == CID_Player && controller->GetOwner()->GetId() != player)
+      OtherPlayers.push_back(controller);
+    else
+  		Controllers.push_back(controller);
 	}
 
 	void Framework::ServerState::RemoveController( Controller *controller )
 	{
-		Controllers.erase(controller);
+    if (controller->GetControllerID() == CID_Player && controller->GetOwner()->GetId() != player)
+      OtherPlayers.erase(controller);
+    else
+  		Controllers.erase(controller);
 	}
 
 	void Framework::ServerState::SendMessage( Message *m )
@@ -181,12 +190,14 @@ namespace Framework
 		ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();
 		while (b != e)
 		{
-      if (b->GetOwner()->GetType() == "PlayerShip" && b->GetOwner()->GetId() != player)
-      {
-        ++b;
-        continue;
-      }
 			b->Update(dt);
+			++b;
+		}
+
+    b = OtherPlayers.begin(), e = OtherPlayers.end();
+		while (b != e)
+		{
+			static_cast<PlayerController*>(&*b)->ServerUpdate(dt);
 			++b;
 		}
 

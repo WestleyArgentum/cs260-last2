@@ -19,6 +19,7 @@ namespace Framework
 		virtual void SendMessage(Message * message);
 
     virtual void ClientUpdate ( float dt );
+    virtual void ServerUpdate ( float dt );
 
 		int health;  // health of the character (decremented by collisions, etc)
 
