@@ -7,6 +7,7 @@
 #include "Core.h"
 #include "Physics.h"
 #include "PlayerController.h"
+#include "GameStateManager.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
 {}
@@ -61,7 +62,7 @@ void Framework::ClientState::HandleCreate( INetMessage *msg )
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )
 {
   PlayerMessage *pid = static_cast<PlayerMessage*>(msg);
-  SetPlayerId(pid->id);
+  GSM->SetPlayerId(pid->id);
   SetStatsId(pid->statsid);
 }
 
@@ -111,7 +112,7 @@ void Framework::ClientState::SendMessage( Message *m )
 
 void Framework::ClientState::Update( float dt )
 {
-  GOC *player = FACTORY->GetObjectWithId(GetPlayerId());
+  GOC *player = FACTORY->GetObjectWithId(GSM->GetPlayerId());
   if (player)
   {
     PlayerController *pc = player->has(PlayerController);

@@ -42,7 +42,7 @@ namespace Framework
 		//^! this is a hack
 		SinglePlayer* state = GetGameState(SinglePlayer);
 		if (state)
-			state->SetPlayerId(GetOwner()->GetId());
+			GSM->SetPlayerId(GetOwner()->GetId());
 		//else
 			//issue some sort of error
 	}
