@@ -2,6 +2,7 @@
 #include "Network.h"
 #include "GameProtocol.h"
 #include "GameMessages.h"
+#include <iostream>
 
 namespace Framework
 {
@@ -95,7 +96,7 @@ namespace Framework
           ///Reset the timeout timer.
           connections[remote].timer.Start();
         }
-        else ///Net connection.
+        else ///New connection.
         {
           Lock lock(mutex);
 
@@ -161,6 +162,9 @@ namespace Framework
 
       if (!begin->second.IsInBasketEmpty())
       {
+        static Timer timer;
+        std::cout << "Time since last message: " << timer.TimeElapsed() << std::endl;
+        timer.Start();
         ///Send the messages we received out to the system.
         begin->second.DistributeMessages();
         begin->second.EmptyInBasket();
