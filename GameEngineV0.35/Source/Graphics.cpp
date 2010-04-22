@@ -108,7 +108,7 @@ namespace Framework
 		pp.Windowed = true;						//You can't just set this to FALSE--you'll need to change other stuff as well.
 		pp.SwapEffect = D3DSWAPEFFECT_DISCARD;	//Picks the best way to handle back buffers for you, but it means you have draw a full screen every time.
 		pp.BackBufferFormat = D3DFMT_UNKNOWN;	//This is for windowed apps, full screen will need to be explicit.
-		pp.PresentationInterval  = D3DPRESENT_INTERVAL_DEFAULT;
+		pp.PresentationInterval  = D3DPRESENT_DONOTWAIT;
 		pp.BackBufferWidth = ScreenWidth;
 		pp.BackBufferHeight = ScreenHeight;
 

@@ -55,7 +55,7 @@ namespace Framework
 	void SpawnRandomAsteroids()
 	{
 		//^! if we end up with a level object then it should contain into like a number of random asteroids to spawn and the range
-		for (unsigned i = 0; i < 1; ++i)
+		for (unsigned i = 0; i < 60; ++i)
 		{
 			float x_pos = 0;
 			float y_pos = 0;
