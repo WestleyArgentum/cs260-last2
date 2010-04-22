@@ -21,7 +21,6 @@ void Framework::ClientState::Initialize( void )
 	ErrorIf(!NETWORK);
 	NETWORK->FindServer();
   CORE->SleepSystem(PHYSICS);
-  //CreateObjectAt(Vec2(0,0), 0, "Camera", static_cast<unsigned>(-1));
 }
 
 void Framework::ClientState::OnCleanup( void )
