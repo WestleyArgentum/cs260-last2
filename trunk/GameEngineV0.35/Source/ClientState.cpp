@@ -8,6 +8,7 @@
 #include "Physics.h"
 #include "PlayerController.h"
 #include "GameStateManager.h"
+#include "Console.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
 {}
@@ -21,6 +22,8 @@ void Framework::ClientState::Initialize( void )
 	ErrorIf(!NETWORK);
 	NETWORK->FindServer();
   CORE->SleepSystem(PHYSICS);
+
+  CreateConsole();
 }
 
 void Framework::ClientState::OnCleanup( void )
