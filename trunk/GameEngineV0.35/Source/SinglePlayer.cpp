@@ -100,8 +100,13 @@ namespace Framework
   void SinglePlayer::Initialize( void )
   {
     ///Load the assets of the level.
-	  LoadFromFile("Levels\\SinglePlayer.txt");
-	  SpawnRandomAsteroids();
+    LoadFromFile("Levels\\SinglePlayer.txt");
+
+    GOC * obj = CreateObjectAt(Vec2(0,0), 0, "PlayerShip");
+    GSM->SetPlayerId(obj->GetId());
+	  
+    SpawnRandomAsteroids();
+
 
     GSM->GetStats()[0].playerId_ = GSM->GetPlayerId();
     GSM->GetStats()[0].score_    = 0;
