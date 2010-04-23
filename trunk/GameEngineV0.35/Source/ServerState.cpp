@@ -49,11 +49,7 @@ namespace Framework
     }
     
     //Send special message informing the connection which ship is theirs.
-    PlayerMessage player;
-    player.id = ship->GetId();
-    player.statsid = AddPlayerToRoster(player.id);
-
-    NETWORK->SendNetMessage(connect->address,player);
+    NETWORK->SendNetMessage(connect->address,PlayerMessage(ship->GetId(),AddPlayerToRoster(ship->GetId())));
   }
 
   unsigned ServerState::AddPlayerToRoster( GOCId pid )

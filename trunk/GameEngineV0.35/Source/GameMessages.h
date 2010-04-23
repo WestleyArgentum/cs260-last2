@@ -215,6 +215,7 @@ namespace Framework
   class PlayerMessage : public INetMessage
   {
   public:
+    PlayerMessage( GOCId id_ = 0, unsigned statsid_ = 0 ) : id(id_), statsid(statsid_) {;}
     // Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
 
