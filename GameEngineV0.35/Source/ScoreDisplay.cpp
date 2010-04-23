@@ -22,7 +22,7 @@ namespace Framework
 
   void DisplayScore::OnInitialize( void )
   {
-    Body *body = GetOwner()->has(Body);
+      Body *body = GetOwner()->has(Body);
     Text *text = GetOwner()->has(Text);
 
     if ( body && text )

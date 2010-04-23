@@ -124,15 +124,6 @@ namespace Framework
       b->Update(dt);
       ++b;
     }
-    
-    GOC *hack = FACTORY->GetObjectWithId(GSM->GetPlayerId());
-    if (hack)
-      hack->has(PlayerController)->Update(dt);
-
-
-    PHYSICS->Update(dt);
-    GRAPHICS->Update(dt);
-
   } //Update
 
   ///Cleanup assets and cleanup and ties to other states.
@@ -147,27 +138,27 @@ namespace Framework
     GSM->GetStats()[0].score_ = 0;
   } //Restart
 
-  ///Loads a level from a file. Doesn't unload current level.
-	void SinglePlayer::LoadFromFile( const std::string &filename )
-	{
-		//^! add data about asteroids to spawn, etc
+ // ///Loads a level from a file. Doesn't unload current level.
+	//void SinglePlayer::LoadFromFile( const std::string &filename )
+	//{
+	//	//^! add data about asteroids to spawn, etc
 
-		TextSerializer stream;
-		bool fileOpened = stream.Open(filename);
-		ErrorIf( !fileOpened , "Could not open file %s. File does not exist or is protected." , filename.c_str() );
+	//	TextSerializer stream;
+	//	bool fileOpened = stream.Open(filename);
+	//	ErrorIf( !fileOpened , "Could not open file %s. File does not exist or is protected." , filename.c_str() );
 
-		std::string objectArchetype;
-		Vec2 objectPosition;
-		float objectRotation;
+	//	std::string objectArchetype;
+	//	Vec2 objectPosition;
+	//	float objectRotation;
 
-		while(stream.IsGood())
-		{
-			StreamRead(stream,objectArchetype);
-			StreamRead(stream,objectPosition);
-			StreamRead(stream,objectRotation);
-			if (stream.IsGood())
-				CreateObjectAt(objectPosition, objectRotation, objectArchetype);
-		}
-	}
+	//	while(stream.IsGood())
+	//	{
+	//		StreamRead(stream,objectArchetype);
+	//		StreamRead(stream,objectPosition);
+	//		StreamRead(stream,objectRotation);
+	//		if (stream.IsGood())
+	//			CreateObjectAt(objectPosition, objectRotation, objectArchetype);
+	//	}
+	//}
 
 }

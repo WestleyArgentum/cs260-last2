@@ -39,7 +39,7 @@ namespace Framework
   const GameStateManager::GameStateID GameStateManager::GS_RESTART("RESTART");
 
   ///Initialize the GSM pointer and check for duplicate creations
-  GameStateManager::GameStateManager() : playerShipId_(0), gameStats_(8)
+  GameStateManager::GameStateManager() : playerShipId_(0), gameStats_(NUM_PLAYERS)
 	{	
 		//Set up the global pointer
 		ErrorIf(GSM!=NULL,"Logic already initialized");
