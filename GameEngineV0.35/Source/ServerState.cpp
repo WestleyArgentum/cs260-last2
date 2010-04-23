@@ -22,20 +22,7 @@ namespace Framework
     ConnectionMessage *connect = static_cast<ConnectionMessage*>(msg);
     ///Create a new player with the name specified.
     GOC *obj = CreateObjectAt(Vec2(0,0),0,"PlayerShip");
-    InitializeConnection(connect);
-    //Send special message informing the connection which ship is theirs.
-    PlayerMessage player;
-    player.id = obj->GetId();
-    
-    if (statsindexbase < 7)
-    {
-      GSM->GetStats()[statsindexbase].playerId_ = obj->GetId();
-
-      statsIndicies[obj->GetId()] = statsindexbase;
-      player.statsid = statsindexbase++;
-    }
-
-    NETWORK->SendNetMessage(connect->address,player);
+    InitializeConnection(connect,obj);
   }
 
   void ServerState::HandleInput(INetMessage *msg)
@@ -48,8 +35,9 @@ namespace Framework
   }
 
   ///Goes through every object in the current game and sends a create message for it.
-  void ServerState::InitializeConnection(ConnectionMessage *connect)
+  void ServerState::InitializeConnection(ConnectionMessage *connect, GOC *ship)
   {
+    ///Sync the new connections game with the current gameplay.
     GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
     while (begin != end)
@@ -62,14 +50,22 @@ namespace Framework
       NETWORK->SendNetMessage(connect->address, create);
       ++begin;
     }
+    
+    //Send special message informing the connection which ship is theirs.
+    PlayerMessage player;
+    player.id = ship->GetId();
+    player.statsid = AddPlayerToRoster(player.id);
+
+    NETWORK->SendNetMessage(connect->address,player);
   }
 
-  void ServerState::AddPlayerToRoster( GOCId pid )
+  unsigned ServerState::AddPlayerToRoster( GOCId pid )
   {
-    GSM->GetStats()[statsindexbase++].playerId_ = pid;
+    GSM->GetStats()[statsindexbase].playerId_ = pid;
+    return statsindexbase++;
   }
 
-	ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm ), statsindexbase(1)
+	ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm ), statsindexbase(0)
  	{}
 
 	Framework::ServerState::~ServerState( void )
@@ -85,15 +81,15 @@ namespace Framework
 
 		SpawnRandomAsteroids();
 
-    GSM->GetStats()[0].playerId_ = GSM->GetPlayerId();
-    GSM->GetStats()[0].score_    = 0;
-    GSM->GetStats()[0].color_ = Color(1.f, 1.f, 1.f, 1.f);
+    ///Adds the player to the roster so statistics can be generated.
+    AddPlayerToRoster(myplayer->GetId());
 
 		NETWORK->HostServer();
 
     CreateConsole();
     std::cout << "Server IP: " << NetAPI->LocalIP() << std::endl;
 
+    ///Initialize all the player stats.
     PlayerStats *stats;
 
     stats = &GSM->GetStats()[1];

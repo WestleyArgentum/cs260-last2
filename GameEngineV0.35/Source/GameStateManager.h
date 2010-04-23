@@ -79,6 +79,8 @@ namespace Framework
     GOCId GetPlayerId( void ) { return playerShipId_; }
     Statistics& GetStats( void ) { return gameStats_; }
 
+    void UpdateStats( const Statistics &stats ) { gameStats_ = stats; }
+
     ///Stores the current player Id in the current gamestate.
     void SetPlayerId( GOCId pid ) { playerShipId_ = pid; }
 

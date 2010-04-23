@@ -25,8 +25,8 @@ namespace Framework
     void HandleDestroy(INetMessage *msg);
     void HandleInput(INetMessage *msg);
 
-    void InitializeConnection(ConnectionMessage *connect);
-    void AddPlayerToRoster( GOCId pid );
+    void InitializeConnection(ConnectionMessage *connect, GOC *ship);
+    unsigned AddPlayerToRoster( GOCId pid );
 
 	public:
 		// Create, init,  and destroy methods -----
