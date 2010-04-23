@@ -74,7 +74,7 @@ namespace Framework
     };    // HighestScore
   }   // namespace
 
-  ScoreHUD::ScoreHUD( void ) : Controller(CID_ScoreHUD), transforms_(MAX_PLAYERS - 1)
+  ScoreHUD::ScoreHUD( void ) : Controller(CID_ScoreHUD), transforms_(MAX_PLAYERS - 1), stats_(MAX_PLAYERS - 1)
   {
     text_.reserve(MAX_PLAYERS - 1);
   }

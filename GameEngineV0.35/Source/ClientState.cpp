@@ -8,6 +8,7 @@
 #include "Physics.h"
 #include "PlayerController.h"
 #include "GameStateManager.h"
+#include "ScoreDisplay.h"
 #include "Console.h"
 
 Framework::ClientState::ClientState( GameStateManager *gsm ) : IGameState(gsm)
@@ -34,7 +35,7 @@ void Framework::ClientState::AddController( Controller *controller )
   switch ( controller->GetControllerID() )
   {
   case CID_Camera:
-  case CID_DisplayScore:
+  case CID_ScoreHUD:
     {
       Controllers.push_back(controller);
       break;
@@ -58,7 +59,9 @@ void Framework::ClientState::RemoveController( Controller *controller )
 void Framework::ClientState::HandleCreate( INetMessage *msg )
 {
   CreateMessage* message = static_cast<CreateMessage*>(msg);
-  CreateObjectAt(message->pos, message->rot, message->obj_type, message->id);
+  GOC *obj = CreateObjectAt(message->pos, message->rot, message->obj_type, message->id);
+  //if (message->obj_type == "Score")
+  //  AddController(obj->has(ScoreHUD));
 }
 
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )
