@@ -229,6 +229,7 @@ namespace Framework
 			++b;
 		}
 
+    NETWORK->SendNetMessage(StatsMessage(GSM->GetStats()));
 
     ///Update yourself
     GOC *hack = FACTORY->GetObjectWithId(GSM->GetPlayerId());
@@ -239,15 +240,10 @@ namespace Framework
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
     while (begin != end)
     {
-      UpdateMessage update;
-      update.id = begin->first;
-      update.pos = begin->second->has(Transform)->Position;
-      update.rot = begin->second->has(Transform)->Rotation;
-      NETWORK->SendNetMessage(update);
+      NETWORK->SendNetMessage(UpdateMessage(begin->first,begin->second->has(Transform)->Position,begin->second->has(Transform)->Rotation));
       ++begin;
     }
 
-    NETWORK->SendNetMessage(StatsMessage(GSM->GetStats()));
 
 	}
 
