@@ -76,7 +76,12 @@ void Framework::ClientState::HandleDestroy( INetMessage *msg )
 
 void Framework::ClientState::SendMessage( Message *m )
 {
-  if (m->MessageId == Mid::NetMessage)
+  if (m->MessageId == Mid::StatsUpdate)
+  {
+    StatsMessage *stats = static_cast<StatsMessage*>(m);
+    GSM->UpdateStats(stats->stats_);
+  }
+  else if (m->MessageId == Mid::NetMessage)
   {
     INetMessage *msg = static_cast<INetMessage*>(m);
     switch (msg->Type())
