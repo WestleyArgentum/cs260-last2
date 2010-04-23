@@ -39,6 +39,6 @@ namespace Framework
 		GOCId player_ship_id;
 
 	private:
-		virtual void LoadFromFile ( const std::string &filename );
+		//virtual void LoadFromFile ( const std::string &filename );
   };
 }

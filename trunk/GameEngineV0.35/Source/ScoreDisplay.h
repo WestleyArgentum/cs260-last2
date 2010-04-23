@@ -11,6 +11,7 @@ namespace Framework
   {
     public:
       DisplayScore( void ) : Controller(CID_DisplayScore) {;}
+      ~DisplayScore( void ) {;}
 
       void SetColor( Color color );
       inline void SetColor( Vec4 color ) { SetColor( Convert(color) ); }

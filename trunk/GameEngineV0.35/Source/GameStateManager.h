@@ -21,7 +21,10 @@
 
 namespace Framework
 {
-	///Sample Demo Game Logic
+
+  const unsigned NUM_PLAYERS = 8;
+
+	///Class to manage the current game state and all its objects.
 	class GameStateManager : public ISystem
 	{
 	public:

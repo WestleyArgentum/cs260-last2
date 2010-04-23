@@ -17,8 +17,6 @@
 
 namespace Framework
 {
-
-
   void ServerState::HandleConnection(INetMessage *msg)
   {
     ConnectionMessage *connect = static_cast<ConnectionMessage*>(msg);
@@ -66,7 +64,12 @@ namespace Framework
     }
   }
 
-	Framework::ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm ), statsindexbase(0)
+  void ServerState::AddPlayerToRoster( GOCId pid )
+  {
+    GSM->GetStats()[statsindexbase++].playerId_ = pid;
+  }
+
+	ServerState::ServerState( GameStateManager *gsm ) : IGameState( gsm ), statsindexbase(1)
  	{}
 
 	Framework::ServerState::~ServerState( void )
@@ -82,17 +85,16 @@ namespace Framework
 
 		SpawnRandomAsteroids();
 
+    GSM->GetStats()[0].playerId_ = GSM->GetPlayerId();
+    GSM->GetStats()[0].score_    = 0;
+    GSM->GetStats()[0].color_ = Color(1.f, 1.f, 1.f, 1.f);
 
-		ErrorIf(!NETWORK);
 		NETWORK->HostServer();
 
     CreateConsole();
     std::cout << "Server IP: " << NetAPI->LocalIP() << std::endl;
 
     PlayerStats *stats;
-
-    stats = &GSM->GetStats()[0];
-    (*stats) = PlayerStats(0,0,Color(.7f,.0f,.0f,1.f));
 
     stats = &GSM->GetStats()[1];
     (*stats) = PlayerStats(0,0,Color(.4f,.2f,.1f,1.f));
@@ -217,25 +219,23 @@ namespace Framework
 
 	void Framework::ServerState::Update( float dt )
 	{
-		StatsMessage stats;
-		static unsigned score = 0;
-		stats.stats_.push_back( PlayerStats(0, ++score ) );
-
+		StatsMessage stats( GSM->GetStats() );
 		MessageHub->Post( stats );
 
-		ObjectLinkList<Controller>::iterator b = Controllers.begin(), e = Controllers.end();
+    ObjectLinkList<Controller>::iterator b = OtherPlayers.begin(), e = OtherPlayers.end();
+    while (b != e)
+    {
+      static_cast<PlayerController*>(&*b)->ServerUpdate(dt);
+      ++b;
+    }
+
+		b = Controllers.begin(), e = Controllers.end();
 		while (b != e)
 		{
 			b->Update(dt);
 			++b;
 		}
 
-    b = OtherPlayers.begin(), e = OtherPlayers.end();
-		while (b != e)
-		{
-			static_cast<PlayerController*>(&*b)->ServerUpdate(dt);
-			++b;
-		}
 
     ///Update yourself
     GOC *hack = FACTORY->GetObjectWithId(GSM->GetPlayerId());
