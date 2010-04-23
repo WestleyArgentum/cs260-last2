@@ -45,6 +45,8 @@ namespace Framework
         /// Build the statistics structure getting the data from the buffer given!
       virtual void InterpretData( DataStream &stream );
 
+      virtual void SendThis( void );
+
     public:
       Statistics stats_;    ///< Copy of the current statistics of our game.
   };    // StatsMessage

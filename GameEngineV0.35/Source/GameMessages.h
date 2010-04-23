@@ -49,6 +49,8 @@ namespace Framework
 	class CreateMessage : public INetMessage
 	{
 	public:
+    CreateMessage( void ) : id(0), rot(0) {;}
+    CreateMessage(const std::string &obj_type_, GOCId id_, Vec2 pos_, float rot_);
 		virtual ~CreateMessage( void );
 
 		// Used when extracting messages from the list.
@@ -98,7 +100,7 @@ namespace Framework
   class UpdateMessage : public INetMessage
   {
   public:
-    UpdateMessage( GOCId id_ = 0, const Vec2 &pos_ = Vec2() ) : id(id_), pos(pos_) {;}
+    UpdateMessage( GOCId id_ = 0, const Vec2 &pos_ = Vec2(), float rot_ = 0.f ) : id(id_), pos(pos_), rot(rot_) {;}
 
     // Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
@@ -145,7 +147,7 @@ namespace Framework
 	class InputButtonMessage : public INetMessage
 	{
 	public:
-		InputButtonMessage ();
+		InputButtonMessage(int char_ = 0, WPARAM key_ = 0);
 		virtual ~InputButtonMessage( void );
 
 		// Used when extracting messages from the list.
