@@ -1,5 +1,6 @@
 #include "Precompiled.h"
 #include "Stats.h"
+#include "GameStateManager.h"
 
 namespace Framework
 {
@@ -87,6 +88,11 @@ namespace Framework
 
       stats_.push_back( playerStats );
     }
+  }
+
+  void StatsMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
   }
 
 }   // namespace Framework

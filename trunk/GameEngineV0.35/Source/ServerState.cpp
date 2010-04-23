@@ -42,12 +42,9 @@ namespace Framework
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
     while (begin != end)
     {
-      CreateMessage create;
-      create.id = begin->first;
-      create.obj_type = begin->second->GetType();
-      create.pos = begin->second->has(Transform)->Position;
-      create.rot = begin->second->has(Transform)->Rotation;
-      NETWORK->SendNetMessage(connect->address, create);
+      ///Send off a message telling the connection to create each object.
+      NETWORK->SendNetMessage(connect->address, CreateMessage(begin->second->GetType(),begin->first,
+        begin->second->has(Transform)->Position, begin->second->has(Transform)->Rotation));
       ++begin;
     }
     

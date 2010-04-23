@@ -91,12 +91,7 @@ namespace Framework
 					        shrapnelBody->SetVelocity( dir * 120 );
                 }
 
-                CreateMessage create;
-                create.id = shrapnel->GetId();
-                create.obj_type = "Shrapnel";
-                create.pos = shrapnel->has(Transform)->Position;
-                create.rot = shrapnel->has(Transform)->Rotation;
-                NETWORK->SendNetMessage(create);
+                NETWORK->SendNetMessage(CreateMessage("Shrapnel",shrapnel->GetId(),shrapnel->has(Transform)->Position,shrapnel->has(Transform)->Rotation));
 				      }
 			      }
           }
@@ -120,12 +115,7 @@ namespace Framework
               }
             }
 
-            CreateMessage create;
-            create.id = score->GetId();
-            create.obj_type = "ScoreText_100";
-            create.pos = score->has(Transform)->Position;
-            create.rot = score->has(Transform)->Rotation;
-            NETWORK->SendNetMessage(create);
+            NETWORK->SendNetMessage(CreateMessage("ScoreText_100",score->GetId(),score->has(Transform)->Position,score->has(Transform)->Rotation));
           }
 		    }
         break;

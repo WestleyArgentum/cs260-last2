@@ -115,13 +115,8 @@ namespace Framework
 
 				bulletbody->Velocity = vel;
         
-
-        CreateMessage create;
-        create.id = bullet->GetId();
-        create.obj_type = "Bullet";
-        create.pos = bullet->has(Transform)->Position;
-        create.rot = 0;
-        NETWORK->SendNetMessage(create);
+        ///Send a message to the network to create a bullet.
+        NETWORK->SendNetMessage(CreateMessage("Bullet",bullet->GetId(),bullet->has(Transform)->Position, 0));
 			}
 		}
 
@@ -241,12 +236,8 @@ namespace Framework
 
 				bulletbody->Velocity = vel;
 
-        CreateMessage create;
-        create.id = bullet->GetId();
-        create.obj_type = "Bullet";
-        create.pos = bullet->has(Transform)->Position;
-        create.rot = 0;
-        NETWORK->SendNetMessage(create);
+        ///Send a message to the network to create a bullet.
+        NETWORK->SendNetMessage(CreateMessage("Bullet",bullet->GetId(),bullet->has(Transform)->Position,0));
 			}
     }
   }
