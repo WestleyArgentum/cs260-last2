@@ -64,7 +64,7 @@ namespace Framework
       // Store all the PlayerStats within the given buffer too!
     for ( Statistics::const_iterator it = stats_.begin(); it != stats_.end(); ++it )
     {
-      StreamWrite( stream, *it );
+      it->SerializeData( stream );
     }
 
     return stream.Size();
@@ -84,7 +84,7 @@ namespace Framework
 
     for ( unsigned i = 0; i < size; ++i )
     {
-      StreamRead( stream, playerStats );
+      stats_[i].InterpretData( stream );
 
       stats_.push_back( playerStats );
     }
