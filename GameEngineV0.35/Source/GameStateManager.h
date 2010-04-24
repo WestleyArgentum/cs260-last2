@@ -85,7 +85,7 @@ namespace Framework
     void SetPlayerId( GOCId pid ) { playerShipId_ = pid; }
 
     // Statistic update functions.
-    void SetPlayerColor( GOCId pid, Color shipColor );
+    void SetPlayerColor( GOCId pid, Vec4 shipColor );
     void AddScoreTo( GOCId pid, int amount );
 
     // Get all the information about the player in question.

@@ -131,7 +131,7 @@ namespace Framework
   // Value of the float should be 0 and 255 so the cast will not lose any data.
 #pragma warning( push )
 #pragma warning( disable : 4244 )
-        playerText_.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+        playerText_.SetColor( it->color_.x, it->color_.y, it->color_.z, it->color_.w );
 #pragma warning( pop )
 
         playerText_.SetText( "Score: %u", it->score_ );
@@ -147,7 +147,7 @@ namespace Framework
   // Value of the float should be 0 and 255 so the cast will not lose any data.
 #pragma warning( push )
 #pragma warning( disable : 4244 )
-        current.SetColor( it->color_.r, it->color_.g, it->color_.b, it->color_.a );
+        current.SetColor( it->color_.x, it->color_.y, it->color_.z, it->color_.w );
 #pragma warning( pop )
         current.SetText( "Score: %u", it->score_ );
  

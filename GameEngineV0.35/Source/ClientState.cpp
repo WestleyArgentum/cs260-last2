@@ -36,6 +36,7 @@ void Framework::ClientState::AddController( Controller *controller )
   {
   case CID_Camera:
   case CID_ScoreHUD:
+  case CID_DisplayScore:
     {
       Controllers.push_back(controller);
       break;
@@ -49,6 +50,7 @@ void Framework::ClientState::RemoveController( Controller *controller )
   {
   case CID_Camera:
   case CID_ScoreHUD:
+  case CID_DisplayScore:
     {
       Controllers.erase(controller);
       break;
