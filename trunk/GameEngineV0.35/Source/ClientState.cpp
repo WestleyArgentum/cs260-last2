@@ -48,7 +48,7 @@ void Framework::ClientState::RemoveController( Controller *controller )
   switch ( controller->GetControllerID() )
   {
   case CID_Camera:
-  case CID_DisplayScore:
+  case CID_ScoreHUD:
     {
       Controllers.erase(controller);
       break;
