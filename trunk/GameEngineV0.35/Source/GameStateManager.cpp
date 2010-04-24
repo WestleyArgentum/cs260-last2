@@ -108,7 +108,7 @@ namespace Framework
 
         if ( shipImage )
         {
-          it->color_ = Convert(shipImage->Color);
+          it->color_ = shipImage->Color;
         }
       }
     }
@@ -121,7 +121,9 @@ namespace Framework
 	void GameStateManager::SendMessage(Message * m )
 	{
     if (GameStates.count(Curr))
+    {
       GameStates[Curr]->SendMessage( m );
+    }
 	}
 
   ///Sets the next GameState to state, returns true for success.
@@ -145,7 +147,7 @@ namespace Framework
     GameStates[name] = state;
   }
 
-  void GameStateManager::SetPlayerColor( GOCId pid, Color shipColor )
+  void GameStateManager::SetPlayerColor( GOCId pid, Vec4 shipColor )
   {
     int index = StatsFind( gameStats_, pid );
 
