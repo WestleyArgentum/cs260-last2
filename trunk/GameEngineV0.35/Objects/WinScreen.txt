@@ -1,0 +1,15 @@
+Transform 
+0 0 
+0
+
+Text
+Screen
+60 40
+Comic Sans MS
+255 255 255 255
+
+Body
+1
+0.4
+0.4
+None

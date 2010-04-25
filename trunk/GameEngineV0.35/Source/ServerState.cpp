@@ -249,14 +249,20 @@ namespace Framework
     for(unsigned i = 0; i < stats.stats_.size(); ++i)
     {
       PlayerStats& winner_stats = stats.stats_[i];
-      if(winner_stats.score_ >= WINNING_SCORE)
+      static bool hack2 = false;
+      if(winner_stats.score_ >= WINNING_SCORE && !hack2)
       {
-        // generate a win message
-        EndGameMessage win;
-        win.winner_ = "WIN";  // display this message
-        win.color_ = winner_stats.color_;  // in this color
+        GOC* obj = CreateObjectAt(Vec2(200, 200), 0, "WinScreen");
+        obj->has(Text)->SetText("WIN ^.^");
 
-        NETWORK->SendNetMessage(win);
+        NETWORK->SendNetMessage(CreateMessage("WinScreen", obj->GetId(), obj->has(Transform)->Position, 0));
+        hack2 = true;
+        // generate a win message
+        //EndGameMessage win;
+        //win.winner_ = "WIN";  // display this message
+        //win.color_ = winner_stats.color_;  // in this color
+
+        //NETWORK->SendNetMessage(win);
       }
     }
 
