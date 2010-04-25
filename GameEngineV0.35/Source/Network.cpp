@@ -10,7 +10,7 @@ namespace Framework
   Network *NETWORK = NULL;
 
   ///30 second timeout phase.
-  const double Network::CONNECTION_TIMEOUT = 30.0;
+  const double Network::CONNECTION_TIMEOUT = 15.0;
 
   void Network::Connection::EmptyInBasket( void )
   {
@@ -109,7 +109,7 @@ namespace Framework
 
         }
       }
-    }
+    } // end while (listening)
   }
   void Network::ExitThread( void ) throw()
   {
@@ -144,6 +144,17 @@ namespace Framework
   void Network::CheckForTimeouts( void )
   {
     ///Check to see if any users have timed out...
+    ConnectionMap::iterator begin = connections.begin(), end = connections.end();
+    while (begin != end)
+    {
+      if (begin->second.timer.TimeElapsed() > CONNECTION_TIMEOUT)
+      {
+        TimeoutMessage(begin->first).SendThis();
+        connections.erase(begin++);
+      }
+      else
+        ++begin;
+    }
   }
 
   void Network::UpdateConnections( void )

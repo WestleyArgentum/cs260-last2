@@ -194,6 +194,43 @@ namespace Framework
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// TimeoutMessage
+  NMid::NetMessageIdType TimeoutMessage::Type( void ) const
+  {
+    return NMid::Timeout;
+  }
+
+  INetMessage * TimeoutMessage::Clone( void ) const
+  {
+    return new TimeoutMessage(*this);
+  }
+
+  int TimeoutMessage::SerializeData( DataStream &stream ) const
+  {
+    ///Write the object id.
+    StreamWrite(stream,address.ip_);
+    StreamWrite(stream,address.port_);
+    StreamWrite(stream,address.address);
+
+    return 0;
+  }
+
+  void TimeoutMessage::InterpretData( DataStream &stream )
+  {
+    //Read the object id.
+    StreamRead(stream,address.ip_);
+    StreamRead(stream,address.port_);
+    StreamRead(stream,address.address);
+  }
+
+  ///Sends itself out into the system.
+  void TimeoutMessage::SendThis( void )
+  {
+    GSM->SendMessage(this);
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // InputButtonMessage
 	InputButtonMessage::InputButtonMessage(int char_, WPARAM key_) : character(char_), key(key_)
 	{}

@@ -14,6 +14,7 @@ namespace Framework
     enum NetMessageIdType
     {
        Connection = 0
+      ,Timeout
       ,RestartGame
       ,Update
       ,Create

@@ -145,6 +145,28 @@ namespace Framework
     NetAddress address;
   };
 
+  class TimeoutMessage : public INetMessage
+  {
+  public:
+    TimeoutMessage(const NetAddress &adr) : address(adr) {;}
+    // Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const;
+
+    // Creates a carbon copy of the message.
+    virtual INetMessage * Clone( void ) const;
+
+    // Writes the contents of the message to the buffer of size size provided.
+    virtual int SerializeData( DataStream &stream ) const;
+
+    // Interprets the data in a buffer as the contents of its own message type.
+    virtual void InterpretData( DataStream &stream );
+
+    ///Sends itself out into the system.
+    virtual void SendThis( void );
+
+    NetAddress address;
+  };
+
 	class InputButtonMessage : public INetMessage
 	{
 	public:
