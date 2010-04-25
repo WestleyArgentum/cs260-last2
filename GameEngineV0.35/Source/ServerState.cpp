@@ -253,7 +253,7 @@ namespace Framework
       if(winner_stats.score_ >= WINNING_SCORE && !hack2)
       {
         GOC* obj = CreateObjectAt(Vec2(200, 200), 0, "WinScreen");
-        obj->has(Text)->SetText("WIN ^.^");
+        //obj->has(Text)->SetText("WIN ^.^");
 
         NETWORK->SendNetMessage(CreateMessage("WinScreen", obj->GetId(), obj->has(Transform)->Position, 0));
         hack2 = true;
