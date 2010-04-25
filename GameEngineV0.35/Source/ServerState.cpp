@@ -84,6 +84,7 @@ namespace Framework
 
   unsigned ServerState::AddPlayerToRoster( GOCId pid )
   {
+    Statistics &stats = GSM->GetStats();
     GSM->GetStats()[statsindexbase].playerId_ = pid;
     return statsindexbase++;
   }
