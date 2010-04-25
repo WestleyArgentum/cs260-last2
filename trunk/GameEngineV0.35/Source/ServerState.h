@@ -12,10 +12,10 @@ namespace Framework
 	class ServerState : public IGameState
   {
     typedef std::map<GOCId, unsigned> PlayerToStatsMap;
-    typedef std::map<GOCId,std::pair<std::string,NetAddress> > ConnectionMap;
+    typedef std::map<NetAddress, GOCId> ConnectionMap;
 
     ///Holds a way to reference users by address.
-    //ConnectionMap connections;
+    ConnectionMap connections;
 
     unsigned statsindexbase;
     PlayerToStatsMap statsIndicies;
@@ -24,6 +24,7 @@ namespace Framework
     void HandleCreate(INetMessage *msg);
     void HandleDestroy(INetMessage *msg);
     void HandleInput(INetMessage *msg);
+    void HandleTimeout(INetMessage *msg);
 
     void InitializeConnection(ConnectionMessage *connect, GOC *ship);
     unsigned AddPlayerToRoster( GOCId pid );

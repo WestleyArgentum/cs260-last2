@@ -15,7 +15,8 @@ namespace Framework
     ///Stores all the data about a connection.
     struct Connection
     {
-      Timer timer;         ///< Keeps track of last time contact was made.
+      Timer timer;    ///< Keeps track of last time contact was made.
+      std::string id; ///< A way to cross reference the connection with other systems.
 
       MessageList outbasket[NMid::NumIds]; ///< Messages to be sent.
       MessageList inbasket[NMid::NumIds];  ///< Messages received.

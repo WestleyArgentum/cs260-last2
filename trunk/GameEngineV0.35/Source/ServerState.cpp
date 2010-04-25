@@ -38,9 +38,35 @@ namespace Framework
     obj->SendMessage(input);
   }
 
+  void ServerState::HandleTimeout(INetMessage *msg)
+  {
+    TimeoutMessage *timeout = static_cast<TimeoutMessage*>(msg);
+
+    if (connections.count(timeout->address))
+    {
+      GOCId id = connections[timeout->address];
+      /// Destroy the ship in this side
+      FACTORY->DestroyById(id);
+
+      ///Send out the data to the network to destroy the ship.
+      NETWORK->SendNetMessage(DestroyMessage(id));
+
+      ///Remove the player from the scoreboard.
+      PlayerStats *stats = GSM->GetPlayerInfo(id);
+      stats->playerId_ = 0;
+      stats->score_ = 0;
+
+      /// Remove all info on player.
+      connections.erase(timeout->address);
+    }
+  }
+
   ///Goes through every object in the current game and sends a create message for it.
   void ServerState::InitializeConnection(ConnectionMessage *connect, GOC *ship)
   {
+    ///Save the ship ID so we can destroy it when player leaves/times-out.
+    connections[connect->address] = ship->GetId();
+
     ///Sync the new connections game with the current gameplay.
     GameObjectFactory::GameObjectIdMapType::iterator begin = FACTORY->begin();
     GameObjectFactory::GameObjectIdMapType::const_iterator end = FACTORY->end();
@@ -202,6 +228,11 @@ namespace Framework
         case NMid::InputBtn:
           {
             HandleInput(msg);
+            break;
+          }
+        case NMid::Timeout:
+          {
+            HandleTimeout(msg);
             break;
           }
         }
