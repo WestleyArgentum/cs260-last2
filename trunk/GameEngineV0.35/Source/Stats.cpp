@@ -24,6 +24,10 @@ namespace Framework
 /**************************************************************************************************/
   int PlayerStats::InterpretData( DataStream &stream )
   {
+    StreamRead( stream, playerId_ );
+    StreamRead( stream, score_ );
+    StreamRead( stream, color_ );
+
     return sizeof(PlayerStats);
   }
 
@@ -85,9 +89,9 @@ namespace Framework
 
     for ( unsigned i = 0; i < size; ++i )
     {
-      stats_[i].InterpretData( stream );
-
       stats_.push_back( playerStats );
+
+      stats_[i].InterpretData( stream );
     }
   }
 

@@ -15,8 +15,8 @@ namespace Framework
 	class EndGameMessage : public INetMessage
 	{
 	public:
-    EndGameMessage( const std::string &winner = "", const Vec4& color = Vec4() /*GOCId winnerId = 0*/ ) : winner_(winner), color_(color)
-      /*winnerId_(winnerId)*/ {;}
+    EndGameMessage( const std::string &winner = "", GOCId winnerId = 0 ) : winner_(winner),
+      winnerId_(winnerId) {;}
 
 		// Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
@@ -31,8 +31,7 @@ namespace Framework
 		virtual void InterpretData( DataStream &stream );
 
     std::string winner_;
-    //GOCId winnerId_;
-    Vec4 color_;
+    GOCId winnerId_;
 	};  // EndGameMessage
 
   class RestartMessage : public INetMessage
