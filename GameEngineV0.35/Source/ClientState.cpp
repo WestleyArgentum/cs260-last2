@@ -62,8 +62,16 @@ void Framework::ClientState::HandleCreate( INetMessage *msg )
 {
   CreateMessage* message = static_cast<CreateMessage*>(msg);
   GOC *obj = CreateObjectAt(message->pos, message->rot, message->obj_type, message->id);
-  //if (message->obj_type == "Score")
-  //  AddController(obj->has(ScoreHUD));
+
+  if(obj->GetType() == "WinScreen")
+  {
+    Text* text = obj->has(Text);
+
+    if(GSM->GetStats().front().playerId_ == GSM->GetPlayerId())
+      text->SetText("You Win!");
+    else
+      text->SetText("You Lose!");
+  }
 }
 
 void Framework::ClientState::HandlePlayerId( INetMessage *msg )
