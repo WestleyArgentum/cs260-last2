@@ -108,10 +108,7 @@ namespace Framework
 
         if ( shipImage )
         {
-          it->color_.r = shipImage->Color.x;
-          it->color_.g = shipImage->Color.y;
-          it->color_.b = shipImage->Color.z;
-          it->color_.a = shipImage->Color.w;
+          it->color_ = shipImage->Color;
         }
       }
     }
@@ -163,10 +160,7 @@ namespace Framework
 
     if ( index != -1 )
     {
-      gameStats_[index].color_.r = shipColor.x;
-      gameStats_[index].color_.g = shipColor.y;
-      gameStats_[index].color_.b = shipColor.z;
-      gameStats_[index].color_.a = shipColor.w;
+      gameStats_[index].color_ = shipColor;
     }
   }
 

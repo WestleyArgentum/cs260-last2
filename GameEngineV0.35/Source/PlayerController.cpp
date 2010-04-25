@@ -146,12 +146,7 @@ namespace Framework
     PlayerStats *stats = GSM->GetPlayerInfo(GetOwner()->GetId());
 
     if ( stats )
-    {
-      GetOwner()->has(Sprite)->Color.x = stats->color_.r;
-      GetOwner()->has(Sprite)->Color.y = stats->color_.g;
-      GetOwner()->has(Sprite)->Color.z = stats->color_.b;
-      GetOwner()->has(Sprite)->Color.w = stats->color_.a;
-    }
+      GetOwner()->has(Sprite)->Color = stats->color_;
 
     // handle movement
 		if( IsUpHeld() || IsWHeld() )
