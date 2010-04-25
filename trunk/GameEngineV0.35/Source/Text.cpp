@@ -66,6 +66,8 @@ namespace Framework
     StreamRead( stream, blue );
     StreamRead( stream, alpha );
 
+    StreamRead( stream, text_ );
+
     SetColor( red, green, blue, alpha );
     ChangeFont( width_, height_, fontname_ );
   }
