@@ -256,7 +256,15 @@ namespace Framework
         //obj->has(Text)->SetText("WIN ^.^");
 
         Text* text = obj->has(Text);
-        if(GSM->GetStats().front().playerId_ == GSM->GetPlayerId())
+
+        GOCId id = 0;
+        for(unsigned i = 0; i < GSM->GetStats().size(); ++i)
+        {
+          if(GSM->GetStats()[i].playerId_ > id)
+            id = GSM->GetStats()[i].playerId_;
+        }
+
+        if(id == GSM->GetPlayerId())
           text->SetText("You Win!");
         else
           text->SetText("You Lose!");
