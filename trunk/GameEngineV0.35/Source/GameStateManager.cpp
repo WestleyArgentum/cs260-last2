@@ -120,6 +120,13 @@ namespace Framework
   ///Pass the message to the current state.
 	void GameStateManager::SendMessage(Message * m )
 	{
+    switch ( m->MessageId )
+    {
+      case Mid::StatsUpdate:
+        UpdateStats( static_cast<StatsMessage*>(m)->stats_ );
+        break;
+    }
+
     if (GameStates.count(Curr))
     {
       GameStates[Curr]->SendMessage( m );
