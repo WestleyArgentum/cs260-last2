@@ -136,6 +136,8 @@ void Framework::ClientState::Update( float dt )
   {
 		it->Update( dt );
 	}
+
+  NETWORK->SendNetMessage(KeepAliveMessage());
 }
 
 void Framework::ClientState::Restart( void )
