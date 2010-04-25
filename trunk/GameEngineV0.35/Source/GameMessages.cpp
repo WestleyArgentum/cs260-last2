@@ -22,7 +22,8 @@ namespace Framework
   int EndGameMessage::SerializeData( DataStream &stream ) const
   {
     StreamWrite( stream, winner_ );
-    StreamWrite( stream, winnerId_ );
+    //StreamWrite( stream, winnerId_ );
+    StreamWrite( stream, color_ );
 
     return 0;
   }
@@ -30,7 +31,8 @@ namespace Framework
   void EndGameMessage::InterpretData( DataStream &stream )
   {
     StreamRead( stream, winner_ );
-    StreamRead( stream, winnerId_ );
+    //StreamRead( stream, winnerId_ );
+    StreamRead( stream, color_ );
   }
 
 

@@ -17,6 +17,10 @@
 
 namespace Framework
 {
+
+#define WINNING_SCORE 5000
+
+
   void ServerState::HandleConnection(INetMessage *msg)
   {
     ConnectionMessage *connect = static_cast<ConnectionMessage*>(msg);
@@ -209,6 +213,22 @@ namespace Framework
 	void Framework::ServerState::Update( float dt )
 	{
 		StatsMessage stats( GSM->GetStats() );
+
+    // check for a winner
+    for(unsigned i = 0; i < stats.stats_.size(); ++i)
+    {
+      PlayerStats& winner_stats = stats.stats_[i];
+      if(winner_stats.score_ >= WINNING_SCORE)
+      {
+        // generate a win message
+        EndGameMessage win;
+        win.winner_ = "WIN";  // display this message
+        win.color_ = winner_stats.color_;  // in this color
+
+        NETWORK->SendNetMessage(win);
+      }
+    }
+
 		MessageHub->Post( stats );
 
     ObjectLinkList<Controller>::iterator b = OtherPlayers.begin(), e = OtherPlayers.end();
