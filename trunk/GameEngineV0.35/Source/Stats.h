@@ -17,7 +17,7 @@ namespace Framework
 
     unsigned playerId_;
     unsigned score_;
-    Vec4 color_;
+    Color color_;
   };    // PlayerStats
 
   typedef std::vector<PlayerStats> Statistics;
