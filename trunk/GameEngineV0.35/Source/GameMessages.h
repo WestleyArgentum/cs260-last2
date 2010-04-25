@@ -148,6 +148,7 @@ namespace Framework
   class TimeoutMessage : public INetMessage
   {
   public:
+    TimeoutMessage( void ) {;}
     TimeoutMessage(const NetAddress &adr) : address(adr) {;}
     // Used when extracting messages from the list.
     virtual NMid::NetMessageIdType Type( void ) const;
@@ -252,6 +253,21 @@ namespace Framework
 
     GOCId id;
     unsigned statsid;
+  };
+
+  class KeepAliveMessage : public INetMessage
+  {
+  public:
+    // Used when extracting messages from the list.
+    virtual NMid::NetMessageIdType Type( void ) const { return NMid::KeepAlive; }
+
+    // Creates a carbon copy of the message.
+    virtual INetMessage * Clone( void ) const { return new KeepAliveMessage(); }
+
+    virtual int SerializeData( DataStream &stream ) const { return 0; }
+    virtual void InterpretData( DataStream &stream ) {}
+
+    virtual void SendThis( void ) {}
   };
 
 }

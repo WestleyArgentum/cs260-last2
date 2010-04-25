@@ -46,6 +46,14 @@ namespace Framework
       ++num;
     }
 
+    for (unsigned i = 0; i < NumMessages[NMid::Timeout] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new TimeoutMessage();
+      msg->InterpretData(stream);
+      messages[NMid::Timeout].push_back(msg);
+      ++num;
+    }
+
     for (unsigned i = 0; i < NumMessages[NMid::Update] && stream.IsReadGood(); ++i)
     {
       INetMessage *msg = new UpdateMessage();
@@ -94,13 +102,13 @@ namespace Framework
       ++num;
     }
 
-    //for (unsigned i = 0; i < NumMessages[NMid::KeepAlive] && stream.IsReadGood(); ++i)
-    //{
-    //  INetMessage *msg = new KeepAliveMessage();
-    //  msg->InterpretData(stream);
-    //  messages[NMid::Connection].push_back(msg);
-    //  ++num;
-    //}
+    for (unsigned i = 0; i < NumMessages[NMid::KeepAlive] && stream.IsReadGood(); ++i)
+    {
+      INetMessage *msg = new KeepAliveMessage();
+      msg->InterpretData(stream);
+      messages[NMid::KeepAlive].push_back(msg);
+      ++num;
+    }
 
     return num;
   }
