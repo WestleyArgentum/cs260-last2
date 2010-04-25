@@ -1,5 +1,5 @@
 [Username]
-Koala^_^
+Wes
 
 [Server]
 IP: 10.10.40.64
