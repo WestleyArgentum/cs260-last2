@@ -18,7 +18,7 @@
 namespace Framework
 {
 
-#define WINNING_SCORE 5000
+#define WINNING_SCORE 300
 
 
   void ServerState::HandleConnection(INetMessage *msg)
