@@ -258,10 +258,14 @@ namespace Framework
         Text* text = obj->has(Text);
 
         GOCId id = 0;
+        unsigned score = 0;
         for(unsigned i = 0; i < GSM->GetStats().size(); ++i)
         {
-          if(GSM->GetStats()[i].playerId_ > id)
+          if(GSM->GetStats()[i].score_ > score)
+          {
+            score = GSM->GetStats()[i].score_;
             id = GSM->GetStats()[i].playerId_;
+          }
         }
 
         if(id == GSM->GetPlayerId())
