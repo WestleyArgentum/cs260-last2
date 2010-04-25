@@ -144,7 +144,10 @@ namespace Framework
   void PlayerController::ClientUpdate ( float dt )
   {
     PlayerStats *stats = GSM->GetPlayerInfo(GetOwner()->GetId());
-    GetOwner()->has(Sprite)->Color = stats->color_;
+
+    if ( stats )
+      GetOwner()->has(Sprite)->Color = stats->color_;
+
     // handle movement
 		if( IsUpHeld() || IsWHeld() )
     {

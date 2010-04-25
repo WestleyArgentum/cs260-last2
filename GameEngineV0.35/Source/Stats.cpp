@@ -98,7 +98,7 @@ namespace Framework
   void StatsMessage::SendThis( void )
   {
     MessageHub->Post( StatsMessage(stats_) );
-    //GSM->SendMessage(this);
+    GSM->SendMessage(this);
   }
 
 }   // namespace Framework
