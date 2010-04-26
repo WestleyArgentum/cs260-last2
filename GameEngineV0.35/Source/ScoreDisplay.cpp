@@ -123,6 +123,7 @@ namespace Framework
         // Ignore any playerId that is invalid.
       if ( it->playerId_ == 0 )
       {
+        text_[i].SetText("");
         continue;
       }
       if ( it->playerId_ == GSM->GetPlayerId() )    // If we are draw the current player's score
