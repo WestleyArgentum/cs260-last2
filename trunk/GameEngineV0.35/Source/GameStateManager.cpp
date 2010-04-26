@@ -108,7 +108,7 @@ namespace Framework
 
         if ( shipImage )
         {
-          it->color_ = shipImage->Color;
+          //it->color_ = shipImage->Color;
         }
       }
     }
